@@ -663,6 +663,9 @@ if __name__ == '__main__':
                 all_val_metrics[key].append(val_metrics[key])
                 all_test_metrics[key].append(test_metrics[key])
         files = [open(os.path.join(dir, 'multiple_seed_validation_statistics.txt'), 'w') for dir in log_dirs]
+        print(30*"*")
+        print(files)
+        print(30*"*")
         print('Validation results:')
         for key, value in all_val_metrics.items():
             metric = np.array(value)
