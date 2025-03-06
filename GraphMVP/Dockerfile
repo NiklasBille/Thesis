@@ -10,7 +10,7 @@ RUN apt-get update \
 
 # Set environment variables for PyG installation
 ENV TORCH=1.9.0
-ENV CUDA=cu102 
+ENV CUDA=cu111
 
 # install miniconda
 ENV PATH="/root/miniconda3/bin:$PATH"
@@ -28,11 +28,11 @@ RUN conda init bash \
     && conda create -n GraphMVP python=3.7 -y \
     && conda activate GraphMVP \
     && conda install -y -c rdkit rdkit \
-    && conda install -y -c pytorch pytorch=1.9.1 \
+    && conda install conda-forge::ogb=1.3.5 \
+    && pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html \
     && conda install -y numpy networkx scikit-learn \ 
     && pip install ase \
     && pip install git+https://github.com/bp-kelley/descriptastorus \
-    && pip install ogb \
     && wget https://data.pyg.org/whl/torch-${TORCH}%2B${CUDA}/torch_cluster-1.5.9-cp37-cp37m-linux_x86_64.whl \
     && pip install torch_cluster-1.5.9-cp37-cp37m-linux_x86_64.whl \
     && wget https://data.pyg.org/whl/torch-${TORCH}%2B${CUDA}/torch_scatter-2.0.9-cp37-cp37m-linux_x86_64.whl \

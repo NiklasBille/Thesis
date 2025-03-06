@@ -66,7 +66,7 @@ if __name__ == '__main__':
         torch.cuda.manual_seed_all(args.runseed)
 
     num_tasks = 1
-    dataset_folder = '../datasets/molecule_datasets_regression/'
+    dataset_folder = '../datasets/molecule_datasets/'
     dataset_folder = os.path.join(dataset_folder, args.dataset)
     dataset = MoleculeDatasetComplete(dataset_folder, dataset=args.dataset)
     print('dataset_folder:', dataset_folder)
