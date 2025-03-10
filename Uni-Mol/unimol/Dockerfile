@@ -12,6 +12,8 @@ RUN pip install --no-cache-dir .
 
 # Run the setup script
 RUN python setup.py install
+RUN pip install rdkit-pypi==2022.9.3
 
 # Install ipykernel for jupyter notebook support
 RUN pip3 install ipykernel
+
