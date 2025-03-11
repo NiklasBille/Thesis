@@ -34,7 +34,7 @@ def get_csv_results_reg(predict_path, csv_path, writing_to_csv):
 
 if __name__ == "__main__":
 
-    WRITE_TO_CSV = False 
+    WRITE_TO_CSV = True 
 
     #datasets = ["freesolv_seed2", "freesolv_seed3", "freesolv_seed4"]
     datasets = ["qm7_seed2", "qm7_seed3", "qm7_seed4"]
