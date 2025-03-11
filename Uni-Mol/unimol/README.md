@@ -109,5 +109,6 @@ To evaluate run:
            --fp16 --fp16-init-scale 4 --fp16-scale-window 256 \
            --log-interval 50 --log-format simple 
 
-
+### Metrics
+To obtain metrics and write them to a csv file use the script 'getEvaluationMetricsCSV.py'. Currently this is only implemented for regression tasks, but we can extend to classification tasks when needed.
 
