@@ -35,6 +35,8 @@ To run the training script for e.g. lipo, cd into src_regression and run:
         --output_model_dir $save_dir \
         --dataset $dataset
 
+For all the downstream tasks the author of GraphMVP did not tune the hyperparameters. 
+
 ### Changes in environment
 - cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link)
 - need to install ogb=1.3.5 before torch otherwise the environment uses a  PyTorch installation with CUDA10.2 for some reason.
