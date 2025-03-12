@@ -12,7 +12,7 @@ Run the new image as a container, while loading this directory into the containe
 
     docker run --gpus all --rm -it --runtime=nvidia -v $(pwd):/workspace -w /workspace graphmvp
 
-### Downloading data from paper
+## Downloading data from paper
 To download the dataset used in the paper run:
 
     wget --directory-prefix=datasets/ http://snap.stanford.edu/gnn-pretrain/data/chem_dataset.zip
@@ -20,7 +20,20 @@ To download the dataset used in the paper run:
     mv datasets/dataset datasets/molecule_datasets
     rm datasets/chem_dataset.zip
 
+## Training
+To run the training script for e.g. lipo, cd into src_regression and run:
 
+    save_dir="/workspace/results/lipo_seed2"
+    weight_path="/workspace/weights/pretrained/GraphMVP_regression.pth"
+    dataset=lipophilicity
+    device=1
+    seed=2
+
+    python molecule_finetune_regression.py --device $device \
+    	--seed $seed --runseed $seed \
+    	--input_model_file $weight_path \
+        --output_model_dir $save_dir \
+        --dataset $dataset
 
 ### Changes in environment
 - cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link)
