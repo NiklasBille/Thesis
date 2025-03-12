@@ -5,12 +5,12 @@ This folder reproduces the results from https://github.com/chao1224/GraphMVP
 Ensure you have the "nvidia/cuda:11.0.3-devel-ubuntu22.04" docker image available. To get this image run:
 
     docker pull nvidia/cuda:11.0.3-devel-ubuntu20.04
-Create a docker image from the dockerfile:
+Create a docker image from the dockerfile, navigate to /Thesis/GraphMVP and run::
     
-    docker build --tag graphmvp:pytorch1.9.1-cuda11.0.3 GraphMVP/
+    docker build --tag graphmvp docker/
 Run the new image as a container, while loading this directory into the container:
 
-    docker run --gpus all --rm -it --runtime=nvidia -v <path_to_graphmvp_repo>:/workspace -w /workspace graphmvp:pytorch1.9.0-cuda11.0.3
+    docker run --gpus all --rm -it --runtime=nvidia -v $(pwd):/workspace -w /workspace graphmvp
 
 ### Downloading data from paper
 To download the dataset used in the paper run:
