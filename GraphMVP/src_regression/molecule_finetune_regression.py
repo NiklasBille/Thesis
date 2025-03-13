@@ -27,9 +27,17 @@ def train(model, device, loader, optimizer):
         pred = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch).squeeze()
         y = batch.y.squeeze()
 
+        print(y.dtype)
+        y = y.float() 
+        print(y.dtype)
         loss = reg_criterion(pred, y)
 
         optimizer.zero_grad()
+        print(loss)
+        #print(loss.dtype)
+        #loss.float()
+        #print(loss.dtype)
+        #sys.exit()
         loss.backward()
         optimizer.step()
         total_loss += loss.detach().item()
