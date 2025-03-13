@@ -41,3 +41,10 @@ For all the downstream tasks the author of GraphMVP did not tune the hyperparame
 - cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link)
 - need to install ogb=1.3.5 before torch otherwise the environment uses a  PyTorch installation with CUDA10.2 for some reason.
 https://discuss.pytorch.org/t/geforce-rtx-3090-with-cuda-capability-sm-86-is-not-compatible-with-the-current-pytorch-installation/123499
+- I would run into issues when loading torch_geometric which is required for loading data manually (e.g. when inspecting datasets): 
+
+     ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.29' not found. 
+     
+    The issue was (I think) that the installed SciPy build (1.7.3) requires a newer C++ standard library (a newer libstdc++), but the system’s libstdc++ is too old to to come with GLIBCXX_3.4.29 version. One solution I found was running 'conda install scipy=1.7.0 -c conda-forge' which I think is fine since 1.7.1-1.7.3 only comes with bug-fixes.
+
+    However, I think we can get away with only doing this when inspecting datasets since I don't have any issues when training.
