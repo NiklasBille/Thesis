@@ -26,18 +26,11 @@ def train(model, device, loader, optimizer):
         batch = batch.to(device)
         pred = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch).squeeze()
         y = batch.y.squeeze()
+        y = y.to(torch.float32) # float64 causes issues for some datasets, so convert to float32
 
-        print(y.dtype)
-        y = y.float() 
-        print(y.dtype)
         loss = reg_criterion(pred, y)
 
         optimizer.zero_grad()
-        print(loss)
-        #print(loss.dtype)
-        #loss.float()
-        #print(loss.dtype)
-        #sys.exit()
         loss.backward()
         optimizer.step()
         total_loss += loss.detach().item()
