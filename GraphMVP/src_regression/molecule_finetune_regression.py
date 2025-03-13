@@ -26,6 +26,7 @@ def train(model, device, loader, optimizer):
         batch = batch.to(device)
         pred = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch).squeeze()
         y = batch.y.squeeze()
+        y = y.to(torch.float32) # float64 causes issues for some datasets, so convert to float32
 
         loss = reg_criterion(pred, y)
 

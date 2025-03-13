@@ -5,14 +5,14 @@ This folder reproduces the results from https://github.com/chao1224/GraphMVP
 Ensure you have the "nvidia/cuda:11.0.3-devel-ubuntu22.04" docker image available. To get this image run:
 
     docker pull nvidia/cuda:11.0.3-devel-ubuntu20.04
-Create a docker image from the dockerfile:
+Create a docker image from the dockerfile, navigate to /Thesis/GraphMVP and run::
     
-    docker build --tag graphmvp:pytorch1.9.1-cuda11.0.3 GraphMVP/
+    docker build --tag graphmvp docker/
 Run the new image as a container, while loading this directory into the container:
 
-    docker run --gpus all --rm -it --runtime=nvidia -v <path_to_graphmvp_repo>:/workspace -w /workspace graphmvp:pytorch1.9.0-cuda11.0.3
+    docker run --gpus all --rm -it --runtime=nvidia -v $(pwd):/workspace -w /workspace graphmvp
 
-### Downloading data from paper
+## Downloading data from paper
 To download the dataset used in the paper run:
 
     wget --directory-prefix=datasets/ http://snap.stanford.edu/gnn-pretrain/data/chem_dataset.zip
@@ -20,9 +20,31 @@ To download the dataset used in the paper run:
     mv datasets/dataset datasets/molecule_datasets
     rm datasets/chem_dataset.zip
 
+## Training
+To run the training script for e.g. lipo, cd into src_regression and run:
 
+    save_dir="/workspace/results/lipo_seed2"
+    weight_path="/workspace/weights/pretrained/GraphMVP_regression.pth"
+    dataset=lipophilicity
+    device=1
+    seed=2
+
+    python molecule_finetune_regression.py --device $device \
+    	--seed $seed --runseed $seed \
+    	--input_model_file $weight_path \
+        --output_model_dir $save_dir \
+        --dataset $dataset
+
+For all the downstream tasks the author of GraphMVP did not tune the hyperparameters. 
 
 ### Changes in environment
 - cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link)
 - need to install ogb=1.3.5 before torch otherwise the environment uses a  PyTorch installation with CUDA10.2 for some reason.
 https://discuss.pytorch.org/t/geforce-rtx-3090-with-cuda-capability-sm-86-is-not-compatible-with-the-current-pytorch-installation/123499
+- I would run into issues when loading torch_geometric which is required for loading data manually (e.g. when inspecting datasets): 
+
+     ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.29' not found. 
+     
+    The issue was (I think) that the installed SciPy build (1.7.3) requires a newer C++ standard library (a newer libstdc++), but the system’s libstdc++ is too old to to come with GLIBCXX_3.4.29 version. One solution I found was running 'conda install scipy=1.7.0 -c conda-forge' which I think is fine since 1.7.1-1.7.3 only comes with bug-fixes.
+
+    However, I think we can get away with only doing this when inspecting datasets since I don't have any issues when training.
