@@ -21,6 +21,12 @@ If you wanna fine-tune on freesolve run:
 
 Sometimes errors regrading torch shapes can occur. Reinstalling ogb==1.3.3 has fixed this issue for me.
 
+ogb is funky: if you get a weird error related to this library try doing the following:
+
+    pip uninstall ogb
+    pip install ogb
+    pip install ogb==1.3.3
+
 ## Changes made to original repo
 Since the original paper is from 2022, a few changes was needed to find a set of dependency versions that all can collaborate.
 
