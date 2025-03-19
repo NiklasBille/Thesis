@@ -126,6 +126,7 @@ dataset/ogbg*/
 dataset/COLL/
 dataset/QM9Geomol/
 dataset/QMugs/
+Qmugs/
 dataset/MASIF/
 !/dataset
 /dataset/*
