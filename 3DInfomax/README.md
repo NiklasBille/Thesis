@@ -29,3 +29,8 @@ Since the original paper is from 2022, a few changes was needed to find a set of
 * l. 4 in utils.py has been changed to "from collections.abc import MutableMapping". MutableMapping is now imported from collections.abc instead of collections as specified in original repository.
 * The requirements.txt file has been changed to specifiy new versions. This file should always be used in collaboration with the Dockerfile. It can not be used to create a conda env, since not all dependency versions are specified here. 
 * A dockerfile has been implemented to create an image that should make it possible for anyone to run the code.
+
+
+## Noise experiment 
+Currently working on adding noise to the fine-tuning dataset of QM9. The folder noise_experiment contains a flip_pertubation_noise.py file that implements this file. Currently these methods are used in qm9_dataset.py when initializing the data_dict. For testing purposes we currently just add the noise to the atoms and edges for the first molecule.
+Also created a pre-train_QM9_small_test.yml script file for testing the noise experiment on a small version of QM9 first. 

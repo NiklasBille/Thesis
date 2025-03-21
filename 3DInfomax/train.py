@@ -284,6 +284,8 @@ def train(args):
         return train_geomol(args, device, metrics_dict)
     elif 'ogbg' in args.dataset:
         return train_ogbg(args, device, metrics_dict)
+    elif args.dataset == "qm9_test":
+        return train_qm9_test(args, device, metrics_dict)
 
 
 def train_geomol(args, device, metrics_dict):
@@ -610,6 +612,23 @@ def train_qm9(args, device, metrics_dict):
         test_metrics = trainer.evaluation(test_loader, data_split='test')
         return val_metrics, test_metrics, trainer.writer.log_dir
     return val_metrics
+
+def train_qm9_test(args, device, metrics_dict):
+    all_data = QM9Dataset(return_types=args.required_data, target_tasks=args.targets, device=device,
+                        dist_embedding=args.dist_embedding, num_radial=args.num_radial)
+
+    all_idx = get_random_indices(len(all_data), args.seed_data)
+
+    model_idx = all_idx[:200]
+    test_idx = all_idx[200:250]
+    val_idx = all_idx[250:300]
+    train_idx = model_idx[:200]
+
+
+    model, num_pretrain, transfer_from_same_dataset = load_model(args, data=all_data, device=device)
+    if transfer_from_same_dataset:
+        train_idx = model_idx[num_pretrain: num_pretrain + args.num_train]
+    print('model trainable params: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
 
 def get_arguments():

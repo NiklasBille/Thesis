@@ -15,7 +15,7 @@ import torch.nn.functional as F
 from scipy.constants import physical_constants
 
 from commons.spherical_encoding import dist_emb
-
+from noise_experiment.flip_pertubation_noise import get_noisy_atom_features, get_noisy_edge_features
 hartree2eV = physical_constants['hartree-electron volt relationship'][0]
 
 
@@ -145,8 +145,13 @@ class QM9Dataset(Dataset):
         data_dict = torch.load(os.path.join(self.qm9_directory, 'processed', self.processed_file))
 
         self.features_tensor = data_dict['atom_features']
+        # Add noise to the first 5 nodes for test purposes (Atoms for first molecule)
+        self.features_tensor[:5] = get_noisy_atom_features(self.features_tensor[:5], sample_random=0.5)
 
+        # Add the first 8 edges for test purposes (Bonds for first molecule)
         self.e_features_tensor = data_dict['edge_features']
+        self.e_features_tensor[:8] = get_noisy_edge_features(self.e_features_tensor[:8], sample_random=1)
+
         self.coordinates = data_dict['coordinates']
         self.edge_indices = data_dict['edge_indices']
 
@@ -427,7 +432,6 @@ class QM9Dataset(Dataset):
                 i = bond.GetBeginAtomIdx()
                 j = bond.GetEndAtomIdx()
                 edge_feature = bond_to_feature_vector(bond)
-
                 # add edges in both directions
                 edges_list.append((i, j))
                 edge_features_list.append(edge_feature)
