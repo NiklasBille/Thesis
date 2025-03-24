@@ -1,8 +1,8 @@
 from ogb.utils import features
 import sys
 import torch
-def _sample_uniform_categorical(num: int, size: int) -> torch.Tensor:
-    logits = torch.log(torch.ones(size) / size).repeat(num, 1)
+def _sample_uniform_categorical(num: int, size: int, device: torch.device) -> torch.Tensor:
+    logits = torch.log(torch.ones(size, device=device) / size).repeat(num, 1)
     return torch.distributions.Categorical(logits=logits).sample()
 
 
@@ -10,14 +10,15 @@ from ogb.utils import features
 
 def get_noisy_atom_features(
     atom_features_tensor: torch.Tensor,
-    sample_random: float = 0.05
+    noise_probability: float = 0.05,
+    device: torch.device = torch.device('cpu')
 ) -> torch.Tensor:
     """
     Adds noise to an existing atom feature tensor by randomly replacing values.
 
     Args:
         atom_features_tensor: Tensor of shape [num_atoms, feature_dim], dtype long.
-        sample_random: Probability of replacing a feature with a random valid value.
+        noise_probability: Probability of replacing a feature with a random valid value.
 
     Returns:
         Tensor of same shape with some noisy values.
@@ -29,9 +30,9 @@ def get_noisy_atom_features(
         # Finds all possible noise values for given feature
         vocab_size = features.get_atom_feature_dims()[i]
         # Samples a random value for each atom 
-        sampled_column = _sample_uniform_categorical(num_atoms, vocab_size)
+        sampled_column = _sample_uniform_categorical(num_atoms, vocab_size, device=device)
         # Create a boolean mask for which atoms to add noise to
-        noise_mask = torch.rand(num_atoms) < sample_random
+        noise_mask = torch.rand(num_atoms, device=device) < noise_probability
         # Adds noise
         noisy_col = torch.where(noise_mask, sampled_column, atom_features_tensor[:, i])
         noisy_features.append(noisy_col)
@@ -41,14 +42,15 @@ def get_noisy_atom_features(
 
 def get_noisy_edge_features(
     edge_features_tensor: torch.Tensor,
-    sample_random: float = 0.05
+    noise_probability: float = 0.05,
+    device: torch.device = torch.device('cpu')
 ) -> torch.Tensor:
     """
     Adds noise to an existing edge feature tensor by randomly replacing values.
 
     Args:
         edge_features_tensor: Tensor of shape [num_edges, feature_dim], dtype long.
-        sample_random: Probability of replacing a feature with a random valid value.
+        noise_probability: Probability of replacing a feature with a random valid value.
 
     Returns:
         Tensor of same shape with some noisy values.
@@ -60,9 +62,9 @@ def get_noisy_edge_features(
         # Get the number of possible values for the current edge feature
         vocab_size = features.get_bond_feature_dims()[i]
         # Sample a random value for each edge
-        sampled_column = _sample_uniform_categorical(num_edges, vocab_size)
+        sampled_column = _sample_uniform_categorical(num_edges, vocab_size, device=device)
         # Create a boolean mask for which edges to add noise to
-        noise_mask = torch.rand(num_edges) < sample_random
+        noise_mask = torch.rand(num_edges, device=device) < noise_probability
         # Add noise
         noisy_col = torch.where(noise_mask, sampled_column, edge_features_tensor[:, i])
         noisy_features.append(noisy_col)

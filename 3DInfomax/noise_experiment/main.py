@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from datasets.ogbg_dataset_extension import OGBGDatasetExtension
 from datasets.qm9_dataset import QM9Dataset
 
-def test_data_format():
+def test_data_format_QM9():
     dataset = QM9Dataset(return_types=['dgl_graph', 'targets'], device='cuda')
     
     graph, target = dataset[0]  
@@ -19,6 +19,17 @@ def test_data_format():
     print(graph.edata['feat'])
 
     
+def test_data_format_OGBG():
+    dataset = OGBGDatasetExtension(name='ogbg-molchembl', return_types=['dgl_graph', 'targets'], device='cuda')
+    
+    graph, target = dataset[0]  
+ 
+    #Print each nodes features
+    print(graph.ndata['feat'])
+
+    #Print each edges features
+    print(graph.edata['feat'])
 
 if __name__ == '__main__':
-    test_data_format()
+    # test_data_format_QM9()
+    test_data_format_OGBG()

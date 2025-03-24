@@ -146,11 +146,11 @@ class QM9Dataset(Dataset):
 
         self.features_tensor = data_dict['atom_features']
         # Add noise to the first 5 nodes for test purposes (Atoms for first molecule)
-        self.features_tensor[:5] = get_noisy_atom_features(self.features_tensor[:5], sample_random=0.5)
+        self.features_tensor[:5] = get_noisy_atom_features(self.features_tensor[:5], noise_probability=0.5)
 
         # Add the first 8 edges for test purposes (Bonds for first molecule)
         self.e_features_tensor = data_dict['edge_features']
-        self.e_features_tensor[:8] = get_noisy_edge_features(self.e_features_tensor[:8], sample_random=1)
+        self.e_features_tensor[:8] = get_noisy_edge_features(self.e_features_tensor[:8], noise_probability=1)
 
         self.coordinates = data_dict['coordinates']
         self.edge_indices = data_dict['edge_indices']
