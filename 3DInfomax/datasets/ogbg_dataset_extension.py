@@ -7,7 +7,7 @@ import torch_geometric
 
 from ogb.graphproppred import GraphPropPredDataset, DglGraphPropPredDataset
 from torch.utils.data import Subset
-from noise_experiment.flip_pertubation_noise import get_noisy_atom_features, get_noisy_edge_features
+# from noise_experiment.flip_pertubation_noise import get_noisy_atom_features, get_noisy_edge_features
 
 class OGBGDatasetExtension(GraphPropPredDataset):
     def __init__(self, return_types, name, device, root='dataset', meta_dict=None, num_freq=10):
@@ -37,21 +37,20 @@ class OGBGDatasetExtension(GraphPropPredDataset):
 
     def data_by_type(self, idx, return_type):
         if return_type == 'dgl_graph':           
-            noise = True
-            if noise:
-                # Print the device of the graph
-                print("Device of the graph: ", self.get_graph(idx).to(self.device).device)
+            # noise = False
+            # if noise:
+            #     # Print the device of the graph
 
-                # Add noise to the atom and edge features of the graph
-                noisy_atom_features = get_noisy_atom_features(self.get_graph(idx).to(self.device).ndata['feat'], noise_probability=0.5, device=self.device)
-                noisy_edge_features = get_noisy_edge_features(self.get_graph(idx).to(self.device).edata['feat'], noise_probability=0.5, device=self.device)
+            #     # Add noise to the atom and edge features of the graph
+            #     noisy_atom_features = get_noisy_atom_features(self.get_graph(idx).to(self.device).ndata['feat'], noise_probability=0.5, device=self.device)
+            #     noisy_edge_features = get_noisy_edge_features(self.get_graph(idx).to(self.device).edata['feat'], noise_probability=0.5, device=self.device)
 
-                # Update the graph with the noisy features
-                noisy_graph = self.get_graph(idx).to(self.device)
-                noisy_graph.ndata['feat'] = noisy_atom_features
-                noisy_graph.edata['feat'] = noisy_edge_features
+            #     # Update the graph with the noisy features
+            #     noisy_graph = self.get_graph(idx).to(self.device)
+            #     noisy_graph.ndata['feat'] = noisy_atom_features
+            #     noisy_graph.edata['feat'] = noisy_edge_features
 
-                return noisy_graph.to(self.device)
+            #     return noisy_graph.to(self.device)
 
             return self.get_graph(idx).to(self.device)
         elif return_type == 'raw_features':

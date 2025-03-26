@@ -145,12 +145,12 @@ class QM9Dataset(Dataset):
         data_dict = torch.load(os.path.join(self.qm9_directory, 'processed', self.processed_file))
 
         self.features_tensor = data_dict['atom_features']
-        # Add noise to the first 5 nodes for test purposes (Atoms for first molecule)
-        self.features_tensor[:5] = get_noisy_atom_features(self.features_tensor[:5], noise_probability=0.5)
+        # # Add noise to the first 5 nodes for test purposes (Atoms for first molecule)
+        # self.features_tensor[:5] = get_noisy_atom_features(self.features_tensor[:5], noise_probability=0)
 
-        # Add the first 8 edges for test purposes (Bonds for first molecule)
         self.e_features_tensor = data_dict['edge_features']
-        self.e_features_tensor[:8] = get_noisy_edge_features(self.e_features_tensor[:8], noise_probability=1)
+        # # Add the first 8 edges for test purposes (Bonds for first molecule)
+        # self.e_features_tensor[:8] = get_noisy_edge_features(self.e_features_tensor[:8], noise_probability=0)
 
         self.coordinates = data_dict['coordinates']
         self.edge_indices = data_dict['edge_indices']
