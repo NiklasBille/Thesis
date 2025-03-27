@@ -65,7 +65,7 @@ class FeatureNoiseInjector:
                         noisy_features_col[i] = random.sample(new_possible_values, 1)[0]
             noisy_features.append(noisy_features_col)
         return torch.stack(noisy_features, dim=1)
-    
+       
     def _get_features_from_dataset(self, dataset_name: str):
         # Chech if its part of the ogbg datasets
         if 'ogbg' in dataset_name:

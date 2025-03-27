@@ -27,6 +27,8 @@ class OGBGDatasetExtension(GraphPropPredDataset):
         self.device = device
         self.labels = torch.tensor(self.labels)
 
+        
+
     def __getitem__(self, idx):
         '''Get datapoint with index'''
         data = []
@@ -54,7 +56,7 @@ class OGBGDatasetExtension(GraphPropPredDataset):
                 noisy_graph = self.get_graph(idx)
                 noisy_graph.ndata['feat'] = noisy_atom_features
                 noisy_graph.edata['feat'] = noisy_edge_features
-                
+
                 return noisy_graph.to(self.device)
             return self.get_graph(idx).to(self.device)
         elif return_type == 'raw_features':
