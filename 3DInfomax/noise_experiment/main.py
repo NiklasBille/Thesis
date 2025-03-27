@@ -5,7 +5,7 @@ import torch
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from datasets.ogbg_dataset_extension import OGBGDatasetExtension
-# from datasets.qm9_dataset import QM9Dataset
+from datasets.qm9_dataset import QM9Dataset
 from noise_experiment.feature_noise_injector import FeatureNoiseInjector
 
 def test_data_format_QM9():
@@ -20,15 +20,15 @@ def test_data_format_QM9():
     print(graph.edata['feat'])
 
 def test_data_format_OGBG():
-    dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', return_types=['dgl_graph', 'targets'], device='cuda:1')
-    
-    graph, target = dataset[1]  
+    dataset = OGBGDatasetExtension(name='ogbg-molchembl', return_types=['dgl_graph', 'targets'], device='cuda:1')
+    print(len(dataset))
+    # graph, target = dataset[1]  
  
     #Print each nodes features
-    print(graph.ndata['feat'])
+    # print(graph.ndata['feat'])
 
     #Print each edges features
-    print(graph.edata['feat'])
+    # print(graph.edata['feat'])
 
 def test_noise_injector():
     dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', return_types=['dgl_graph', 'targets'], device='cuda:1')
@@ -46,9 +46,9 @@ def test_noise_injector():
 
 if __name__ == '__main__':
     # test_data_format_QM9()
-    # test_data_format_OGBG()
+    test_data_format_OGBG()
 
-    noisy_node_features, noisy_edge_features = test_noise_injector()
+    # noisy_node_features, noisy_edge_features = test_noise_injector()
     
-    print(noisy_node_features, noisy_edge_features)
+    # print(noisy_node_features, noisy_edge_features)
 

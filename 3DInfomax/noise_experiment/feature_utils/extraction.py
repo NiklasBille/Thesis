@@ -2,13 +2,16 @@ import sys
 import os
 
 # Add the parent directory to sys.path so sibling directories can be accessed
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+
 
 
 import torch
 from collections import defaultdict
 from tqdm import tqdm 
-from feature_utils.io import save_features, load_features
+from datasets.ogbg_dataset_extension import OGBGDatasetExtension
+from noise_experiment.feature_utils.io import save_features, load_features
 def extract_feature_values(dataset, dataset_name, save=True):
     """
     Extracts the unique values of the node and edge features of a dataset.
@@ -50,10 +53,13 @@ def extract_feature_values(dataset, dataset_name, save=True):
     
 
 if __name__ == '__main__':
-    # dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', return_types=['dgl_graph', 'targets'], device='cuda')
-    # dataset = QM9Dataset(return_types=['dgl_graph', 'targets'], device='cuda')
-    # node_dict, edge_dict = extract_feature_values(dataset=dataset, dataset_name='qm9', save=True)
-    node_dict = load_features('noise_experiment/feature_values/ogbg-molfreesolv_node_features.pkl')
-    edge_dict = load_features('noise_experiment/feature_values/ogbg-molfreesolv_edge_features.pkl')
+    dataset_name = 'ogbg-mollipo'
+
+    dataset = OGBGDatasetExtension(name=dataset_name, return_types=['dgl_graph', 'targets'], device='cuda')
+    
+    node_dict, edge_dict = extract_feature_values(dataset=dataset, dataset_name=dataset_name, save=True)
+    # node_dict = load_features('noise_experiment/feature_values/ogbg-molbace_node_features.pkl')
+    # edge_dict = load_features('noise_experiment/feature_values/ogbg-molbace_edge_features.pkl')
+    print("Dataset :", dataset_name)
     print(node_dict)
     print(edge_dict)

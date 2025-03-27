@@ -15,7 +15,7 @@ import torch.nn.functional as F
 from scipy.constants import physical_constants
 
 from commons.spherical_encoding import dist_emb
-from noise_experiment.flip_pertubation_noise import get_noisy_atom_features, get_noisy_edge_features
+
 hartree2eV = physical_constants['hartree-electron volt relationship'][0]
 
 
