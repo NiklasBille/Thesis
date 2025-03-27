@@ -37,6 +37,5 @@ if __name__ == '__main__':
     # test_data_format_OGBG()
 
     test_noise_injector()
-    
     # print(noisy_node_features, noisy_edge_features)
 
