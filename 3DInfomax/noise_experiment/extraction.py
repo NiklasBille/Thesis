@@ -1,10 +1,6 @@
 import sys
 import os
-
-# Add the parent directory to sys.path so sibling directories can be accessed
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
-
 
 
 import torch

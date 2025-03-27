@@ -1,19 +1,20 @@
 import sys
 import os 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 import torch
 from typing import Dict, List
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from feature_utils.extraction import load_features
+from noise_experiment.io import load_features
 import random
+
 class FeatureNoiseInjector:
     def __init__(self, 
-                 node_feature_path: str, 
-                 edge_feature_path: str,
+                 dataset_name: str,
                  noise_probability: float,
                  device: torch.device = torch.device('cpu')):
         self.device = device
-        self.possible_node_values: Dict[int, List[int]]  = load_features(node_feature_path)
-        self.possible_edge_values: Dict[int, List[int]]  = load_features(edge_feature_path)
+        node_features, edge_features = self._get_features_from_dataset(dataset_name)
+        self.possible_node_values: Dict[int, List[int]]  = node_features
+        self.possible_edge_values: Dict[int, List[int]]  = edge_features
         self.noise_probability = noise_probability
     
     def apply_noise(self, 
@@ -21,6 +22,7 @@ class FeatureNoiseInjector:
                     feature_type: str = 'node'
                     ) -> torch.Tensor:
         """"
+        Apply noise to a tensor of features
         """
         if feature_type == 'node':
             feature_values = self.possible_node_values
@@ -63,6 +65,15 @@ class FeatureNoiseInjector:
                         noisy_features_col[i] = random.sample(new_possible_values, 1)[0]
             noisy_features.append(noisy_features_col)
         return torch.stack(noisy_features, dim=1)
+    
+    def _get_features_from_dataset(self, dataset_name: str):
+        # Chech if its part of the ogbg datasets
+        if 'ogbg' in dataset_name:
+            node_features = load_features(f'noise_experiment/feature_values/{dataset_name}_node_features.pkl')
+            edge_features = load_features(f'noise_experiment/feature_values/{dataset_name}_edge_features.pkl')
+            return node_features, edge_features
+        else:
+            raise ValueError("Dataset not supported")
 
 if __name__ == '__main__':
     # Create a tensor to test the noise injector

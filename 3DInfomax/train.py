@@ -158,6 +158,7 @@ def parse_arguments():
     p.add_argument('--force_random_split', type=bool, default=False, help='use random split for ogb')
     p.add_argument('--reuse_pre_train_data', type=bool, default=False, help='use all data instead of ignoring that used during pre-training')
     p.add_argument('--transfer_3d', type=bool, default=False, help='set true to load the 3d network instead of the 2d network')
+    p.add_argument('--noise_level', type=float, default=0.0, help='Specifies the noise level for the noise injection')
     return p.parse_args()
 
 
@@ -428,7 +429,7 @@ def train_pcqm4m(args, device, metrics_dict):
 
 
 def train_ogbg(args, device, metrics_dict):
-    dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset)
+    dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
     split_idx = dataset.get_idx_split()
     if args.force_random_split == True:
         all_idx = get_random_indices(len(dataset), args.seed_data)

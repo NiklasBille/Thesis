@@ -1,4 +1,3 @@
-import os
 import torch.nn.functional as F
 import dgl
 import numpy as np
@@ -7,10 +6,10 @@ import torch_geometric
 
 from ogb.graphproppred import GraphPropPredDataset, DglGraphPropPredDataset
 from torch.utils.data import Subset
-# from noise_experiment.flip_pertubation_noise import get_noisy_atom_features, get_noisy_edge_features
+from noise_experiment.feature_noise_injector import FeatureNoiseInjector
 
 class OGBGDatasetExtension(GraphPropPredDataset):
-    def __init__(self, return_types, name, device, root='dataset', meta_dict=None, num_freq=10):
+    def __init__(self, return_types, name, device, noise_level=0.0, root='dataset', meta_dict=None, num_freq=10):
         super(OGBGDatasetExtension, self).__init__(name=name, root=root, meta_dict=meta_dict)
         '''
             - name (str): name of the dataset
@@ -24,7 +23,7 @@ class OGBGDatasetExtension(GraphPropPredDataset):
         self.san_graphs = {}
         self.pos_enc = {}
         self.num_freq = num_freq
-
+        self.noise_level = noise_level
         self.device = device
         self.labels = torch.tensor(self.labels)
 
@@ -36,22 +35,27 @@ class OGBGDatasetExtension(GraphPropPredDataset):
         return tuple(data)
 
     def data_by_type(self, idx, return_type):
-        if return_type == 'dgl_graph':           
-            # noise = False
-            # if noise:
-            #     # Print the device of the graph
+        if return_type == 'dgl_graph':  
+            if self.noise_level > 0.0:
+                # Define noise injector
+                noise_injector = FeatureNoiseInjector(
+                    dataset_name=self.name,
+                    noise_probability=self.noise_level,
+                    device=torch.device(self.device)
+                )
+                # Apply noise to node features
+                tensor_node_feat = torch.tensor(self.graphs[idx]['node_feat'])
+                noisy_atom_features = noise_injector.apply_noise(tensor_node_feat, feature_type='node')
+                # Apply noise to edge features
+                tensor_edge_feat = torch.tensor(self.graphs[idx]['edge_feat'])
+                noisy_edge_features = noise_injector.apply_noise(tensor_edge_feat, feature_type='edge')
 
-            #     # Add noise to the atom and edge features of the graph
-            #     noisy_atom_features = get_noisy_atom_features(self.get_graph(idx).to(self.device).ndata['feat'], noise_probability=0.5, device=self.device)
-            #     noisy_edge_features = get_noisy_edge_features(self.get_graph(idx).to(self.device).edata['feat'], noise_probability=0.5, device=self.device)
-
-            #     # Update the graph with the noisy features
-            #     noisy_graph = self.get_graph(idx).to(self.device)
-            #     noisy_graph.ndata['feat'] = noisy_atom_features
-            #     noisy_graph.edata['feat'] = noisy_edge_features
-
-            #     return noisy_graph.to(self.device)
-
+                # Create noisy graph
+                noisy_graph = self.get_graph(idx)
+                noisy_graph.ndata['feat'] = noisy_atom_features
+                noisy_graph.edata['feat'] = noisy_edge_features
+                
+                return noisy_graph.to(self.device)
             return self.get_graph(idx).to(self.device)
         elif return_type == 'raw_features':
             return torch.tensor(self.graphs[idx]['node_feat']).to(self.device)
