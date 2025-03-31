@@ -34,38 +34,45 @@ class FeatureNoiseInjector:
     
         
     def _random_flip_noise(
-        self,
-        features_tensor: torch.Tensor,
-        possible_values: Dict[int, List[int]],
-        noise_probability: float
+            self,
+            features_tensor: torch.Tensor,
+            possible_values: Dict[int, List[int]],
+            noise_probability: float
     ) -> torch.Tensor:
-        """
-        Adds random flip noise to a categorical feature tensor.
+        """"
+        Randomly flip features in the tensor with a given probability.
         """
         num_rows, feat_dim = features_tensor.shape
         noisy_features = []
+        features_with_only_one_value = [i for i in range(feat_dim) if len(possible_values[i]) == 1]       
+        # Loop over each feature dimension
         for j in range(feat_dim):
+            # If the feature has only one possible value, we don't need to add noise
+            if j in features_with_only_one_value:
+                noisy_features.append(features_tensor[:, j])
+                continue
+
             features_col = features_tensor[:, j]
-            values = possible_values[j]
+            pos_values_for_feature = possible_values[j]
             noisy_features_col = features_col.clone()
             noise_mask = torch.rand(num_rows, device=self.device) < noise_probability
 
-            for i in range(num_rows):
-                if noise_mask[i]:
-                    original_value = features_col[i].item()
-                    # Checks if the original value is in the possible values
-                    assert original_value in values, f"Original value {original_value} not in possible values {values}"
-                    # Ensures edgecase where only one possible value exists
-                    if len(values) == 1:
-                        continue 
-                    else: 
-                        new_possible_values = values.copy()
-                        new_possible_values.remove(original_value)
-                        # replace original value with a random value from the possible values
-                        noisy_features_col[i] = random.sample(new_possible_values, 1)[0]
+            # Get noisy indices
+            noisy_indices = torch.nonzero(noise_mask, as_tuple=True)[0]
+            if len(noisy_indices) > 0:
+                # Get the original values at the noisy indices 
+                values_to_be_flipped = features_col[noisy_indices]
+                
+                flipped_values = []
+                for value in values_to_be_flipped:
+                    choices = [v for v in pos_values_for_feature if v != value.item()]
+                    flipped_values.append(random.choice(choices))
+                
+                noisy_features_col[noisy_indices] = torch.tensor(flipped_values, device=self.device)
             noisy_features.append(noisy_features_col)
         return torch.stack(noisy_features, dim=1)
-       
+    
+
     def _get_features_from_dataset(self, dataset_name: str):
         # Chech if its part of the ogbg datasets
         if 'ogbg' in dataset_name:

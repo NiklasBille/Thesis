@@ -6,10 +6,11 @@ import torch
 from datasets.ogbg_dataset_extension import OGBGDatasetExtension
 from datasets.qm9_dataset import QM9Dataset
 from noise_experiment.feature_noise_injector import FeatureNoiseInjector
+import torch, time
 
 
 def test_feature_noise_injector_effectiveness():
-    noisy_dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', noise_level=0.05, return_types=['dgl_graph', 'targets'], device='cuda:1')
+    noisy_dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', noise_level=0.10, return_types=['dgl_graph', 'targets'], device='cuda:1')
     clean_dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', noise_level=0.0, return_types=['dgl_graph', 'targets'], device='cuda:1')
     
     
@@ -47,4 +48,7 @@ if __name__ == '__main__':
     noise = test_feature_noise_injector_effectiveness()
     # For freesolv we have one feature with no value to flip to therefore we will be 1/12*noise_level off
     print(f"Fraction of noisy features: {noise}")
+    
+
+
     

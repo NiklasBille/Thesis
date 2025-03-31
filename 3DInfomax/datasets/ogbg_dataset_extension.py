@@ -46,14 +46,15 @@ class OGBGDatasetExtension(GraphPropPredDataset):
                     device=torch.device(self.device)
                 )
                 # Apply noise to node features
-                tensor_node_feat = torch.tensor(self.graphs[idx]['node_feat'])
+                tensor_node_feat = torch.tensor(self.graphs[idx]['node_feat']).to(self.device)
                 noisy_atom_features = noise_injector.apply_noise(tensor_node_feat, feature_type='node')
                 # Apply noise to edge features
-                tensor_edge_feat = torch.tensor(self.graphs[idx]['edge_feat'])
+                tensor_edge_feat = torch.tensor(self.graphs[idx]['edge_feat']).to(self.device)
                 noisy_edge_features = noise_injector.apply_noise(tensor_edge_feat, feature_type='edge')
 
                 # Create noisy graph
                 noisy_graph = self.get_graph(idx)
+                noisy_graph = noisy_graph.to(self.device)
                 noisy_graph.ndata['feat'] = noisy_atom_features
                 noisy_graph.edata['feat'] = noisy_edge_features
 
