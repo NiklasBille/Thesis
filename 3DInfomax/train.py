@@ -234,7 +234,9 @@ def load_model(args, data, device):
 
 def train(args):
     seed_all(args.seed)
-    device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+    device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
+    # device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+
     metrics_dict = {'rsquared': Rsquared(),
                     'mae': MAE(),
                     'pearsonr': PearsonR(),

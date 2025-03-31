@@ -20,6 +20,7 @@ batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
+device: cuda:1
 loss_func: L1Loss
 required_data:
   - dgl_graph

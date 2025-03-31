@@ -53,9 +53,9 @@ if __name__ == '__main__':
 
     dataset = OGBGDatasetExtension(name=dataset_name, return_types=['dgl_graph', 'targets'], device='cuda')
     
-    # node_dict, edge_dict = extract_feature_values(dataset=dataset, dataset_name=dataset_name, save=True)
-    node_dict = load_features('noise_experiment/feature_values/ogbg-molfreesolv_node_features.pkl')
-    edge_dict = load_features('noise_experiment/feature_values/ogbg-molfreesolv_edge_features.pkl')
+    # node_dict, edge_dict = extract_feature_values(dataset=dataset, dataset_name=dataset_name, save=False)
+    node_dict = load_features(f'noise_experiment/feature_values/{dataset_name}_node_features.pkl')
+    edge_dict = load_features(f'noise_experiment/feature_values/{dataset_name}_edge_features.pkl')
     print("Dataset :", dataset_name)
     print(node_dict)
     print(edge_dict)
