@@ -20,6 +20,8 @@ To download the data and unpack it run:
     tar -xvzf data/molecular_property_prediction.tar.gz -C data/
     rm data/molecular_property_prediction.tar.gz
 
+To use random splits, see `data/README.md`.
+
 ### Downloading weights
 To download pre-trained weights for both all hydrogen and no hydrogen case run:
 
@@ -76,7 +78,7 @@ All hyperparameters can be found in the Uni-Mol repo. To train on e.g. FreeSolv 
            --update-freq $update_freq --seed $seed \
            --fp16 --fp16-init-scale 4 --fp16-scale-window 256 \
            --log-interval 100 --log-format simple \
-           --validate-interval 1 \
+           --validate-interval 1 --tensorboard-logdir $save_dir/tsb \
            --finetune-from-model $weight_path \
            --best-checkpoint-metric $metric --patience 20 \
            --save-dir $save_dir --only-polar $only_polar
@@ -110,5 +112,8 @@ To evaluate run:
            --log-interval 50 --log-format simple 
 
 ### Metrics
-To obtain metrics and write them to a csv file use the script 'getEvaluationMetricsCSV.py'. Currently this is only implemented for regression tasks, but we can extend to classification tasks when needed.
+To obtain metrics and write them to a csv file use the script `getEvaluationMetricsCSV.py`. Currently this is only implemented for regression tasks, but we can extend to classification tasks when needed.
+
+### Tensorboard
+By including the argument `--tensorboard-logdir $save_dir/tsb` we can inspect loss curves etc. Outside of the container run the command `tensorboard --logdir=<path_to_tsb>` and follow the link.
 

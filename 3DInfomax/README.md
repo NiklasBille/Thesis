@@ -21,6 +21,12 @@ If you wanna fine-tune on freesolve run:
 
 Sometimes errors regrading torch shapes can occur. Reinstalling ogb==1.3.3 has fixed this issue for me.
 
+ogb is funky: if you get a weird error related to this library try doing the following:
+
+    pip uninstall ogb
+    pip install ogb
+    pip install ogb==1.3.3
+
 ## Changes made to original repo
 Since the original paper is from 2022, a few changes was needed to find a set of dependency versions that all can collaborate.
 
@@ -29,6 +35,8 @@ Since the original paper is from 2022, a few changes was needed to find a set of
 * l. 4 in utils.py has been changed to "from collections.abc import MutableMapping". MutableMapping is now imported from collections.abc instead of collections as specified in original repository.
 * The requirements.txt file has been changed to specifiy new versions. This file should always be used in collaboration with the Dockerfile. It can not be used to create a conda env, since not all dependency versions are specified here. 
 * A dockerfile has been implemented to create an image that should make it possible for anyone to run the code.
+* In `dataset/geom_drugs_dataset.py` the function `torch.linalg.eigh` had an unexpected argument `eigenvectors=True`. This was removed since the function defaults to also return the eigenvectors.
+* In `train.py` there is a mistake in the the function `train_ogbg`. When using random splitting (`if args.force_random_split == True:`) they store indices as train/train/train when it should be train/val/test.
 
 
 ## Noise experiment 

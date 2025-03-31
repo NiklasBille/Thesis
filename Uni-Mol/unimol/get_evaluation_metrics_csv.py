@@ -36,10 +36,13 @@ if __name__ == "__main__":
 
     WRITE_TO_CSV = True 
 
-    #datasets = ["freesolv_seed0", "freesolv_seed3", "freesolv_seed4"]
+    #datasets = ["freesolv_seed2", "freesolv_seed3", "freesolv_seed4"]
     #datasets = ["qm7_seed2", "qm7_seed3", "qm7_seed4"]
     #datasets = ["esol_seed2", "esol_seed3", "esol_seed4"]
-    datasets = ["lipo_seed2", "lipo_seed3", "lipo_seed4"]
+    #datasets = ["lipo_seed2", "lipo_seed3", "lipo_seed4"]
+    #datasets = ["freesolv_seed2_random", "freesolv_seed3_random", "freesolv_seed4_random"]
+    #datasets = ["lipo_seed2_random", "lipo_seed3_random", "lipo_seed4_random"]
+    datasets = ["esol_seed2_random", "esol_seed3_random", "esol_seed4_random"]
 
     RMSE_list = []
     RMSE_agg_list = []

@@ -129,6 +129,8 @@ dmypy.json
 .pyre/
 
 # Data dir and weights dir
-unimol/data
+unimol/data/molecular_property_prediction
+unimol/data/molecular_property_prediction_random
+unimol/data/molecular_property_prediction.tar.gz
 unimol/weights/finetuned
 unimol/weights/pretrained

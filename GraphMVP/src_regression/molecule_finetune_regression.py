@@ -16,6 +16,7 @@ from models_complete_feature import GNN_graphpredComplete, GNNComplete
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from splitters import random_scaffold_split, random_split, scaffold_split
 from torch_geometric.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
 
 
 def train(model, device, loader, optimizer):
@@ -65,7 +66,7 @@ if __name__ == '__main__':
         if torch.cuda.is_available() else torch.device('cpu')
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(args.runseed)
-
+    writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb"))
     num_tasks = 1
     dataset_folder = '../datasets/molecule_datasets/'
     dataset_folder = os.path.join(dataset_folder, args.dataset)
