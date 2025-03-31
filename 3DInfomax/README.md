@@ -35,3 +35,4 @@ Since the original paper is from 2022, a few changes was needed to find a set of
 * l. 4 in utils.py has been changed to "from collections.abc import MutableMapping". MutableMapping is now imported from collections.abc instead of collections as specified in original repository.
 * The requirements.txt file has been changed to specifiy new versions. This file should always be used in collaboration with the Dockerfile. It can not be used to create a conda env, since not all dependency versions are specified here. 
 * A dockerfile has been implemented to create an image that should make it possible for anyone to run the code.
+* In `dataset/geom_drugs_dataset.py` the function `torch.linalg.eigh` had an unexpected argument `eigenvectors=True`. This was removed since the function defaults to also return the eigenvectors.
