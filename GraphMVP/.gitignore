@@ -4,3 +4,11 @@ weights/pretrained/
 *.npz
 *.pth
 *.pt
+
+# Ignore TensorBoard event files
+**/events.out.tfevents.*
+
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
