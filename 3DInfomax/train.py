@@ -431,8 +431,9 @@ def train_ogbg(args, device, metrics_dict):
     if args.force_random_split == True:
         all_idx = get_random_indices(len(dataset), args.seed_data)
         split_idx["train"] = all_idx[:len(split_idx["train"])]
-        split_idx["train"] = all_idx[len(split_idx["train"]):len(split_idx["train"])+len(split_idx["valid"])]
-        split_idx["train"] = all_idx[len(split_idx["train"])+len(split_idx["valid"]):]
+        split_idx["valid"] = all_idx[len(split_idx["train"]):len(split_idx["train"])+len(split_idx["valid"])]
+        split_idx["test"] = all_idx[len(split_idx["train"])+len(split_idx["valid"]):]
+
     collate_function = globals()[args.collate_function] if args.collate_params == {} else globals()[
         args.collate_function](**args.collate_params)
 
