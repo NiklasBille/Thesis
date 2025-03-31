@@ -1,2 +1,6 @@
 datasets/
 weights/pretrained/
+# Ignore model evaluation/checkpoint outputs
+*.npz
+*.pth
+*.pt
