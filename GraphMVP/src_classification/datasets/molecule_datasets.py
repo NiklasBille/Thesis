@@ -61,6 +61,7 @@ def mol_to_graph_data_obj_simple(mol):
     for atom in mol.GetAtoms():
         atom_feature = [allowable_features['possible_atomic_num_list'].index(atom.GetAtomicNum())] + \
                        [allowable_features['possible_chirality_list'].index(atom.GetChiralTag())]
+        # Implement noise here
         atom_features_list.append(atom_feature)
     x = torch.tensor(np.array(atom_features_list), dtype=torch.long)
 
@@ -78,6 +79,7 @@ def mol_to_graph_data_obj_simple(mol):
             edge_feature = [allowable_features['possible_bonds'].index(bond.GetBondType())] + \
                            [allowable_features['possible_bond_dirs'].index(bond.GetBondDir())]
             edges_list.append((i, j))
+            # Implement noise here
             edge_features_list.append(edge_feature)
             edges_list.append((j, i))
             edge_features_list.append(edge_feature)

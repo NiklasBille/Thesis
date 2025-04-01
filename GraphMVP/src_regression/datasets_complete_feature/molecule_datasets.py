@@ -27,6 +27,7 @@ def mol_to_graph_data_obj_simple(mol):
     atom_features_list = []
     for atom in mol.GetAtoms():
         atom_feature = atom_to_feature_vector(atom)
+        # Implement noise here
         atom_features_list.append(atom_feature)
     x = torch.tensor(np.array(atom_features_list), dtype=torch.long)
 
@@ -42,6 +43,7 @@ def mol_to_graph_data_obj_simple(mol):
             i = bond.GetBeginAtomIdx()
             j = bond.GetEndAtomIdx()
             edge_feature = bond_to_feature_vector(bond)
+            # Implement noise here
 
             edges_list.append((i, j))
             edge_features_list.append(edge_feature)
