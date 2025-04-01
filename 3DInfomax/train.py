@@ -432,6 +432,10 @@ def train_pcqm4m(args, device, metrics_dict):
 
 def train_ogbg(args, device, metrics_dict):
     dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
+    # Need to define a noisy dataset to introduce noise in the training data
+    # The in test.py we test that the splits are equal for two different dataset instances
+    dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
+
     split_idx = dataset.get_idx_split()
     if args.force_random_split == True:
         all_idx = get_random_indices(len(dataset), args.seed_data)
@@ -441,8 +445,9 @@ def train_ogbg(args, device, metrics_dict):
 
     collate_function = globals()[args.collate_function] if args.collate_params == {} else globals()[
         args.collate_function](**args.collate_params)
-
-    train_loader = DataLoader(Subset(dataset, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
+    
+    # Introduce noise in the training data
+    train_loader = DataLoader(Subset(dataset_noise, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
                               collate_fn=collate_function)
     val_loader = DataLoader(Subset(dataset, split_idx["valid"]), batch_size=args.batch_size, shuffle=False,
                             collate_fn=collate_function)
