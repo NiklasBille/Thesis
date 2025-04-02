@@ -90,6 +90,7 @@ if __name__ == '__main__':
     num_tasks = get_num_task(args.dataset)
     dataset_folder = '../datasets/molecule_datasets/'
     dataset = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset)
+    dataset_noise = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset, noise_level=args.noise_level, device=device)
     print(dataset)
 
     eval_metric = roc_auc_score
@@ -97,7 +98,11 @@ if __name__ == '__main__':
     if args.split == 'scaffold':
         smiles_list = pd.read_csv(dataset_folder + args.dataset + '/processed/smiles.csv',
                                   header=None)[0].tolist()
-        train_dataset, valid_dataset, test_dataset = scaffold_split(
+        # We only add noise to the train_dataset  
+        train_dataset, _, _ = scaffold_split(
+            dataset_noise, smiles_list, null_value=0, frac_train=0.8,
+            frac_valid=0.1, frac_test=0.1)
+        _, valid_dataset, test_dataset = scaffold_split(
             dataset, smiles_list, null_value=0, frac_train=0.8,
             frac_valid=0.1, frac_test=0.1)
         print('split via scaffold')

@@ -71,12 +71,17 @@ if __name__ == '__main__':
     dataset_folder = '../datasets/molecule_datasets/'
     dataset_folder = os.path.join(dataset_folder, args.dataset)
     dataset = MoleculeDatasetComplete(dataset_folder, dataset=args.dataset)
+    dataset_noise = MoleculeDatasetComplete(dataset_folder, dataset=args.dataset, noise_level=args.noise_level, device=device)
     print('dataset_folder:', dataset_folder)
     print(dataset)
 
     if args.split == 'scaffold':
         smiles_list = pd.read_csv(dataset_folder + '/processed/smiles.csv', header=None)[0].tolist()
-        train_dataset, valid_dataset, test_dataset = scaffold_split(
+        # We only add noise to the train_dataset  
+        train_dataset, _, _ = scaffold_split(
+            dataset_noise, smiles_list, null_value=0, frac_train=0.8,
+            frac_valid=0.1, frac_test=0.1)
+        _, valid_dataset, test_dataset = scaffold_split(
             dataset, smiles_list, null_value=0, frac_train=0.8,
             frac_valid=0.1, frac_test=0.1)
         print('split via scaffold')
@@ -93,7 +98,6 @@ if __name__ == '__main__':
         print('random scaffold')
     else:
         raise ValueError('Invalid split option.')
-
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
     val_loader = DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
