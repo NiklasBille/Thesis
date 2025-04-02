@@ -37,3 +37,10 @@ Since the original paper is from 2022, a few changes was needed to find a set of
 * A dockerfile has been implemented to create an image that should make it possible for anyone to run the code.
 * In `dataset/geom_drugs_dataset.py` the function `torch.linalg.eigh` had an unexpected argument `eigenvectors=True`. This was removed since the function defaults to also return the eigenvectors.
 * In `train.py` there is a mistake in the the function `train_ogbg`. When using random splitting (`if args.force_random_split == True:`) they store indices as train/train/train when it should be train/val/test.
+
+
+## Noise experiment 
+Currently working on adding noise to the fine-tuning dataset of QM9. The folder noise_experiment contains a flip_pertubation_noise.py file that implements this file. Currently these methods are used in qm9_dataset.py when initializing the data_dict. For testing purposes we currently just add the noise to the atoms and edges for the first molecule.
+Also created a pre-train_QM9_small_test.yml script file for testing the noise experiment on a small version of QM9 first. 
+
+When extracting features for the different ogb/moleculenet datasets, it can require you to install ogb==1.3.6 first.

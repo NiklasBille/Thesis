@@ -158,6 +158,7 @@ def parse_arguments():
     p.add_argument('--force_random_split', type=bool, default=False, help='use random split for ogb')
     p.add_argument('--reuse_pre_train_data', type=bool, default=False, help='use all data instead of ignoring that used during pre-training')
     p.add_argument('--transfer_3d', type=bool, default=False, help='set true to load the 3d network instead of the 2d network')
+    p.add_argument('--noise_level', type=float, default=0.0, help='Specifies the noise level for the noise injection')
     return p.parse_args()
 
 
@@ -233,7 +234,9 @@ def load_model(args, data, device):
 
 def train(args):
     seed_all(args.seed)
-    device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+    device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
+    # device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+
     metrics_dict = {'rsquared': Rsquared(),
                     'mae': MAE(),
                     'pearsonr': PearsonR(),
@@ -284,6 +287,8 @@ def train(args):
         return train_geomol(args, device, metrics_dict)
     elif 'ogbg' in args.dataset:
         return train_ogbg(args, device, metrics_dict)
+    elif args.dataset == "qm9_test":
+        return train_qm9_test(args, device, metrics_dict)
 
 
 def train_geomol(args, device, metrics_dict):
@@ -426,7 +431,11 @@ def train_pcqm4m(args, device, metrics_dict):
 
 
 def train_ogbg(args, device, metrics_dict):
-    dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset)
+    dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
+    # Need to define a noisy dataset to introduce noise in the training data
+    # The in test.py we test that the splits are equal for two different dataset instances
+    dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
+
     split_idx = dataset.get_idx_split()
     if args.force_random_split == True:
         all_idx = get_random_indices(len(dataset), args.seed_data)
@@ -436,8 +445,9 @@ def train_ogbg(args, device, metrics_dict):
 
     collate_function = globals()[args.collate_function] if args.collate_params == {} else globals()[
         args.collate_function](**args.collate_params)
-
-    train_loader = DataLoader(Subset(dataset, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
+    
+    # Introduce noise in the training data
+    train_loader = DataLoader(Subset(dataset_noise, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
                               collate_fn=collate_function)
     val_loader = DataLoader(Subset(dataset, split_idx["valid"]), batch_size=args.batch_size, shuffle=False,
                             collate_fn=collate_function)
@@ -612,6 +622,23 @@ def train_qm9(args, device, metrics_dict):
         return val_metrics, test_metrics, trainer.writer.log_dir
     return val_metrics
 
+def train_qm9_test(args, device, metrics_dict):
+    all_data = QM9Dataset(return_types=args.required_data, target_tasks=args.targets, device=device,
+                        dist_embedding=args.dist_embedding, num_radial=args.num_radial)
+
+    all_idx = get_random_indices(len(all_data), args.seed_data)
+
+    model_idx = all_idx[:200]
+    test_idx = all_idx[200:250]
+    val_idx = all_idx[250:300]
+    train_idx = model_idx[:200]
+
+
+    model, num_pretrain, transfer_from_same_dataset = load_model(args, data=all_data, device=device)
+    if transfer_from_same_dataset:
+        train_idx = model_idx[num_pretrain: num_pretrain + args.num_train]
+    print('model trainable params: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
+
 
 def get_arguments():
     args = parse_arguments()
@@ -664,9 +691,6 @@ if __name__ == '__main__':
                 all_val_metrics[key].append(val_metrics[key])
                 all_test_metrics[key].append(test_metrics[key])
         files = [open(os.path.join(dir, 'multiple_seed_validation_statistics.txt'), 'w') for dir in log_dirs]
-        print(30*"*")
-        print(files)
-        print(30*"*")
         print('Validation results:')
         for key, value in all_val_metrics.items():
             metric = np.array(value)
