@@ -462,7 +462,7 @@ def train_ogbg(args, device, metrics_dict):
     args.val_per_batch = False
     args.main_metric_goal = 'min' if metrics[args.main_metric].metric == 'rmse' else 'max'
     trainer = get_trainer(args=args, model=model, data=dataset, device=device, metrics=metrics)
-    val_metrics = trainer.train(train_loader, val_loader)
+    val_metrics = trainer.train(train_loader, val_loader, test_loader)
     if args.eval_on_test:
         test_metrics = trainer.evaluation(test_loader, data_split='test')
         return val_metrics, test_metrics, trainer.writer.log_dir
@@ -664,8 +664,7 @@ def get_arguments():
                     for v in value:
                         arg_dict[key].append(v)
                 else:
-                    arg_dict[key] = value
-
+                    arg_dict[key] = value                             
     return args
 
 
