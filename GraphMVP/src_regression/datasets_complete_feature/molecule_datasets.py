@@ -3,6 +3,7 @@ import pickle
 from itertools import chain, repeat
 
 import networkx as nx
+from noise_experiment.feature_noise_injector import FeatureNoiseInjector
 import numpy as np
 import pandas as pd
 import torch
@@ -27,7 +28,6 @@ def mol_to_graph_data_obj_simple(mol):
     atom_features_list = []
     for atom in mol.GetAtoms():
         atom_feature = atom_to_feature_vector(atom)
-        # Implement noise here
         atom_features_list.append(atom_feature)
     x = torch.tensor(np.array(atom_features_list), dtype=torch.long)
 
@@ -43,7 +43,6 @@ def mol_to_graph_data_obj_simple(mol):
             i = bond.GetBeginAtomIdx()
             j = bond.GetEndAtomIdx()
             edge_feature = bond_to_feature_vector(bond)
-            # Implement noise here
 
             edges_list.append((i, j))
             edge_features_list.append(edge_feature)
@@ -169,13 +168,15 @@ def create_standardized_mol_id(smiles):
 #todo: prune
 class MoleculeDatasetComplete(InMemoryDataset):
     def __init__(self, root, dataset='zinc250k', transform=None,
-                 pre_transform=None, pre_filter=None, empty=False, force_reload=False):
+                 pre_transform=None, pre_filter=None, empty=False, force_reload=False, noise_level = 0.0, device = 'cpu'):
 
         self.root = root
         self.dataset = dataset
         self.transform = transform
         self.pre_filter = pre_filter
         self.pre_transform = pre_transform
+        self.noise_level = noise_level
+        self.device = device
 
         # This is to ensure we can run the processing again
         if force_reload and os.path.exists(os.path.join(root, 'processed')):
@@ -194,6 +195,22 @@ class MoleculeDatasetComplete(InMemoryDataset):
             s = list(repeat(slice(None), item.dim()))
             s[data.__cat_dim__(key, item)] = slice(slices[idx], slices[idx + 1])
             data[key] = item[s]
+        if self.noise_level > 0:
+            noise_injector = FeatureNoiseInjector(
+                dataset_name=self.dataset,
+                noise_probability=self.noise_level,
+                device=self.device
+            )
+            tensor_node_features = torch.tensor(data.x).to(self.device)
+            tensor_edge_features = torch.tensor(data.edge_attr).to(self.device)
+
+            # Apply noise to node and edge features
+            noisy_node_features = noise_injector.apply_noise(features_tensor=tensor_node_features, feature_type='node')
+            noisy_edge_features = noise_injector.apply_noise(features_tensor=tensor_edge_features, feature_type='edge')
+
+            # Convert back to torch.int64
+            data.x = noisy_node_features.to(torch.int64)
+            data.edge_attr = noisy_edge_features.to(torch.int64)
         return data
 
     @property

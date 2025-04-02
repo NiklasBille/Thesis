@@ -64,6 +64,7 @@ if __name__ == '__main__':
     edge_features_freesolv = load_features('noise_experiment/feature_values/freesolv_edge_features.pkl')
     print('Node features (freesolv):', node_features_freesolv)
     print('Edge features (freesolv):', edge_features_freesolv)
+    # extract_feature_values(MoleculeDataset("datasets/molecule_datasets/freesolv", dataset='freesolv'), 'freesolv', save=True)
 
     
 
