@@ -40,7 +40,7 @@ For all the downstream tasks the author of GraphMVP did not tune the hyperparame
 ## Noise experiment 
 To obtain the correct processed data features we need to re-process the datasets, since they are not processed in the desired way after downloading them. Therefore, first run the `noise_experiment/process_datasets.py`
 
-    cd noise_experiment && python process_datasets.py
+    python noise_experiment/process_datasets.py
 
 ## Changes in environment
 - cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link)
