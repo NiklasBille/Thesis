@@ -39,10 +39,26 @@ def train(model, device, loader, optimizer):
     return total_loss / len(loader)
 
 
-def eval(model, device, loader):
+def eval(model, device, loader, compute_loss=False):
+    """
+    Evaluate a model on a dataset and compute RMSE and MAE.
+
+    Args:
+        model: The PyTorch model to evaluate.
+        device: Device to run the model on.
+        loader: DataLoader for the evaluation dataset.
+        compute_loss (bool): Whether to compute and return average loss. 
+
+    Returns:
+        metrics (dict): RMSE and MAE scores.
+        y_true (np.ndarray): True labels.
+        y_pred (np.ndarray): Predicted labels.
+        avg_loss (float, optional): Average loss if compute_loss is True.
+    """
     model.eval()
     y_true, y_pred = [], []
-
+    
+    total_loss = 0
     for step, batch in enumerate(loader):
         batch = batch.to(device)
         with torch.no_grad():
@@ -52,11 +68,38 @@ def eval(model, device, loader):
         y_true.append(true)
         y_pred.append(pred)
 
+        if compute_loss:
+            loss = reg_criterion(pred, true).detach().item()
+            total_loss += loss
+
     y_true = torch.cat(y_true, dim=0).cpu().numpy()
     y_pred = torch.cat(y_pred, dim=0).cpu().numpy()
     rmse = mean_squared_error(y_true, y_pred, squared=False)
     mae = mean_absolute_error(y_true, y_pred)
-    return {'RMSE': rmse, 'MAE': mae}, y_true, y_pred
+    
+    if compute_loss:
+        return {'RMSE': rmse, 'MAE': mae}, y_true, y_pred, total_loss/len(loader)
+    else:
+        return {'RMSE': rmse, 'MAE': mae}, y_true, y_pred
+
+
+def log_scalars_to_tensorboard(writers, results, losses):
+    """
+    Log MAE, RMSE, MSE, and loss to TensorBoard for each data split.
+
+    Args:
+        writers (dict): TensorBoard SummaryWriter objects for per split.
+        results (dict): Dictionary with MAE and RMSE metrics per split.
+        losses (dict): Dictionary with loss values per split.
+    """
+    for split in ['train', 'val', 'test']:
+        writer = writers[split]
+        result = results[split]
+        loss = losses[split]
+        writer.add_scalar('mae', result["MAE"], epoch)
+        writer.add_scalar('rmse', result["RMSE"], epoch)
+        writer.add_scalar('mse', np.square(result["RMSE"]), epoch)
+        writer.add_scalar('loss', loss, epoch)
 
 
 if __name__ == '__main__':
@@ -66,7 +109,13 @@ if __name__ == '__main__':
         if torch.cuda.is_available() else torch.device('cpu')
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(args.runseed)
-    writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb"))
+
+    # create writers for Tensorboard
+    train_writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb", "train"))
+    val_writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb", "val"))
+    test_writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb", "test"))
+    writers = {'train': train_writer, 'val': val_writer, 'test': test_writer}
+    
     num_tasks = 1
     dataset_folder = '../datasets/molecule_datasets/'
     dataset_folder = os.path.join(dataset_folder, args.dataset)
@@ -127,8 +176,14 @@ if __name__ == '__main__':
             train_result, train_target, train_pred = eval(model, device, train_loader)
         else:
             train_result = {'RMSE': 0, 'MAE': 0, 'R2': 0}
-        val_result, val_target, val_pred = eval(model, device, val_loader)
-        test_result, test_target, test_pred = eval(model, device, test_loader)
+
+        val_result, val_target, val_pred, val_loss = eval(model, device, val_loader, compute_loss=True)
+        test_result, test_target, test_pred, test_loss = eval(model, device, test_loader, compute_loss=True)
+        
+        results = {'train': train_result, 'val': val_result, 'test': test_result}
+        losses = {'train': loss_acc, 'val': val_loss, 'test': test_loss}
+        log_scalars_to_tensorboard(writers, results, losses)
+
 
         train_result_list.append(train_result)
         val_result_list.append(val_result)
@@ -152,6 +207,10 @@ if __name__ == '__main__':
                 filename = join(args.output_model_dir, 'evaluation_best.pth')
                 np.savez(filename, val_target=val_target, val_pred=val_pred,
                          test_target=test_target, test_pred=test_pred)
+
+    # Close Tensorboard writers
+    for writer in writers.values():
+        writer.close()            
 
     for metric in metric_list:
         print('Best (RMSE), {} train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(
