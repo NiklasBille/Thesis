@@ -177,8 +177,7 @@ class MoleculeDatasetComplete(InMemoryDataset):
         self.pre_filter = pre_filter
         self.pre_transform = pre_transform
 
-        # Since some datasets does not have the correct features when downloading,
-        # we wanna ensure we can process the dataset correctly
+        # This is to ensure we can run the processing again
         if force_reload and os.path.exists(os.path.join(root, 'processed')):
             shutil.rmtree(os.path.join(root, 'processed'))
 
@@ -215,9 +214,6 @@ class MoleculeDatasetComplete(InMemoryDataset):
         return
 
     def process(self):
-        print("*"*50)
-        print("process")
-        print("*"*50)
         def shared_extractor(smiles_list, rdkit_mol_objs, labels):
             data_list = []
             data_smiles_list = []

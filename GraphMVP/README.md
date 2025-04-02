@@ -37,7 +37,12 @@ To run the training script for e.g. lipo, cd into src_regression and run:
 
 For all the downstream tasks the author of GraphMVP did not tune the hyperparameters. 
 
-### Changes in environment
+## Noise experiment 
+To obtain the correct processed data features we need to re-process the datasets, since they are not processed in the desired way after downloading them. Therefore, first run the `noise_experiment/process_datasets.py`
+
+    cd noise_experiment && python process_datasets.py
+
+## Changes in environment
 - cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link)
 - need to install ogb=1.3.5 before torch otherwise the environment uses a  PyTorch installation with CUDA10.2 for some reason.
 https://discuss.pytorch.org/t/geforce-rtx-3090-with-cuda-capability-sm-86-is-not-compatible-with-the-current-pytorch-installation/123499

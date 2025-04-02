@@ -12,6 +12,7 @@ from rdkit.Chem.rdMolDescriptors import GetMorganFingerprintAsBitVect
 from torch.utils import data
 from torch_geometric.data import (Data, InMemoryDataset, download_url,
                                   extract_zip)
+import shutil
 
 allowable_features = {
     'possible_atomic_num_list':       list(range(1, 119)),
@@ -223,13 +224,18 @@ def create_standardized_mol_id(smiles):
 
 class MoleculeDataset(InMemoryDataset):
     def __init__(self, root, dataset='zinc250k', transform=None,
-                 pre_transform=None, pre_filter=None, empty=False):
+                 pre_transform=None, pre_filter=None, empty=False, force_reload=False):
 
         self.root = root
         self.dataset = dataset
         self.transform = transform
         self.pre_filter = pre_filter
         self.pre_transform = pre_transform
+
+        # Since some datasets does not have the correct features when downloading,
+        # we wanna ensure we can process the dataset correctly
+        if force_reload and os.path.exists(os.path.join(root, 'processed')):
+            shutil.rmtree(os.path.join(root, 'processed'))
 
         super(MoleculeDataset, self).__init__(root, transform, pre_transform, pre_filter)
 
@@ -264,7 +270,6 @@ class MoleculeDataset(InMemoryDataset):
         return
 
     def process(self):
-
         def shared_extractor(smiles_list, rdkit_mol_objs, labels):
             data_list = []
             data_smiles_list = []
