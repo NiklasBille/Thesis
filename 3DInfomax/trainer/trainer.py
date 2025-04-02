@@ -56,17 +56,31 @@ class Trainer():
             self.writer = SummaryWriter(
                 '{}/{}_{}_{}_{}_{}'.format(args.logdir, args.model_type, args.dataset, args.experiment_name, args.seed,
                                         datetime.now().strftime('%d-%m_%H-%M-%S')))
+            layout = self.create_writer_layout()
+            self.writer.add_custom_scalars(layout)
             shutil.copyfile(self.args.config.name,
                             os.path.join(self.writer.log_dir, os.path.basename(self.args.config.name)))
         print('Log directory: ', self.writer.log_dir)
         self.hparams = copy.copy(args).__dict__
         for key, value in flatten_dict(self.hparams).items():
             print(f'{key}: {value}')
+    
+    def create_writer_layout(self):
+        """ Creates a custom layout used by Tensorboard with overlaying loss curves etc. """
+        total_metrics =  list(self.metrics.keys()) + [type(self.loss_func).__name__, 'mean_pred', 'std_pred',
+                                                      'mean_targets', 'std_targets']
+        
+        layout = {
+            self.args.dataset: {
+                metric: ["Multiline", [f"{metric}/train", f"{metric}/val", f"{metric}/test"]] for metric in total_metrics
+            },
+        }
+        return layout
 
     def run_per_epoch_evaluations(self, loader):
         pass
 
-    def train(self, train_loader: DataLoader, val_loader: DataLoader):
+    def train(self, train_loader: DataLoader, val_loader: DataLoader, test_loader: DataLoader):
         epochs_no_improve = 0  # counts every epoch that the validation accuracy did not improve for early stopping
         for epoch in range(self.start_epoch, self.args.num_epochs + 1):  # loop over the dataset multiple times
             self.model.train()
@@ -74,18 +88,22 @@ class Trainer():
 
             self.model.eval()
             with torch.no_grad():
-                metrics = self.predict(val_loader, epoch)
-                val_score = metrics[self.main_metric]
+                val_metrics = self.predict(val_loader, epoch)
+                val_score = val_metrics[self.main_metric]
+                test_metrics = self.predict(test_loader, epoch)
+                test_score = test_metrics[self.main_metric]
 
                 if self.lr_scheduler != None and not self.scheduler_step_per_batch:
                     self.step_schedulers(metrics=val_score)
 
                 if self.args.eval_per_epochs > 0 and epoch % self.args.eval_per_epochs == 0:
                     self.run_per_epoch_evaluations(val_loader)
-
-                self.tensorboard_log(metrics, data_split='val', epoch=epoch, log_hparam=True, step=self.optim_steps)
-                val_loss = metrics[type(self.loss_func).__name__]
+                self.tensorboard_log(val_metrics, data_split='val', epoch=epoch, log_hparam=True, step=self.optim_steps)
+                self.tensorboard_log(test_metrics, data_split='test', epoch=epoch, log_hparam=True, step=self.optim_steps)
+                val_loss = val_metrics[type(self.loss_func).__name__]
+                test_loss = test_metrics[type(self.loss_func).__name__]
                 print('[Epoch %d] %s: %.6f val loss: %.6f' % (epoch, self.main_metric, val_score, val_loss))
+                print('[Epoch %d] %s: %.6f test loss: %.6f' % (epoch, self.main_metric, test_score, test_loss))
 
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
@@ -138,7 +156,7 @@ class Trainer():
             loss, predictions, targets = self.process_batch(batch, optim)
             with torch.no_grad():
                 if self.optim_steps % self.args.log_iterations == 0 and optim != None:
-                    metrics = self.evaluate_metrics(predictions, targets)
+                    metrics = self.evaluate_metrics(predictions, targets, val=True) # To also log the main metric on the train set we need to set val=True 
                     metrics[type(self.loss_func).__name__] = loss.item()
                     self.run_tensorboard_functions(predictions, targets, step=self.optim_steps, data_split='train')
                     self.tensorboard_log(metrics, data_split='train', step=self.optim_steps, epoch=epoch)
