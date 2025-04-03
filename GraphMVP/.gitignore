@@ -4,6 +4,8 @@ weights/pretrained/
 *.npz
 *.pth
 *.pt
+!weights/pretrained/GraphMVP_classification.pth
+!weights/pretrained/GraphMVP_regression.pth
 
 # Ignore TensorBoard event files
 **/events.out.tfevents.*
@@ -12,3 +14,5 @@ weights/pretrained/
 # Ignore Python cache files
 __pycache__/
 *.pyc
+
+# Do not ignore weights/pretrained/GraphMVP_classification.pth 
