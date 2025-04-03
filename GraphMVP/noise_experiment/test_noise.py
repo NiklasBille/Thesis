@@ -7,13 +7,13 @@ from src_classification.datasets.molecule_datasets import MoleculeDataset
 from src_regression.datasets_complete_feature.molecule_datasets import MoleculeDatasetComplete
 import torch
 
-def test_noise_distribution_for_dataset(dataset_path, dataset_name, regression=True, device='cuda:1'):
+def test_noise_distribution_for_dataset(dataset_path, dataset_name, regression=True,):
     if regression:
-        noisy_dataset = MoleculeDatasetComplete(dataset_path, dataset=dataset_name, noise_level=0.05, device=device)
-        clean_dataset = MoleculeDatasetComplete(dataset_path, dataset=dataset_name, device=device)
+        noisy_dataset = MoleculeDatasetComplete(dataset_path, dataset=dataset_name, noise_level=0.05)
+        clean_dataset = MoleculeDatasetComplete(dataset_path, dataset=dataset_name)
     else:
-        noisy_dataset = MoleculeDataset(dataset_path, dataset=dataset_name, noise_level=0.05, device=device)
-        clean_dataset = MoleculeDataset(dataset_path, dataset=dataset_name, device=device)
+        noisy_dataset = MoleculeDataset(dataset_path, dataset=dataset_name, noise_level=0.05)
+        clean_dataset = MoleculeDataset(dataset_path, dataset=dataset_name)
     
     assert len(noisy_dataset) == len(clean_dataset), "Datasets should have the same length"
     total_number_of_features = 0
@@ -26,8 +26,8 @@ def test_noise_distribution_for_dataset(dataset_path, dataset_name, regression=T
         noisy_node_features = noisy_graph.x
         noisy_edge_features = noisy_graph.edge_attr
 
-        clean_node_features = clean_graph.x.to(device)
-        clean_edge_features = clean_graph.edge_attr.to(device)
+        clean_node_features = clean_graph.x
+        clean_edge_features = clean_graph.edge_attr
 
         num_atoms = noisy_node_features.shape[0]
         num_node_features = noisy_node_features.shape[1]
@@ -50,19 +50,19 @@ def test_noise_distribution_for_all_datasets():
     noise_fractions = []
     for name in regression_datasets:
         dataset_path = os.path.join('datasets/molecule_datasets', name)
-        noise_fraction = test_noise_distribution_for_dataset(dataset_path, name, regression=True, device='cuda:0')
+        noise_fraction = test_noise_distribution_for_dataset(dataset_path, name, regression=True)
         noise_fractions.append(noise_fraction)
     for name in classification_datasets:
         dataset_path = os.path.join('datasets/molecule_datasets', name)
-        noise_fraction = test_noise_distribution_for_dataset(dataset_path, name, regression=False, device='cuda:0')
+        noise_fraction = test_noise_distribution_for_dataset(dataset_path, name, regression=False)
         noise_fractions.append(noise_fraction)
     
     for name, noise_fraction in zip(regression_datasets + classification_datasets, noise_fractions):
         print(f"Dataset: {name}, Noise Fraction: {noise_fraction:.4f}")
     
 if __name__ == '__main__':
-    # noise_fraction = test_noise_distribution_for_dataset('datasets/molecule_datasets/toxcast', 'toxcast', regression=True, device='cuda:0')
-    # print(f"Noise fraction for freesolv dataset: {noise_fraction:.4f}")
-    test_noise_distribution_for_all_datasets()
+    noise_fraction = test_noise_distribution_for_dataset('datasets/molecule_datasets/toxcast', 'toxcast', regression=True)
+    print(f"Noise fraction for freesolv dataset: {noise_fraction:.4f}")
+    # test_noise_distribution_for_all_datasets()
 
 

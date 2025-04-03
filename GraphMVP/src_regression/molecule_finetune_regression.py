@@ -72,7 +72,7 @@ if __name__ == '__main__':
     dataset_folder = os.path.join(dataset_folder, args.dataset)
     dataset = MoleculeDatasetComplete(dataset_folder, dataset=args.dataset)
     if args.noise_level > 0:
-        dataset_noise = MoleculeDatasetComplete(dataset_folder, dataset=args.dataset, noise_level=args.noise_level, device=device)
+        dataset_noise = MoleculeDatasetComplete(dataset_folder, dataset=args.dataset, noise_level=args.noise_level)
     print('dataset_folder:', dataset_folder)
     print(dataset)
 

@@ -91,7 +91,7 @@ if __name__ == '__main__':
     dataset_folder = '../datasets/molecule_datasets/'
     dataset = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset)
     if args.noise_level > 0:
-        dataset_noise = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset, noise_level=args.noise_level, device=device)
+        dataset_noise = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset, noise_level=args.noise_level)
     print(dataset)
 
     eval_metric = roc_auc_score

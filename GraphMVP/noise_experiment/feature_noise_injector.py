@@ -5,13 +5,14 @@ import torch
 from typing import Dict, List
 from noise_experiment.io import load_features
 import random
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..')) 
 
 class FeatureNoiseInjector:
     def __init__(self, 
                  dataset_name: str,
-                 noise_probability: float,
-                 device: torch.device = torch.device('cpu')):
-        self.device = device
+                 noise_probability: float):
+
         node_features, edge_features = self._get_features_from_dataset(dataset_name)
         self.possible_node_values: Dict[int, List[int]]  = node_features
         self.possible_edge_values: Dict[int, List[int]]  = edge_features
@@ -55,7 +56,7 @@ class FeatureNoiseInjector:
             features_col = features_tensor[:, j]
             pos_values_for_feature = possible_values[j]
             noisy_features_col = features_col.clone()
-            noise_mask = torch.rand(num_rows, device=self.device) < noise_probability
+            noise_mask = torch.rand(num_rows) < noise_probability
 
             # Get noisy indices
             noisy_indices = torch.nonzero(noise_mask, as_tuple=True)[0]
@@ -68,15 +69,17 @@ class FeatureNoiseInjector:
                     choices = [v for v in pos_values_for_feature if v != value.item()]
                     flipped_values.append(random.choice(choices))
                 
-                noisy_features_col[noisy_indices] = torch.tensor(flipped_values, device=self.device)
+                noisy_features_col[noisy_indices] = torch.tensor(flipped_values)
             noisy_features.append(noisy_features_col)
         return torch.stack(noisy_features, dim=1)
     
 
     def _get_features_from_dataset(self, dataset_name: str):
         try :
-            node_features = load_features(f'noise_experiment/feature_values/{dataset_name}_node_features.pkl')
-            edge_features = load_features(f'noise_experiment/feature_values/{dataset_name}_edge_features.pkl')
+            node_path = os.path.join(PROJECT_ROOT, 'noise_experiment', 'feature_values', f'{dataset_name}_node_features.pkl')
+            edge_path = os.path.join(PROJECT_ROOT, 'noise_experiment', 'feature_values', f'{dataset_name}_edge_features.pkl')
+            node_features = load_features(node_path)
+            edge_features = load_features(edge_path)
             return node_features, edge_features
         except FileNotFoundError:
             print(f"Feature values for {dataset_name} not found. Please run the feature extraction first.")
