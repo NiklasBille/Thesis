@@ -15,4 +15,3 @@ weights/pretrained/
 __pycache__/
 *.pyc
 
-# Do not ignore weights/pretrained/GraphMVP_classification.pth 
