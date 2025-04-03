@@ -12,6 +12,9 @@ parser.add_argument('--input_data_dir', type=str, default='')
 parser.add_argument('--dataset', type=str, default='bace')
 parser.add_argument('--num_workers', type=int, default=8)
 
+# about noise experiment
+parser.add_argument('--noise_level', type=float, default=0.0)
+
 # about training strategies
 parser.add_argument('--split', type=str, default='scaffold')
 parser.add_argument('--batch_size', type=int, default=256)
