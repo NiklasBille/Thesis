@@ -64,6 +64,7 @@ from trainer.metrics import QM9DenormalizedL1, QM9DenormalizedL2, \
     BatchVariance, DimensionCovariance, MAE, PositiveSimilarityMultiplePositivesSeparate2d, \
     NegativeSimilarityMultiplePositivesSeparate2d, OGBEvaluator, PearsonR, PositiveProb, NegativeProb, \
     Conformer2DVariance, Conformer3DVariance, PCQM4MEvaluatorWrapper
+from trainer.metrics import ROCAUCscore,PRCAUCscore
 from trainer.trainer import Trainer
 
 # turn on for debugging C code like Segmentation Faults
@@ -234,8 +235,9 @@ def load_model(args, data, device):
 
 def train(args):
     seed_all(args.seed)
-    device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
-    # device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+    #device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
+    device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+    #device = "cpu"
 
     metrics_dict = {'rsquared': Rsquared(),
                     'mae': MAE(),
@@ -268,7 +270,9 @@ def train(args):
                     'uniformity': Uniformity(t=2),
                     'alignment': Alignment(alpha=2),
                     'batch_variance': BatchVariance(),
-                    'dimension_covariance': DimensionCovariance()
+                    'dimension_covariance': DimensionCovariance(),
+                    'rocauc': ROCAUCscore(),
+                    'prcauc': PRCAUCscore(),
                     }
     print('using device: ', device)
     if args.dataset == 'qm9' or args.dataset == 'qm9_rdkit'or args.dataset == 'qm9_neuralconf':
