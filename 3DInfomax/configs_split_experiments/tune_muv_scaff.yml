@@ -1,9 +1,10 @@
 experiment_name: 'tune_muv_scaff'
+force_random_split : True
 
 multithreaded_seeds:
   - 1
-  #- 2
-  #- 3
+  - 2
+  - 3
 
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
@@ -12,8 +13,8 @@ transfer_layers:
 
 
 dataset: 'ogbg-molmuv'
-num_epochs: 5
-batch_size: 32
+num_epochs: 1000
+batch_size: 700
 log_iterations: 30
 patience: 40
 minimum_epochs: 120

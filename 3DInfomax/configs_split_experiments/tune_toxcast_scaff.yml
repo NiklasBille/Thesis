@@ -11,7 +11,7 @@ transfer_layers:
 
 
 
-dataset: 'ogbg-moltox21'
+dataset: 'ogbg-moltoxcast'
 num_epochs: 1000
 batch_size: 32
 log_iterations: 30
