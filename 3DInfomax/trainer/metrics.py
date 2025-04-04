@@ -1,5 +1,8 @@
 from typing import Union
 
+import numpy as np
+from sklearn.metrics import average_precision_score, roc_auc_score
+
 import torch
 from ogb.graphproppred import Evaluator
 from ogb.lsc import PCQM4MEvaluator
@@ -113,6 +116,67 @@ class OGBEvaluator(nn.Module):
             return torch.tensor(float('NaN'))
         input_dict = {"y_true": targets, "y_pred": preds}
         return torch.tensor(self.evaluator.eval(input_dict)[self.metric])
+
+class ROCAUCscore(nn.Module):
+    """
+    Computes ROC-AUC averaged across tasks.
+    """
+    def __init__(self):
+        super().__init__()
+    
+    def forward(self, preds, targets):
+    
+        if torch is not None and isinstance(targets, torch.Tensor):
+            targets = targets.detach().cpu().numpy()
+
+        if torch is not None and isinstance(preds, torch.Tensor):
+            preds = preds.detach().cpu().numpy()
+
+        rocauc_list = []
+
+        for i in range(targets.shape[1]):
+            #AUC is only defined when there is at least one positive data.
+            if np.sum(targets[:,i] == 1) > 0 and np.sum(targets[:,i] == 0) > 0:
+                # ignore nan values
+                is_labeled = targets[:,i] == targets[:,i]
+                rocauc_list.append(roc_auc_score(targets[is_labeled,i], preds[is_labeled,i]))
+        
+        if len(rocauc_list) == 0:
+            raise RuntimeError('No positively labeled data available. Cannot compute ROC-AUC.')
+        
+        return sum(rocauc_list)/len(rocauc_list)
+
+class PRCAUCscore(nn.Module):
+    """
+    Computes PRC-AUC averaged across tasks.
+    """
+    def __init__(self):
+        super().__init__()
+    
+    def forward(self, preds, targets):
+        if torch is not None and isinstance(targets, torch.Tensor):
+            targets = targets.detach().cpu().numpy()
+
+        if torch is not None and isinstance(preds, torch.Tensor):
+            preds = preds.detach().cpu().numpy()
+
+        prcauc_list = []
+
+        for i in range(targets.shape[1]):
+            #AUC is only defined when there is at least one positive data.
+            if np.sum(targets[:,i] == 1) > 0 and np.sum(targets[:,i] == 0) > 0:
+                # ignore nan values
+                is_labeled = targets[:,i] == targets[:,i]
+                prcauc = average_precision_score(targets[is_labeled,i], preds[is_labeled,i])
+
+                prcauc_list.append(prcauc)
+
+        if len(prcauc_list) == 0:
+            raise RuntimeError('No positively labeled data available. Cannot compute Average Precision.')
+        
+        return sum(prcauc_list)/len(prcauc_list)
+    
+
 
 
 class PCQM4MEvaluatorWrapper(nn.Module):
