@@ -1,29 +1,33 @@
-experiment_name: 'tune_toxcast_scaff'
+experiment_name: 'tune_lipo_scaff'
+logdir: 'runs/3DInfomax/scaffold'
 
 multithreaded_seeds:
   - 1
   - 2
   - 3
-
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
   - gnn.
 
 
 
-dataset: 'ogbg-moltoxcast'
+dataset: 'ogbg-mollipo'
 num_epochs: 1000
-batch_size: 32
+batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: OGBNanLabelBCEWithLogitsLoss
+loss_func: L1Loss
 required_data:
   - dgl_graph
   - targets
 metrics:
-  - prcauc
-  - rocauc
+  - rsquared
+  - mean_predictor_loss
+  - pearsonr
+  - mae
+  
+
 
 optimizer: Adam
 optimizer_params:
@@ -46,7 +50,7 @@ lr_scheduler_params:
 # Model parameters
 model_type: 'PNA'
 model_parameters:
-  target_dim: 617
+  target_dim: 1
   hidden_dim: 200
   mid_batch_norm: True
   last_batch_norm: True

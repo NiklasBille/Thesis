@@ -1,32 +1,30 @@
-experiment_name: 'del'
-logdir: 'runs'
+experiment_name: 'tune_muv_scaff'
+logdir: 'runs/3DInfomax/scaffold'
 
 multithreaded_seeds:
-  #- 1
+  - 1
   - 2
-  #- 3
+  - 3
 
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
   - gnn.
 
-  
 
 
-
-dataset: 'ogbg-molbbbp'
-num_epochs: 10
-batch_size: 30
+dataset: 'ogbg-molmuv'
+num_epochs: 1000
+batch_size: 700
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
 loss_func: OGBNanLabelBCEWithLogitsLoss
-critic_loss: OGBNanLabelBCEWithLogitsLoss
 required_data:
   - dgl_graph
   - targets
-#metrics:
-#  - prcauc
+metrics:
+  - rocauc
+  - prcauc
 
 
 optimizer: Adam
@@ -50,7 +48,7 @@ lr_scheduler_params:
 # Model parameters
 model_type: 'PNA'
 model_parameters:
-  target_dim: 1
+  target_dim: 17
   hidden_dim: 200
   mid_batch_norm: True
   last_batch_norm: True
@@ -85,4 +83,3 @@ model_parameters:
 
 # continue training from checkpoint:
 #checkpoint: runs/PNAReadout_2_layer_03-04_15-29-07/last_checkpoint.pt
-checkpoint: runs/PNA_ogbg-molbbbp_del_3_07-04_07-23-23/last_checkpoint.pt

@@ -1,4 +1,6 @@
-experiment_name: 'tune_sider_scaff'
+experiment_name: 'tune_clintox_random'
+logdir: 'runs/3DInfomax/random'
+force_random_split : True
 
 multithreaded_seeds:
   - 1
@@ -11,7 +13,7 @@ transfer_layers:
 
 
 
-dataset: 'ogbg-molsider'
+dataset: 'ogbg-molclintox'
 num_epochs: 1000
 batch_size: 32
 log_iterations: 30
@@ -47,7 +49,7 @@ lr_scheduler_params:
 # Model parameters
 model_type: 'PNA'
 model_parameters:
-  target_dim: 27
+  target_dim: 2
   hidden_dim: 200
   mid_batch_norm: True
   last_batch_norm: True

@@ -1,32 +1,30 @@
-experiment_name: 'del'
-logdir: 'runs'
+experiment_name: 'tune_bace_scaff'
+logdir: 'runs/3DInfomax/scaffold'
 
 multithreaded_seeds:
-  #- 1
+  - 1
   - 2
-  #- 3
+  - 3
 
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
   - gnn.
 
-  
 
 
-
-dataset: 'ogbg-molbbbp'
-num_epochs: 10
-batch_size: 30
+dataset: 'ogbg-molbace'
+num_epochs: 1000
+batch_size: 32
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: OGBNanLabelBCEWithLogitsLoss
-critic_loss: OGBNanLabelBCEWithLogitsLoss
+loss_func: BCEWithLogitsLoss
 required_data:
   - dgl_graph
   - targets
-#metrics:
-#  - prcauc
+metrics:
+  - prcauc
+  - rocauc
 
 
 optimizer: Adam
@@ -85,4 +83,3 @@ model_parameters:
 
 # continue training from checkpoint:
 #checkpoint: runs/PNAReadout_2_layer_03-04_15-29-07/last_checkpoint.pt
-checkpoint: runs/PNA_ogbg-molbbbp_del_3_07-04_07-23-23/last_checkpoint.pt

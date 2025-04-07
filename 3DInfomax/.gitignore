@@ -149,3 +149,7 @@ runs2
 !/runs
 /runs/*
 !/runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52
+!/runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
+!/runs/PNA_drugs_graphcl_123_31-03_15-29-27/pna.py
+!/runs/PNA_drugs_graphcl_123_31-03_15-29-27/pre-train_graphCL_baseline.yml
+!/runs/PNA_drugs_graphcl_123_31-03_15-29-27/train_arguments.yaml

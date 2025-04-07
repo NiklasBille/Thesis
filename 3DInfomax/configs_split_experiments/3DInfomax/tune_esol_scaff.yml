@@ -1,29 +1,32 @@
-experiment_name: 'tune_clintox_scaff'
+experiment_name: 'tune_esol_scaff'
+logdir: 'runs/3DInfomax/scaffold'
 
 multithreaded_seeds:
   - 1
   - 2
   - 3
-
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
   - gnn.
 
 
 
-dataset: 'ogbg-molclintox'
+dataset: 'ogbg-molesol'
 num_epochs: 1000
 batch_size: 32
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: BCEWithLogitsLoss
+loss_func: L1Loss
 required_data:
   - dgl_graph
   - targets
 metrics:
-  - prcauc
-  - rocauc
+  - rsquared
+  - mean_predictor_loss
+  - pearsonr
+  - mae
+  
 
 
 optimizer: Adam
@@ -47,7 +50,7 @@ lr_scheduler_params:
 # Model parameters
 model_type: 'PNA'
 model_parameters:
-  target_dim: 2
+  target_dim: 1
   hidden_dim: 200
   mid_batch_norm: True
   last_batch_norm: True

@@ -1,29 +1,34 @@
-experiment_name: 'tune_bbbp_scaff'
+experiment_name: 'tune_lipo_random'
+logdir: 'runs/3DInfomax/random'
+force_random_split : True
 
 multithreaded_seeds:
   - 1
   - 2
   - 3
-
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
   - gnn.
 
 
 
-dataset: 'ogbg-molbbbp'
+dataset: 'ogbg-mollipo'
 num_epochs: 1000
-batch_size: 32
+batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: BCEWithLogitsLoss
+loss_func: L1Loss
 required_data:
   - dgl_graph
   - targets
 metrics:
-  - prcauc
-  - rocauc
+  - rsquared
+  - mean_predictor_loss
+  - pearsonr
+  - mae
+  
+
 
 optimizer: Adam
 optimizer_params:

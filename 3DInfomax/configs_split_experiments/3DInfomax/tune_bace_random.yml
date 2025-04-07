@@ -1,4 +1,5 @@
-experiment_name: 'tune_muv_scaff'
+experiment_name: 'tune_bace_random'
+logdir: 'runs/3DInfomax/random'
 force_random_split : True
 
 multithreaded_seeds:
@@ -12,19 +13,19 @@ transfer_layers:
 
 
 
-dataset: 'ogbg-molmuv'
+dataset: 'ogbg-molbace'
 num_epochs: 1000
-batch_size: 700
+batch_size: 32
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: OGBNanLabelBCEWithLogitsLoss
+loss_func: BCEWithLogitsLoss
 required_data:
   - dgl_graph
   - targets
-#metrics:
-  #- rocauc
-  #- prcauc
+metrics:
+  - prcauc
+  - rocauc
 
 
 optimizer: Adam
@@ -48,7 +49,7 @@ lr_scheduler_params:
 # Model parameters
 model_type: 'PNA'
 model_parameters:
-  target_dim: 17
+  target_dim: 1
   hidden_dim: 200
   mid_batch_norm: True
   last_batch_norm: True
