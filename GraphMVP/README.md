@@ -42,14 +42,13 @@ To obtain the correct processed data features we need to re-process the datasets
 
     python noise_experiment/process_datasets.py
 
-## Changes in environment
-- cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link)
-- need to install ogb=1.3.5 before torch otherwise the environment uses a  PyTorch installation with CUDA10.2 for some reason.
-https://discuss.pytorch.org/t/geforce-rtx-3090-with-cuda-capability-sm-86-is-not-compatible-with-the-current-pytorch-installation/123499
-- I would run into issues when loading torch_geometric which is required for loading data manually (e.g. when inspecting datasets): 
-
-     ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.29' not found. 
+## Changes made
+* cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link in original repo)
+* We must install ogb=1.3.5 before torch otherwise the environment uses a  PyTorch installation with CUDA10.2 for some reason. See [this link](https://discuss.pytorch.org/t/geforce-rtx-3090-with-cuda-capability-sm-86-is-not-compatible-with-the-current-pytorch-installation/123499) for information on this issue.
+* When loading data outside of the train script (e.g. when inspecting datasets) we would run into issues when loading torch_geometric: 
+    ```
+    ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.29' not found
+    ```
      
-    The issue was (I think) that the installed SciPy build (1.7.3) requires a newer C++ standard library (a newer libstdc++), but the system’s libstdc++ is too old to to come with GLIBCXX_3.4.29 version. One solution I found was running 'conda install scipy=1.7.0 -c conda-forge' which I think is fine since 1.7.1-1.7.3 only comes with bug-fixes.
-
-    However, I think we can get away with only doing this when inspecting datasets since I don't have any issues when training.
+    The issue could be that the installed SciPy build (1.7.3) requires a newer C++ standard library (a newer libstdc++), but the system’s libstdc++ is too old to include the GLIBCXX_3.4.29 version. One possible solution is running `conda install scipy=1.7.0 -c conda-forge` which hopefully does not break things since 1.7.1-1.7.3 only comes with bug-fixes.
+* In `src_regression/molecule_finetune_regression.py` we implemented a Tensorboard logger. We modified the `eval` function to include an argument `compute_loss=False` that computes and returns the loss (no grad) when set to `True`. This is done so that we can log the validation and test loss.
