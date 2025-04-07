@@ -27,7 +27,10 @@ class OGBGDatasetExtension(GraphPropPredDataset):
         self.device = device
         self.labels = torch.tensor(self.labels)
 
-        
+    def get_all_indices(self):
+        split_idx = self.get_idx_split()
+        all_idx = np.sort(np.concatenate((split_idx['train'], split_idx['valid'], split_idx['test'])))
+        return all_idx
 
     def __getitem__(self, idx):
         '''Get datapoint with index'''

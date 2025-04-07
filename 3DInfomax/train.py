@@ -2,7 +2,9 @@ import argparse
 import concurrent.futures
 import copy
 import os
+import sys
 import re
+from math import floor
 
 from icecream import install
 from ogb.lsc import PCQM4MDataset, PCQM4MEvaluator
@@ -160,6 +162,7 @@ def parse_arguments():
     p.add_argument('--reuse_pre_train_data', type=bool, default=False, help='use all data instead of ignoring that used during pre-training')
     p.add_argument('--transfer_3d', type=bool, default=False, help='set true to load the 3d network instead of the 2d network')
     p.add_argument('--noise_level', type=float, default=0.0, help='Specifies the noise level for the noise injection')
+    p.add_argument('--train_prop', type=float, default=0.8, choices=[0.6, 0.7, 0.8], help='Specifies the proportion of data in the train set')
     return p.parse_args()
 
 
@@ -434,6 +437,7 @@ def train_pcqm4m(args, device, metrics_dict):
     return val_metrics
 
 
+
 def train_ogbg(args, device, metrics_dict):
     dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
     # Need to define a noisy dataset to introduce noise in the training data
@@ -441,6 +445,12 @@ def train_ogbg(args, device, metrics_dict):
     dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
 
     split_idx = dataset.get_idx_split()
+    all_idx = dataset.get_all_indices()
+
+    train_cutoff = floor(args.train_prop * len(all_idx))
+    valid_cutoff = int(np.round((1-args.train_prop)*1/2*len(all_idx)))
+
+
     if args.force_random_split == True:
         all_idx = get_random_indices(len(dataset), args.seed_data)
         split_idx["train"] = all_idx[:len(split_idx["train"])]
