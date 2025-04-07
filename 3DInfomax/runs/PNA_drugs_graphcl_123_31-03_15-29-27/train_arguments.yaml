@@ -1,0 +1,168 @@
+batch_size: 500
+
+checkpoint:
+
+collate_function: NodeDropCollate
+
+collate_params:
+  drop_ratio: 0.2
+
+config: runs/PNA_drugs_graphcl_123_31-03_15-29-27/pre-train_graphCL_baseline.yml
+
+critic_loss: MSELoss
+
+critic_loss_params: {}
+
+critic_parameters:
+
+critic_type:
+
+dataset: drugs
+
+device: cuda
+
+dist_embedding: no
+
+eval_on_test: yes
+
+eval_per_epochs: 0
+
+exclude_from_transfer: []
+
+expensive_log_iterations: 100
+
+experiment_name: graphcl
+
+force_random_split: no
+
+frozen_layers: []
+
+linear_probing_samples: 500
+
+log_iterations: 2
+
+logdir: runs
+
+loss_func: NTXent
+
+loss_params:
+  tau: 0.1
+
+lr_scheduler: WarmUpWrapper
+
+lr_scheduler_params:
+  cooldown: 20
+  factor: 0.6
+  min_lr: 1.0e-06
+  mode: min
+  patience: 25
+  threshold: 0.0001
+  verbose: yes
+  warmup_steps:
+    - 700
+  wrapped_scheduler: ReduceLROnPlateau
+
+main_metric: loss
+
+main_metric_goal: min
+
+metrics:
+  - positive_similarity
+  - negative_similarity
+  - contrastive_accuracy
+  - true_negative_rate
+  - true_positive_rate
+  - uniformity
+  - alignment
+  - batch_variance
+  - dimension_covariance
+
+minimum_epochs: 0
+
+model3d_parameters:
+
+model3d_type:
+
+model_parameters:
+  aggregators:
+    - mean
+    - max
+    - min
+    - std
+  batch_norm_momentum: 0.93
+  dropout: 0.0
+  hidden_dim: 200
+  last_batch_norm: yes
+  mid_batch_norm: yes
+  posttrans_layers: 1
+  pretrans_layers: 2
+  propagation_depth: 7
+  readout_aggregators:
+    - min
+    - max
+    - mean
+  readout_batchnorm: yes
+  readout_hidden_dim: 200
+  readout_layers: 2
+  residual: yes
+  scalers:
+    - identity
+    - amplification
+    - attenuation
+  target_dim: 256
+
+model_type: PNA
+
+models_to_save: []
+
+multithreaded_seeds: []
+
+num_conformers: 3
+
+num_epochs: 1000
+
+num_epochs_local_only: 1
+
+num_radial: 6
+
+num_train: 280000
+
+num_val:
+
+optimizer: Adam
+
+optimizer_params:
+  lr: 8.0e-05
+
+patience: 35
+
+pretrain_checkpoint:
+
+required_data:
+  - dgl_graph
+
+reuse_pre_train_data: no
+
+scheduler_step_per_batch: no
+
+seed: 123
+
+seed_data: 123
+
+targets: []
+
+tensorboard_functions: []
+
+train_sampler:
+
+trainer: graphcl_trainer
+
+transfer_3d: no
+
+transfer_layers: []
+
+transferred_lr:
+
+use_e_features: yes
+
+val_per_batch: yes

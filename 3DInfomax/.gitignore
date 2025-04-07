@@ -149,6 +149,11 @@ runs2
 !/runs
 /runs/*
 !/runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52
+
+!/runs/PNA_drugs_graphcl_123_31-03_15-29-27
+# Re-ignore everything inside it
+/runs/PNA_drugs_graphcl_123_31-03_15-29-27/*
+# Then un-ignore the specific files
 !/runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
 !/runs/PNA_drugs_graphcl_123_31-03_15-29-27/pna.py
 !/runs/PNA_drugs_graphcl_123_31-03_15-29-27/pre-train_graphCL_baseline.yml
