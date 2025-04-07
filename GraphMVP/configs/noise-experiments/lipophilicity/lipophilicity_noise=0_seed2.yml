@@ -1,0 +1,6 @@
+dataset: lipophilicity
+output_model_dir: "../results/lipophilicity_noise=0_seed2.yml"
+input_model_file: "../weights/pretrained/GraphMVP_regression.pth"
+device: 1
+seed: 2
+runseed: 2
