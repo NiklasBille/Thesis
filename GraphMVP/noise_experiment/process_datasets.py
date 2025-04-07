@@ -28,7 +28,7 @@ def extract_features_classification():
     
 
 if __name__ == "__main__":
-    # extract_features_regression()
-    # extract_features_classification()
-    dataset = MoleculeDatasetComplete('datasets/molecule_datasets/freesolv', dataset='freesolv', force_reload=False)
-    print("Length of freesolv:", len(dataset))
+    extract_features_regression()
+    extract_features_classification()
+    # dataset = MoleculeDatasetComplete('datasets/molecule_datasets/freesolv', dataset='freesolv', force_reload=False)
+    # print("Length of freesolv:", len(dataset))

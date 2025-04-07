@@ -20,6 +20,10 @@ To download the dataset used in the paper run:
     mv datasets/dataset datasets/molecule_datasets
     rm datasets/chem_dataset.zip
 
+To obtain the correct processed data features we need to re-process the datasets, since they are not processed in the desired way after downloading them. Therefore, first run the `noise_experiment/process_datasets.py`
+
+    python noise_experiment/process_datasets.py
+
 ## Training
 To run the training script for e.g. lipo, cd into src_regression and run:
 
@@ -37,10 +41,6 @@ To run the training script for e.g. lipo, cd into src_regression and run:
 
 For all the downstream tasks the author of GraphMVP did not tune the hyperparameters. 
 
-## Noise experiment 
-To obtain the correct processed data features we need to re-process the datasets, since they are not processed in the desired way after downloading them. Therefore, first run the `noise_experiment/process_datasets.py`
-
-    python noise_experiment/process_datasets.py
 
 ## Changes made
 * cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link in original repo)
