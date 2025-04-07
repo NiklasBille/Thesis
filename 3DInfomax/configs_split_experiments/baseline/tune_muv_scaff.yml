@@ -1,31 +1,30 @@
-experiment_name: 'tune_freesolv_scaff'
+experiment_name: 'tune_muv_scaff'
+logdir: 'runs/baseline/scaffold'
 
 multithreaded_seeds:
   - 1
   - 2
   - 3
-pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
+
+pretrain_checkpoint: runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
 transfer_layers:
   - gnn.
 
 
 
-dataset: 'ogbg-molfreesolv'
+dataset: 'ogbg-molmuv'
 num_epochs: 1000
-batch_size: 30
+batch_size: 700
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: L1Loss
+loss_func: OGBNanLabelBCEWithLogitsLoss
 required_data:
   - dgl_graph
   - targets
 metrics:
-  - rsquared
-  - mean_predictor_loss
-  - pearsonr
-  - mae
-
+  - rocauc
+  - prcauc
 
 
 optimizer: Adam
@@ -49,7 +48,7 @@ lr_scheduler_params:
 # Model parameters
 model_type: 'PNA'
 model_parameters:
-  target_dim: 1
+  target_dim: 17
   hidden_dim: 200
   mid_batch_norm: True
   last_batch_norm: True
