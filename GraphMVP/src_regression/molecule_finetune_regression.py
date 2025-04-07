@@ -1,3 +1,4 @@
+import copy
 import os
 import sys
 
@@ -6,6 +7,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import yaml
 
 sys.path.insert(0, '../src_classification')
 from os.path import join
@@ -17,7 +19,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 from splitters import random_scaffold_split, random_split, scaffold_split
 from torch_geometric.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-
+import pyaml
 
 def train(model, device, loader, optimizer):
     model.train()
@@ -155,6 +157,14 @@ if __name__ == '__main__':
     val_loader = DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
 
+    
+    if args.output_model_dir != '' and args.config is not None:
+        train_args = copy.copy(args)
+        config_path = args.config if isinstance(args.config, str) else args.config.name
+        train_args.config = os.path.join(args.output_model_dir, os.path.basename(config_path))
+        with open(os.path.join(args.output_model_dir, 'train_arguments.yaml'), 'w') as yaml_path:
+            pyaml.dump(train_args.__dict__, yaml_path)
+    
     # set up model
     molecule_model = GNNComplete(num_layer=args.num_layer, emb_dim=args.emb_dim, JK=args.JK, drop_ratio=args.dropout_ratio, gnn_type=args.gnn_type)
     model = GNN_graphpredComplete(args=args, num_tasks=num_tasks, molecule_model=molecule_model)

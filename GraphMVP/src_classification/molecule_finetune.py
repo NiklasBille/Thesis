@@ -1,3 +1,5 @@
+import copy
+import os
 from os.path import join
 
 import numpy as np
@@ -12,7 +14,7 @@ from sklearn.metrics import (accuracy_score, average_precision_score,
 from splitters import random_scaffold_split, random_split, scaffold_split
 from torch_geometric.data import DataLoader
 from util import get_num_task
-
+import pyaml
 from datasets import MoleculeDataset
 
 
@@ -132,6 +134,13 @@ if __name__ == '__main__':
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size,
                              shuffle=False, num_workers=args.num_workers)
 
+    if args.output_model_dir != '' and args.config is not None:
+        train_args = copy.copy(args)
+        config_path = args.config if isinstance(args.config, str) else args.config.name
+        train_args.config = os.path.join(args.output_model_dir, os.path.basename(config_path))
+        with open(os.path.join(args.output_model_dir, 'train_arguments.yaml'), 'w') as yaml_path:
+            pyaml.dump(train_args.__dict__, yaml_path)
+            
     # set up model
     molecule_model = GNN(num_layer=args.num_layer, emb_dim=args.emb_dim,
                          JK=args.JK, drop_ratio=args.dropout_ratio,
