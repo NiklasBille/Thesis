@@ -447,7 +447,6 @@ def train_ogbg(args, device, metrics_dict):
 
     if args.force_random_split == False:
         split_idx = scaffold_split(args.dataset, frac_train=args.train_prop)
-
     else:        
         split_idx = random_split(len_dataset=len(dataset), frac_train=args.train_prop, seed_data=args.seed_data)
 

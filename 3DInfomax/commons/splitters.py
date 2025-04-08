@@ -61,6 +61,7 @@ def scaffold_split(dataset_name, frac_train=0.8):
 
     assert len(set(train_idx).intersection(set(valid_idx))) == 0
     assert len(set(test_idx).intersection(set(valid_idx))) == 0
+    assert len(train_idx) + len(valid_idx) + len(test_idx) == len(smiles_df)
 
     return {'train': sorted(train_idx), 'valid': sorted(valid_idx), 'test': sorted(test_idx)}
 
