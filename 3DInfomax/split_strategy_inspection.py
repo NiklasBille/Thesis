@@ -2,7 +2,7 @@ from datasets.ogbg_dataset_extension import OGBGDatasetExtension
 from datasets.qm9_dataset import QM9Dataset
 from train import get_arguments, parse_arguments
 from commons.utils import get_random_indices
-from commons.splitters import generate_scaffold
+from commons.splitters import generate_scaffold, scaffold_split
 
 import sys
 import os
@@ -10,6 +10,7 @@ import pandas as pd
 import torch
 import numpy as np
 from math import floor
+from tqdm import tqdm
 
 
 def test_scaffold_splits_for_different_models():
@@ -74,76 +75,96 @@ def test_scaffold_splits_for_different_models():
     print(f"GraphMVP matches test set: {len(common_smiles_GraphMVP) == len(test_smiles_list)}")
     print(f"UniMol matches test set: {len(common_smiles_UniMol) == len(test_smiles_list)}")
 
-def scaffold_split(dataset_name, frac_train=0.8, frac_valid=0.1, frac_test=0.1,):
-
-    # get a list of SMILES for all molecules
-    path_to_smiles_mapping = f"/workspace/dataset/{dataset_name.replace('-','_')}/mapping/mol.csv.gz"
-
-    smiles_df = pd.read_csv(path_to_smiles_mapping, compression="gzip")["smiles"]
-
-    # create dict of the form {scaffold_i: [idx1, idx....]}
-    all_scaffolds = {}
-    for i, smiles in smiles_df.items():
-        scaffold = generate_scaffold(smiles, include_chirality=True)
-        if scaffold not in all_scaffolds:
-            all_scaffolds[scaffold] = [i]
-        else:
-            all_scaffolds[scaffold].append(i)
-
-    # sort from largest to smallest sets
-    all_scaffolds = {key: sorted(value) for key, value in all_scaffolds.items()}
-    all_scaffold_sets = [
-        scaffold_set for (scaffold, scaffold_set) in sorted(
-            all_scaffolds.items(), key=lambda x: (len(x[1]), x[1][0]), reverse=True)
-    ]
-
-    # get train, valid test indices
-    train_cutoff = frac_train * len(smiles_df)
-    valid_cutoff = (frac_train + frac_valid) * len(smiles_df)
-
-    train_idx, valid_idx, test_idx = [], [], []
-    for scaffold_set in all_scaffold_sets:
-        if len(train_idx) + len(scaffold_set) > train_cutoff:
-            if len(train_idx) + len(valid_idx) + len(scaffold_set) > valid_cutoff:
-                test_idx.extend(scaffold_set)
-            else:
-                valid_idx.extend(scaffold_set)
-        else:
-            train_idx.extend(scaffold_set)
-
-    assert len(set(train_idx).intersection(set(valid_idx))) == 0
-    assert len(set(test_idx).intersection(set(valid_idx))) == 0
-
-    return sorted(train_idx), sorted(valid_idx), sorted(test_idx)
-
 
 def test_custom_80_10_10_split_matches_ground_truth():
+    
+    # for better console readability.
+    import warnings
+    warnings.filterwarnings(
+        "ignore",
+        message="You are using `torch.load` with `weights_only=False`",
+        category=FutureWarning
+    )
+
     return_types = ["dgl_graph", "targets"]
     noise_level = 0.0
     device = torch.device("cuda:0")
 
     datasets = ["ogbg-molbace", "ogbg-molbbbp", "ogbg-molclintox", "ogbg-molmuv", "ogbg-molsider", "ogbg-moltox21", "ogbg-moltoxcast", "ogbg-molhiv", "ogbg-molesol", "ogbg-molfreesolv", "ogbg-mollipo"]
+    #datasets = ['ogbg-moltoxcast', 'ogbg-molfreesolv']
 
-    for dataset_name in datasets:    
+    for dataset_name in tqdm(datasets, desc="Processing datasets"):    
         dataset = OGBGDatasetExtension(return_types=return_types, device=device, name=dataset_name, noise_level=noise_level)
 
         split_idx = dataset.get_idx_split() # ground truth
 
         all_idx = dataset.get_all_indices()
 
-        train_idx, valid_idx, test_idx = scaffold_split(dataset_name)
+        custom_split = scaffold_split(dataset_name)
+        train_idx = custom_split['train']; valid_idx = custom_split['valid']; test_idx = custom_split['test']
 
-        print(all(train_idx == split_idx["train"]))
-        print(all(valid_idx == split_idx["valid"]))
-        print(all(test_idx == split_idx["test"]))
+        print("Train, valid and test contains all indices: ", len(set(train_idx + valid_idx + test_idx)-set(all_idx))==0)
+
+        train_is_equal = all(train_idx == split_idx['train']) 
+        valid_is_equal = all(valid_idx == split_idx['valid']) 
+        test_is_equal = all(test_idx == split_idx['test']) 
+        print(f"{dataset_name} - Train idx match: {train_is_equal}")
+        print(f"{dataset_name} - Valid idx match: {valid_is_equal}")
+        print(f"{dataset_name} - Test idx match:  {test_is_equal}")
+        
+        if train_is_equal == False or test_is_equal == False or test_is_equal == False:
+            print(f"Indices in train_idx but not in split_idx['train']: {set(train_idx) - set(split_idx['train'])}")
+            print(f"Indices in split_idx['train'] but not in train_idx: {set(split_idx['train']) - set(train_idx)}")
+
+            print(f"Indices in valid_idx but not in split_idx['valid']: {set(valid_idx) - set(split_idx['valid'])}")
+            print(f"Indices in split_idx['valid'] but not in valid_idx: {set(split_idx['valid']) - set(valid_idx)}")
+
+            print(f"Indices in test_idx but not in split_idx['test']: {set(test_idx) - set(split_idx['test'])}")
+            print(f"Indices in split_idx['test'] but not in test_idx: {set(split_idx['test']) - set(test_idx)}")
+
+        print("="*20)
+                        #print(len(test_idx))
+            #print(len(split_idx['test']))
+            #print(test_idx)
+            #print(split_idx['test'])
+
 
     # First get smiles strings for the task
 
 
     #train_cutoff = floor(args.train_prop * len(all_idx))
     #valid_cutoff = int(np.round((1-args.train_prop)*1/2*len(all_idx)))
-    
+
+def test_custom_splits_contain_all_molecules():
+    # for better console readability.
+    import warnings
+    warnings.filterwarnings(
+        "ignore",
+        message="You are using `torch.load` with `weights_only=False`",
+        category=FutureWarning
+    )
+
+    return_types = ["dgl_graph", "targets"]
+    noise_level = 0.0
+    device = torch.device("cuda:0")
+
+    train_props = [0.8, 0.7, 0.6]
+    datasets = ["ogbg-molbace", "ogbg-molbbbp", "ogbg-molclintox", "ogbg-molmuv", "ogbg-molsider", "ogbg-moltox21", "ogbg-moltoxcast", "ogbg-molhiv", "ogbg-molesol", "ogbg-molfreesolv", "ogbg-mollipo"]
+
+    for dataset_name in tqdm(datasets):   
+        dataset = OGBGDatasetExtension(return_types=return_types, device=device, name=dataset_name, noise_level=noise_level)
+
+        all_idx = dataset.get_all_indices()
+
+        for train_prop in train_props:
+            custom_split =  scaffold_split(dataset_name, frac_train=train_prop)
+            train_idx = custom_split['train']; valid_idx = custom_split['valid']; test_idx = custom_split['test']
+
+
+            print(f"Dataset: {dataset_name}, train proportion: {train_prop}")
+            print("Train, valid and test contains all indices: ", len(set(train_idx + valid_idx + test_idx)-set(all_idx))==0, "\n")
 
 if __name__ == "__main__":
     #test_scaffold_splits_for_different_models()
-    test_custom_80_10_10_split_matches_ground_truth()
+    #test_custom_80_10_10_split_matches_ground_truth()
+    test_custom_splits_contain_all_molecules()

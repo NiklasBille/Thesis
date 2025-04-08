@@ -10,6 +10,7 @@ from icecream import install
 from ogb.lsc import PCQM4MDataset, PCQM4MEvaluator
 from ogb.utils import smiles2graph
 
+from commons.splitters import scaffold_split
 from commons.utils import seed_all, get_random_indices, TENSORBOARD_FUNCTIONS
 from datasets.ZINC_dataset import ZINCDataset
 from datasets.bace_geomol_feat import BACEGeomol
@@ -444,14 +445,11 @@ def train_ogbg(args, device, metrics_dict):
     # The in test.py we test that the splits are equal for two different dataset instances
     dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
 
-    split_idx = dataset.get_idx_split()
-    all_idx = dataset.get_all_indices()
+    #split_idx = dataset.get_idx_split()
+    if args.force_random_split == False:
+        split_idx = scaffold_split(args.dataset, frac_train=args.train_prop)
 
-    train_cutoff = floor(args.train_prop * len(all_idx))
-    valid_cutoff = int(np.round((1-args.train_prop)*1/2*len(all_idx)))
-
-
-    if args.force_random_split == True:
+    else:
         all_idx = get_random_indices(len(dataset), args.seed_data)
         split_idx["train"] = all_idx[:len(split_idx["train"])]
         split_idx["valid"] = all_idx[len(split_idx["train"]):len(split_idx["train"])+len(split_idx["valid"])]

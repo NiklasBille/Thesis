@@ -1,6 +1,6 @@
-experiment_name: 'del'
+experiment_name: 'del_new'
 logdir: 'runs/del'
-force_random_split : True
+#force_random_split : True
 
 #multithreaded_seeds:
   #- 1
@@ -14,7 +14,7 @@ transfer_layers:
 
 
 dataset: 'ogbg-molfreesolv'
-num_epochs: 10
+num_epochs: 5
 batch_size: 30
 log_iterations: 30
 patience: 40
