@@ -1,32 +1,32 @@
-experiment_name: 'tune_qmugs_NTXentMultiplePositives_620000_35epochs'
+experiment_name: '3DInfomax_esol_noise=0.02'
+logdir: 'runs/flip-pertubation/3DInfomax/esol/noise=0.02'
 
 multithreaded_seeds:
   - 1
   - 2
   - 3
-  - 4
-  - 5
-  - 6
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
   - gnn.
 
-device: cuda:1
 
-dataset: 'ogbg-molfreesolv'
+
+dataset: 'ogbg-molesol'
+noise_level: 0.02
 num_epochs: 1000
 batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
+device: cuda:1
 loss_func: L1Loss
 required_data:
   - dgl_graph
   - targets
 metrics:
-  - rsquared
-  - mean_predictor_loss
-  - pearsonr
+  - mae
+  - rmse
+
 
 
 optimizer: Adam

@@ -236,8 +236,8 @@ def load_model(args, data, device):
 
 def train(args):
     seed_all(args.seed)
-    #device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
-    device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+    device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
+    #device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
     #device = "cpu"
 
     metrics_dict = {'rsquared': Rsquared(),
@@ -437,10 +437,10 @@ def train_pcqm4m(args, device, metrics_dict):
 
 
 def train_ogbg(args, device, metrics_dict):
-    dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
-    # Need to define a noisy dataset to introduce noise in the training data
-    # The in test.py we test that the splits are equal for two different dataset instances
-    dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
+    dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset)
+    # Need to define a noisy dataset to introduce noise in the training data (splits are equal)
+    if args.noise_level > 0:
+        dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
 
     split_idx = dataset.get_idx_split()
     if args.force_random_split == True:
@@ -453,8 +453,11 @@ def train_ogbg(args, device, metrics_dict):
         args.collate_function](**args.collate_params)
     
     # Introduce noise in the training data
-    train_loader = DataLoader(Subset(dataset_noise, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
+    train_loader = DataLoader(Subset(dataset, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
                               collate_fn=collate_function)
+    if args.noise_level > 0:
+        train_loader = DataLoader(Subset(dataset_noise, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
+                                  collate_fn=collate_function)
     val_loader = DataLoader(Subset(dataset, split_idx["valid"]), batch_size=args.batch_size, shuffle=False,
                             collate_fn=collate_function)
     test_loader = DataLoader(Subset(dataset, split_idx["test"]), batch_size=args.batch_size, shuffle=False,

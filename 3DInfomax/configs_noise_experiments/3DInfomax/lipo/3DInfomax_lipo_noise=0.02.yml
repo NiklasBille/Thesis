@@ -1,6 +1,5 @@
-experiment_name: '3Dinfomax_freesolv_noise=0.05'
-logdir: 'runs/flip-pertubation/noise=0.05/3Dinfomax/freesolv
-force_random_split : True
+experiment_name: '3DInfomax_lipo_noise=0.02'
+logdir: 'runs/flip-pertubation/3DInfomax/lipo/noise=0.02'
 
 multithreaded_seeds:
   - 1
@@ -12,8 +11,8 @@ transfer_layers:
 
 
 
-dataset: 'ogbg-molfreesolv'
-noise_level: 0.05
+dataset: 'ogbg-mollipo
+noise_level: 0.2
 num_epochs: 1000
 batch_size: 30
 log_iterations: 30
