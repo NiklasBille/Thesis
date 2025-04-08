@@ -67,7 +67,7 @@ from trainer.metrics import QM9DenormalizedL1, QM9DenormalizedL2, \
     BatchVariance, DimensionCovariance, MAE, PositiveSimilarityMultiplePositivesSeparate2d, \
     NegativeSimilarityMultiplePositivesSeparate2d, OGBEvaluator, PearsonR, PositiveProb, NegativeProb, \
     Conformer2DVariance, Conformer3DVariance, PCQM4MEvaluatorWrapper
-from trainer.metrics import ROCAUCscore,PRCAUCscore
+from trainer.metrics import ROCAUCscore,PRCAUCscore, RMSE
 from trainer.trainer import Trainer
 
 # turn on for debugging C code like Segmentation Faults
@@ -141,7 +141,7 @@ def parse_arguments():
                    help='parameters with keywords of the chosen collate function')
     p.add_argument('--use_e_features', default=True, type=bool, help='ignore edge features if set to False')
     p.add_argument('--targets', default=[], help='properties that should be predicted')
-    p.add_argument('--device', type=str, default='cuda', help='What device to train on: cuda or cpu')
+    p.add_argument('--device', type=str, default='0', help="Device to use: 'cpu', '0' for cuda:0, '1' for cuda:1, etc.")
 
     p.add_argument('--dist_embedding', type=bool, default=False, help='add dist embedding to complete graphs edges')
     p.add_argument('--num_radial', type=int, default=6, help='number of frequencies for distance embedding')
@@ -239,12 +239,18 @@ def load_model(args, data, device):
 
 def train(args):
     seed_all(args.seed)
-    #device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
-    device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
-    #device = "cpu"
+
+    if args.device.lower() == 'cpu':
+        device = torch.device('cpu')
+    elif args.device.isdigit() and torch.cuda.is_available():
+        device = torch.device(f'cuda:{args.device}')
+    else:
+        raise ValueError(f"Invalid device option '{args.device}'. Use 'cpu' or a GPU index like '0', '1'.")
+
 
     metrics_dict = {'rsquared': Rsquared(),
                     'mae': MAE(),
+                    'rmse': RMSE(),
                     'pearsonr': PearsonR(),
                     'ogbg-molhiv': OGBEvaluator(d_name='ogbg-molhiv', metric='rocauc'),
                     'ogbg-molpcba': OGBEvaluator(d_name='ogbg-molpcba', metric='ap'),

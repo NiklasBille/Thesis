@@ -14,7 +14,7 @@ transfer_layers:
 
 
 dataset: 'ogbg-molfreesolv'
-num_epochs: 5
+num_epochs: 100
 batch_size: 30
 log_iterations: 30
 patience: 40
