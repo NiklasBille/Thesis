@@ -64,6 +64,7 @@ from trainer.metrics import QM9DenormalizedL1, QM9DenormalizedL2, \
     BatchVariance, DimensionCovariance, MAE, PositiveSimilarityMultiplePositivesSeparate2d, \
     NegativeSimilarityMultiplePositivesSeparate2d, OGBEvaluator, PearsonR, PositiveProb, NegativeProb, \
     Conformer2DVariance, Conformer3DVariance, PCQM4MEvaluatorWrapper
+from trainer.metrics import RMSE
 from trainer.metrics import ROCAUCscore,PRCAUCscore
 from trainer.trainer import Trainer
 
@@ -241,6 +242,7 @@ def train(args):
 
     metrics_dict = {'rsquared': Rsquared(),
                     'mae': MAE(),
+                    'rmse': RMSE(),
                     'pearsonr': PearsonR(),
                     'ogbg-molhiv': OGBEvaluator(d_name='ogbg-molhiv', metric='rocauc'),
                     'ogbg-molpcba': OGBEvaluator(d_name='ogbg-molpcba', metric='ap'),
