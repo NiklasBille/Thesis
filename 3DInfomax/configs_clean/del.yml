@@ -1,6 +1,6 @@
-experiment_name: 'del_new'
+experiment_name: 'del_new_60'
 logdir: 'runs/del'
-#force_random_split : True
+force_random_split : True
 
 #multithreaded_seeds:
   #- 1

@@ -1,8 +1,8 @@
 from datasets.ogbg_dataset_extension import OGBGDatasetExtension
 from datasets.qm9_dataset import QM9Dataset
 from train import get_arguments, parse_arguments
-from commons.utils import get_random_indices
-from commons.splitters import generate_scaffold, scaffold_split
+from commons.utils import get_random_indices, seed_all
+from commons.splitters import generate_scaffold, scaffold_split, random_split
 
 import sys
 import os
@@ -76,7 +76,7 @@ def test_scaffold_splits_for_different_models():
     print(f"UniMol matches test set: {len(common_smiles_UniMol) == len(test_smiles_list)}")
 
 
-def test_custom_80_10_10_split_matches_ground_truth():
+def test_custom_80_10_10_scaffold_split_matches_ground_truth():
     
     # for better console readability.
     import warnings
@@ -135,7 +135,62 @@ def test_custom_80_10_10_split_matches_ground_truth():
     #train_cutoff = floor(args.train_prop * len(all_idx))
     #valid_cutoff = int(np.round((1-args.train_prop)*1/2*len(all_idx)))
 
-def test_custom_splits_contain_all_molecules():
+
+def test_custom_80_10_10_random_split_matches_ground_truth():
+    # for better console readability.
+    import warnings
+    warnings.filterwarnings(
+        "ignore",
+        message="You are using `torch.load` with `weights_only=False`",
+        category=FutureWarning
+    )
+
+    return_types = ["dgl_graph", "targets"]
+    noise_level = 0.0
+    device = torch.device("cuda:0")
+    seed=1
+    seed_data=123
+    seed_all(seed)
+    datasets = ["ogbg-molbace", "ogbg-molbbbp", "ogbg-molclintox", "ogbg-molmuv", "ogbg-molsider", "ogbg-moltox21", "ogbg-moltoxcast", "ogbg-molhiv", "ogbg-molesol", "ogbg-molfreesolv", "ogbg-mollipo"]
+    #datasets = ["ogbg-molfreesolv"]
+    
+    for dataset_name in tqdm(datasets, desc="Processing datasets"):
+        dataset = OGBGDatasetExtension(return_types=return_types, device=device, name=dataset_name, noise_level=noise_level)
+
+        # ground truth
+        split_idx = dataset.get_idx_split()
+        all_idx = get_random_indices(len(dataset), seed_data)
+        
+        split_idx["train"] = all_idx[:len(split_idx["train"])]
+        split_idx["valid"] = all_idx[len(split_idx["train"]):len(split_idx["train"])+len(split_idx["valid"])]
+        split_idx["test"] = all_idx[len(split_idx["train"])+len(split_idx["valid"]):]
+
+        # get custom splits
+        custom_split = random_split(len_dataset=len(dataset),  frac_train=0.8, seed_data=seed_data)
+        train_idx = custom_split['train']; valid_idx = custom_split['valid']; test_idx = custom_split['test']
+
+        print("Train, valid and test contains all indices: ", len(set(list(train_idx) + list(valid_idx) + list(test_idx))-set(all_idx))==0)
+
+        train_is_equal = all(train_idx == split_idx['train']) 
+        valid_is_equal = all(valid_idx == split_idx['valid']) 
+        test_is_equal = all(test_idx == split_idx['test']) 
+        print(f"{dataset_name} - Train idx match: {train_is_equal}")
+        print(f"{dataset_name} - Valid idx match: {valid_is_equal}")
+        print(f"{dataset_name} - Test idx match:  {test_is_equal}")
+        
+        if train_is_equal == False or test_is_equal == False or test_is_equal == False:
+            print(f"Indices in train_idx but not in split_idx['train']: {set(train_idx) - set(split_idx['train'])}")
+            print(f"Indices in split_idx['train'] but not in train_idx: {set(split_idx['train']) - set(train_idx)}")
+
+            print(f"Indices in valid_idx but not in split_idx['valid']: {set(valid_idx) - set(split_idx['valid'])}")
+            print(f"Indices in split_idx['valid'] but not in valid_idx: {set(split_idx['valid']) - set(valid_idx)}")
+
+            print(f"Indices in test_idx but not in split_idx['test']: {set(test_idx) - set(split_idx['test'])}")
+            print(f"Indices in split_idx['test'] but not in test_idx: {set(split_idx['test']) - set(test_idx)}")
+
+        print("="*20)
+
+def test_custom_scaffold_splits_contain_all_molecules():
     # for better console readability.
     import warnings
     warnings.filterwarnings(
@@ -164,7 +219,41 @@ def test_custom_splits_contain_all_molecules():
             print(f"Dataset: {dataset_name}, train proportion: {train_prop}")
             print("Train, valid and test contains all indices: ", len(set(train_idx + valid_idx + test_idx)-set(all_idx))==0, "\n")
 
+def test_custom_random_splits_contain_all_molecules():
+    # for better console readability.
+    import warnings
+    warnings.filterwarnings(
+        "ignore",
+        message="You are using `torch.load` with `weights_only=False`",
+        category=FutureWarning
+    )
+
+    return_types = ["dgl_graph", "targets"]
+    noise_level = 0.0
+    device = torch.device("cuda:0")
+    seed=1
+    seed_data=123
+    seed_all(seed)
+
+    train_props = [0.8, 0.7, 0.6]
+    datasets = ["ogbg-molbace", "ogbg-molbbbp", "ogbg-molclintox", "ogbg-molmuv", "ogbg-molsider", "ogbg-moltox21", "ogbg-moltoxcast", "ogbg-molhiv", "ogbg-molesol", "ogbg-molfreesolv", "ogbg-mollipo"]
+
+    for dataset_name in tqdm(datasets):   
+        dataset = OGBGDatasetExtension(return_types=return_types, device=device, name=dataset_name, noise_level=noise_level)
+
+        all_idx = dataset.get_all_indices()
+
+        for train_prop in train_props:
+            custom_split = random_split(len_dataset=len(dataset),  frac_train=0.8, seed_data=seed_data)
+            train_idx = custom_split['train']; valid_idx = custom_split['valid']; test_idx = custom_split['test']
+
+
+            print(f"Dataset: {dataset_name}, train proportion: {train_prop}")
+            print("Train, valid and test contains all indices: ", len(set(list(train_idx) + list(valid_idx) + list(test_idx))-set(all_idx))==0, "\n")
+
 if __name__ == "__main__":
     #test_scaffold_splits_for_different_models()
-    #test_custom_80_10_10_split_matches_ground_truth()
-    test_custom_splits_contain_all_molecules()
+    #test_custom_80_10_10_scaffold_split_matches_ground_truth()
+    #test_custom_80_10_10_random_split_matches_ground_truth()
+    #test_custom_scaffold_splits_contain_all_molecules()
+    test_custom_random_splits_contain_all_molecules()

@@ -1,8 +1,11 @@
 
 import pandas as pd
+import numpy as np
 
 from rdkit.Chem.Scaffolds import MurckoScaffold
 from rdkit import RDLogger  
+
+from commons.utils import get_random_indices
 
 
 def generate_scaffold(smiles, include_chirality=False):
@@ -17,7 +20,9 @@ def generate_scaffold(smiles, include_chirality=False):
 
 
 def scaffold_split(dataset_name, frac_train=0.8):
-    frac_valid = (1-0.8)/2
+    frac_valid = (1-frac_train)/2
+
+    np.testing.assert_almost_equal(frac_train + 2*frac_valid, 1.0)
 
     # get a list of SMILES for all molecules
     path_to_smiles_mapping = f"/workspace/dataset/{dataset_name.replace('-','_')}/mapping/mol.csv.gz"
@@ -59,3 +64,22 @@ def scaffold_split(dataset_name, frac_train=0.8):
 
     return {'train': sorted(train_idx), 'valid': sorted(valid_idx), 'test': sorted(test_idx)}
 
+def random_split(seed_data, len_dataset, frac_train=0.8):
+    frac_valid = (1-frac_train)/2
+    np.testing.assert_almost_equal(frac_train + 2*frac_valid, 1.0)
+
+    all_idx = get_random_indices(len_dataset, seed_data)
+
+    # get train, valid test indices
+    train_cutoff = int(frac_train * len_dataset)
+    valid_cutoff = int((frac_train + frac_valid) * len_dataset)
+
+    train_idx = all_idx[:train_cutoff]
+    valid_idx = all_idx[train_cutoff:valid_cutoff]
+    test_idx = all_idx[valid_cutoff:]
+
+    assert len(set(train_idx).intersection(set(valid_idx))) == 0
+    assert len(set(test_idx).intersection(set(valid_idx))) == 0
+    assert len(train_idx) + len(valid_idx) + len(test_idx) == len_dataset
+
+    return {'train': train_idx, 'valid': valid_idx, 'test': test_idx}
