@@ -2,13 +2,21 @@ from datasets.ogbg_dataset_extension import OGBGDatasetExtension
 from datasets.qm9_dataset import QM9Dataset
 from train import get_arguments, parse_arguments
 from commons.utils import get_random_indices
+from commons.splitters import generate_scaffold
 
 import sys
+import os
 import pandas as pd
 import torch
+import numpy as np
+from math import floor
 
 
-if __name__ == "__main__":
+def test_scaffold_splits_for_different_models():
+    """
+    Checks if the scaffold splits for a couple of datasets are the same in GraphMVH, 3DInfomax and UniMol. 
+    Requires that we pass a config file.
+    """
     args = get_arguments()
     device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
 
@@ -65,3 +73,77 @@ if __name__ == "__main__":
 
     print(f"GraphMVP matches test set: {len(common_smiles_GraphMVP) == len(test_smiles_list)}")
     print(f"UniMol matches test set: {len(common_smiles_UniMol) == len(test_smiles_list)}")
+
+def scaffold_split(dataset_name, frac_train=0.8, frac_valid=0.1, frac_test=0.1,):
+
+    # get a list of SMILES for all molecules
+    path_to_smiles_mapping = f"/workspace/dataset/{dataset_name.replace('-','_')}/mapping/mol.csv.gz"
+
+    smiles_df = pd.read_csv(path_to_smiles_mapping, compression="gzip")["smiles"]
+
+    # create dict of the form {scaffold_i: [idx1, idx....]}
+    all_scaffolds = {}
+    for i, smiles in smiles_df.items():
+        scaffold = generate_scaffold(smiles, include_chirality=True)
+        if scaffold not in all_scaffolds:
+            all_scaffolds[scaffold] = [i]
+        else:
+            all_scaffolds[scaffold].append(i)
+
+    # sort from largest to smallest sets
+    all_scaffolds = {key: sorted(value) for key, value in all_scaffolds.items()}
+    all_scaffold_sets = [
+        scaffold_set for (scaffold, scaffold_set) in sorted(
+            all_scaffolds.items(), key=lambda x: (len(x[1]), x[1][0]), reverse=True)
+    ]
+
+    # get train, valid test indices
+    train_cutoff = frac_train * len(smiles_df)
+    valid_cutoff = (frac_train + frac_valid) * len(smiles_df)
+
+    train_idx, valid_idx, test_idx = [], [], []
+    for scaffold_set in all_scaffold_sets:
+        if len(train_idx) + len(scaffold_set) > train_cutoff:
+            if len(train_idx) + len(valid_idx) + len(scaffold_set) > valid_cutoff:
+                test_idx.extend(scaffold_set)
+            else:
+                valid_idx.extend(scaffold_set)
+        else:
+            train_idx.extend(scaffold_set)
+
+    assert len(set(train_idx).intersection(set(valid_idx))) == 0
+    assert len(set(test_idx).intersection(set(valid_idx))) == 0
+
+    return sorted(train_idx), sorted(valid_idx), sorted(test_idx)
+
+
+def test_custom_80_10_10_split_matches_ground_truth():
+    return_types = ["dgl_graph", "targets"]
+    noise_level = 0.0
+    device = torch.device("cuda:0")
+
+    datasets = ["ogbg-molbace", "ogbg-molbbbp", "ogbg-molclintox", "ogbg-molmuv", "ogbg-molsider", "ogbg-moltox21", "ogbg-moltoxcast", "ogbg-molhiv", "ogbg-molesol", "ogbg-molfreesolv", "ogbg-mollipo"]
+
+    for dataset_name in datasets:    
+        dataset = OGBGDatasetExtension(return_types=return_types, device=device, name=dataset_name, noise_level=noise_level)
+
+        split_idx = dataset.get_idx_split() # ground truth
+
+        all_idx = dataset.get_all_indices()
+
+        train_idx, valid_idx, test_idx = scaffold_split(dataset_name)
+
+        print(all(train_idx == split_idx["train"]))
+        print(all(valid_idx == split_idx["valid"]))
+        print(all(test_idx == split_idx["test"]))
+
+    # First get smiles strings for the task
+
+
+    #train_cutoff = floor(args.train_prop * len(all_idx))
+    #valid_cutoff = int(np.round((1-args.train_prop)*1/2*len(all_idx)))
+    
+
+if __name__ == "__main__":
+    #test_scaffold_splits_for_different_models()
+    test_custom_80_10_10_split_matches_ground_truth()

@@ -13,14 +13,13 @@ transfer_layers:
 
 
 
-dataset: 'ogbg-molbbbp'
+dataset: 'ogbg-molfreesolv'
 num_epochs: 10
 batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: OGBNanLabelBCEWithLogitsLoss
-critic_loss: OGBNanLabelBCEWithLogitsLoss
+loss_func: L1Loss
 required_data:
   - dgl_graph
   - targets
