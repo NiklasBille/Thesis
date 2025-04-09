@@ -1,8 +1,10 @@
 import argparse
-
+import yaml
 parser = argparse.ArgumentParser()
 
 # about seed and basic info
+parser.add_argument('--config', type=argparse.FileType(mode='r'), default=None)
+
 parser.add_argument('--seed', type=int, default=42)
 parser.add_argument('--runseed', type=int, default=0)
 parser.add_argument('--device', type=int, default=0)
@@ -95,4 +97,14 @@ parser.add_argument('--no_verbose', dest='verbose', action='store_false')
 parser.set_defaults(verbose=False)
 
 args = parser.parse_args()
+# If config was an argument overwrite the args in config file
+if args.config is not None:
+    config_dict = yaml.load(args.config, Loader=yaml.FullLoader)
+    arg_dict = args.__dict__
+    for key, value in config_dict.items():
+        if isinstance(value, list):
+            for v in value:
+                arg_dict[key].append(v)
+        else:
+            arg_dict[key] = value
 print('arguments\t', args)

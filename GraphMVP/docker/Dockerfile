@@ -39,6 +39,7 @@ RUN conda init bash \
     && pip install torch_scatter-2.0.9-cp37-cp37m-linux_x86_64.whl \
     && wget https://data.pyg.org/whl/torch-${TORCH}%2B${CUDA}/torch_sparse-0.6.12-cp37-cp37m-linux_x86_64.whl \
     && pip install torch_sparse-0.6.12-cp37-cp37m-linux_x86_64.whl \
-    && pip install torch-geometric==1.7.2 
+    && pip install torch-geometric==1.7.2 \
+    && pip install pyaml<21.10.0
 
 RUN echo "conda activate GraphMVP" >> ~/.bashrc

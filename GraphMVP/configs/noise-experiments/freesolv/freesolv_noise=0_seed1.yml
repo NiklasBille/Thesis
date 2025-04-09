@@ -1,0 +1,6 @@
+dataset: freesolv
+output_model_dir: "../results/freesolv_noise=0_seed1.yml"
+input_model_file: "../weights/pretrained/GraphMVP_regression.pth"
+device: 1
+seed: 1
+runseed: 1

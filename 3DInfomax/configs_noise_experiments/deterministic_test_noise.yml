@@ -1,4 +1,5 @@
-experiment_name: 'tune_qmugs_NTXentMultiplePositives_620000_35epochs'
+experiment_name: 'deterministic_test_noise'
+logdir: 'runs/deterministic_test_noise'
 
 multithreaded_seeds:
   - 1
@@ -11,22 +12,24 @@ pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-
 transfer_layers:
   - gnn.
 
-device: cuda:1
+
 
 dataset: 'ogbg-molfreesolv'
+noise_level: 0.5
 num_epochs: 1000
 batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
+device: cuda:0
 loss_func: L1Loss
 required_data:
   - dgl_graph
   - targets
 metrics:
-  - rsquared
-  - mean_predictor_loss
-  - pearsonr
+  - mae
+  - rmse
+
 
 
 optimizer: Adam

@@ -1,0 +1,6 @@
+dataset: esol
+output_model_dir: "../results/esol_noise=0_seed3.yml"
+input_model_file: "../weights/pretrained/GraphMVP_regression.pth"
+device: 1
+seed: 3
+runseed: 3

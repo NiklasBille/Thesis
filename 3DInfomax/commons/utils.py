@@ -24,8 +24,11 @@ def seed_all(seed):
     np.random.seed(seed)
     dgl.random.seed(seed)
     random.seed(seed)
-    # torch.backends.cudnn.deterministic = True
-    # torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    # "use_deterministic_algorithms" is not possible since some operations require non-deterministic algorithms
+    # torch.use_deterministic_algorithms(True)
+    
 
 
 def get_random_indices(length, seed=123):
