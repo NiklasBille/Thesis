@@ -28,6 +28,10 @@ metrics:
   - prcauc
   - rocauc
 
+collate_function: NodeDropCollate
+collate_params:
+  drop_ratio: 0.2
+
 
 optimizer: Adam
 optimizer_params:

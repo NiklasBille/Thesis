@@ -1,4 +1,4 @@
-experiment_name: 'tune_bace_scaff_80_10_10'
+experiment_name: 'tune_freesolv'
 logdir: 'runs/quick_test'
 train_prop: 0.8
 
@@ -6,6 +6,9 @@ multithreaded_seeds:
   - 1
   - 2
   - 3
+  - 4
+  - 5
+  - 6
 
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
@@ -13,19 +16,20 @@ transfer_layers:
 
 
 
-dataset: 'ogbg-molbace'
-num_epochs: 1000
-batch_size: 32
+dataset: 'ogbg-molfreesolv'
+num_epochs: 2
+batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-loss_func: BCEWithLogitsLoss
+loss_func: L1Loss
 required_data:
   - dgl_graph
   - targets
 metrics:
-  - prcauc
-  - rocauc
+  - rmse
+  - mae
+
 
 
 optimizer: Adam

@@ -1,22 +1,20 @@
-experiment_name: 'tune_lipo_random'
-logdir: 'runs/baseline/random/80_10_10'
+experiment_name: 'graphcl_test'
+logdir: runs/del
 train_prop: 0.8
-force_random_split : True
+pretrain_checkpoint : runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
+transfer_layers:
+  - gnn.
+trainer: graphcl_trainer
+
+noise_level: 0.1
 
 multithreaded_seeds:
   - 1
-  - 2
-  - 3
+  #- 2
+  #- 3
 
-pretrain_checkpoint : runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
-trainer: graphcl_trainer
-transfer_layers:
-  - gnn.
-
-
-
-dataset: 'ogbg-mollipo'
-num_epochs: 1000
+dataset: 'ogbg-molfreesolv'
+num_epochs: 3
 batch_size: 30
 log_iterations: 30
 patience: 40
@@ -24,7 +22,7 @@ minimum_epochs: 120
 loss_func: L1Loss
 required_data:
   - dgl_graph
-  - targets
+  #- targets
 metrics:
   - rmse
   - mae
@@ -32,12 +30,11 @@ metrics:
 collate_function: NodeDropCollate
 collate_params:
   drop_ratio: 0.2
-  
-
 
 optimizer: Adam
 optimizer_params:
   lr: 1.0e-3
+
 
 scheduler_step_per_batch: False
 lr_scheduler: WarmUpWrapper
@@ -46,11 +43,14 @@ lr_scheduler_params:
   interpolation: 'linear'
   # parameters of scheduler to run after warmup
   wrapped_scheduler: ReduceLROnPlateau
-  factor: 0.5
+  cooldown: 20
+  factor: 0.6
   patience: 25
   min_lr: 1.0e-6
+  threshold: 1.0e-4
   mode: 'min'
   verbose: True
+
 
 
 # Model parameters
@@ -84,8 +84,6 @@ model_parameters:
   pretrans_layers: 2
   posttrans_layers: 1
   residual: True
-
-
 
 
 
