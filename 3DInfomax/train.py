@@ -453,10 +453,10 @@ def train_ogbg(args, device, metrics_dict):
         args.collate_function](**args.collate_params)
     
     # Introduce noise in the training data
-    train_loader = DataLoader(Subset(dataset, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
+    train_loader = DataLoader(Subset(dataset, split_idx["train"]), batch_size=args.batch_size, shuffle=False,
                               collate_fn=collate_function)
     if args.noise_level > 0:
-        train_loader = DataLoader(Subset(dataset_noise, split_idx["train"]), batch_size=args.batch_size, shuffle=True,
+        train_loader = DataLoader(Subset(dataset_noise, split_idx["train"]), batch_size=args.batch_size, shuffle=False,
                                   collate_fn=collate_function)
     val_loader = DataLoader(Subset(dataset, split_idx["valid"]), batch_size=args.batch_size, shuffle=False,
                             collate_fn=collate_function)

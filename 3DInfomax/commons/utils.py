@@ -26,7 +26,8 @@ def seed_all(seed):
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-    torch.use_deterministic_algorithms(True)
+    # "use_deterministic_algorithms" is not possible since some operations require non-deterministic algorithms
+    # torch.use_deterministic_algorithms(True)
     
 
 
