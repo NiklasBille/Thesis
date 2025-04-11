@@ -91,8 +91,8 @@ def parse_arguments():
     p.add_argument('--num_train', type=int, default=-1, help='n samples of the model samples to use for train')
     p.add_argument('--seed', type=int, default=123, help='seed for reproducibility')
     p.add_argument('--num_val', type=int, default=None, help='n samples of the model samples to use for validation')
-    p.add_argument('--multithreaded_seeds', type=list, default=[],
-                   help='if this is non empty, multiple threads will be started, training the same model but with the different seeds')
+    p.add_argument('--multiple_seeds', type=list, default=[],
+                   help='Can only be used through "run_seeds.py". If this is non empty, multiple but isolated runs are started')
     p.add_argument('--seed_data', type=int, default=123, help='if you want to use a different seed for the datasplit')
     p.add_argument('--loss_func', type=str, default='MSELoss', help='Class name of torch.nn like [MSELoss, L1Loss]')
     p.add_argument('--loss_params', type=dict, default={}, help='parameters with keywords of the chosen loss function')
@@ -690,57 +690,4 @@ def get_arguments():
 if __name__ == '__main__':
     args = get_arguments()
 
-    if args.multithreaded_seeds != []:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = []
-            for seed in args.multithreaded_seeds:
-                args_copy = get_arguments()
-                args_copy.seed = seed
-                futures.append(executor.submit(train, args_copy))
-            results = [f.result() for f in
-                       futures]  # list of tuples of dictionaries with the validation results first and the test results second
-        all_val_metrics = defaultdict(list)
-        all_test_metrics = defaultdict(list)
-        log_dirs = []
-        for result in results:
-            val_metrics, test_metrics, log_dir = result
-            log_dirs.append(log_dir)
-            for key in val_metrics.keys():
-                all_val_metrics[key].append(val_metrics[key])
-                all_test_metrics[key].append(test_metrics[key])
-        files = [open(os.path.join(dir, 'multiple_seed_validation_statistics.txt'), 'w') for dir in log_dirs]
-        print('Validation results:')
-        for key, value in all_val_metrics.items():
-            metric = np.array(value)
-            for file in files:
-                file.write(f'\n{key:}\n')
-                file.write(f'mean: {metric.mean()}\n')
-                file.write(f'stddev: {metric.std()}\n')
-                file.write(f'stderr: {metric.std() / np.sqrt(len(metric))}\n')
-                file.write(f'values: {value}\n')
-            print(f'\n{key}:')
-            print(f'mean: {metric.mean()}')
-            print(f'stddev: {metric.std()}')
-            print(f'stderr: {metric.std() / np.sqrt(len(metric))}')
-            print(f'values: {value}')
-        for file in files:
-            file.close()
-        files = [open(os.path.join(dir, 'multiple_seed_test_statistics.txt'), 'w') for dir in log_dirs]
-        print('Test results:')
-        for key, value in all_test_metrics.items():
-            metric = np.array(value)
-            for file in files:
-                file.write(f'\n{key:}\n')
-                file.write(f'mean: {metric.mean()}\n')
-                file.write(f'stddev: {metric.std()}\n')
-                file.write(f'stderr: {metric.std() / np.sqrt(len(metric))}\n')
-                file.write(f'values: {value}\n')
-            print(f'\n{key}:')
-            print(f'mean: {metric.mean()}')
-            print(f'stddev: {metric.std()}')
-            print(f'stderr: {metric.std() / np.sqrt(len(metric))}')
-            print(f'values: {value}')
-        for file in files:
-            file.close()
-    else:
-        train(args)
+    train(args)

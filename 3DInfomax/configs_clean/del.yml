@@ -1,11 +1,11 @@
-experiment_name: 'del_new_60'
-logdir: 'runs/del'
-force_random_split : True
+experiment_name: 'del'
+logdir: 'runs/del_multiple_seeds_arg'
+device: '1'
 
-#multithreaded_seeds:
-  #- 1
-  #- 2
-  #- 3
+multiple_seeds:
+  - 1
+  - 2
+  - 3
 
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
@@ -14,7 +14,7 @@ transfer_layers:
 
 
 dataset: 'ogbg-molfreesolv'
-num_epochs: 100
+num_epochs: 3
 batch_size: 30
 log_iterations: 30
 patience: 40
