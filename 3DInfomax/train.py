@@ -92,7 +92,7 @@ def parse_arguments():
     p.add_argument('--seed', type=int, default=123, help='seed for reproducibility')
     p.add_argument('--num_val', type=int, default=None, help='n samples of the model samples to use for validation')
     p.add_argument('--multiple_seeds', type=list, default=[],
-                   help='Can only be used through "run_seeds.py". If this is non empty, multiple but isolated runs are started')
+                   help='Can only be used through "run_multiple.py". If this is non empty, multiple but isolated runs are started')
     p.add_argument('--seed_data', type=int, default=123, help='if you want to use a different seed for the datasplit')
     p.add_argument('--loss_func', type=str, default='MSELoss', help='Class name of torch.nn like [MSELoss, L1Loss]')
     p.add_argument('--loss_params', type=dict, default={}, help='parameters with keywords of the chosen loss function')
