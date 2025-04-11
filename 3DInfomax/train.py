@@ -2,12 +2,15 @@ import argparse
 import concurrent.futures
 import copy
 import os
+import sys
 import re
+from math import floor
 
 from icecream import install
 from ogb.lsc import PCQM4MDataset, PCQM4MEvaluator
 from ogb.utils import smiles2graph
 
+from commons.splitters import scaffold_split, random_split
 from commons.utils import seed_all, get_random_indices, TENSORBOARD_FUNCTIONS
 from datasets.ZINC_dataset import ZINCDataset
 from datasets.bace_geomol_feat import BACEGeomol
@@ -64,8 +67,7 @@ from trainer.metrics import QM9DenormalizedL1, QM9DenormalizedL2, \
     BatchVariance, DimensionCovariance, MAE, PositiveSimilarityMultiplePositivesSeparate2d, \
     NegativeSimilarityMultiplePositivesSeparate2d, OGBEvaluator, PearsonR, PositiveProb, NegativeProb, \
     Conformer2DVariance, Conformer3DVariance, PCQM4MEvaluatorWrapper
-from trainer.metrics import RMSE
-from trainer.metrics import ROCAUCscore,PRCAUCscore
+from trainer.metrics import ROCAUCscore,PRCAUCscore, RMSE
 from trainer.trainer import Trainer
 
 # turn on for debugging C code like Segmentation Faults
@@ -89,8 +91,8 @@ def parse_arguments():
     p.add_argument('--num_train', type=int, default=-1, help='n samples of the model samples to use for train')
     p.add_argument('--seed', type=int, default=123, help='seed for reproducibility')
     p.add_argument('--num_val', type=int, default=None, help='n samples of the model samples to use for validation')
-    p.add_argument('--multithreaded_seeds', type=list, default=[],
-                   help='if this is non empty, multiple threads will be started, training the same model but with the different seeds')
+    p.add_argument('--multiple_seeds', type=list, default=[],
+                   help='Can only be used through "run_seeds.py". If this is non empty, multiple but isolated runs are started')
     p.add_argument('--seed_data', type=int, default=123, help='if you want to use a different seed for the datasplit')
     p.add_argument('--loss_func', type=str, default='MSELoss', help='Class name of torch.nn like [MSELoss, L1Loss]')
     p.add_argument('--loss_params', type=dict, default={}, help='parameters with keywords of the chosen loss function')
@@ -139,7 +141,7 @@ def parse_arguments():
                    help='parameters with keywords of the chosen collate function')
     p.add_argument('--use_e_features', default=True, type=bool, help='ignore edge features if set to False')
     p.add_argument('--targets', default=[], help='properties that should be predicted')
-    p.add_argument('--device', type=str, default='cuda', help='What device to train on: cuda or cpu')
+    p.add_argument('--device', type=str, default='0', help="Device to use: 'cpu', '0' for cuda:0, '1' for cuda:1, etc.")
 
     p.add_argument('--dist_embedding', type=bool, default=False, help='add dist embedding to complete graphs edges')
     p.add_argument('--num_radial', type=int, default=6, help='number of frequencies for distance embedding')
@@ -161,6 +163,7 @@ def parse_arguments():
     p.add_argument('--reuse_pre_train_data', type=bool, default=False, help='use all data instead of ignoring that used during pre-training')
     p.add_argument('--transfer_3d', type=bool, default=False, help='set true to load the 3d network instead of the 2d network')
     p.add_argument('--noise_level', type=float, default=0.0, help='Specifies the noise level for the noise injection')
+    p.add_argument('--train_prop', type=float, default=0.8, choices=[0.6, 0.7, 0.8], help='Specifies the proportion of data in the train set')
     return p.parse_args()
 
 
@@ -237,8 +240,6 @@ def load_model(args, data, device):
 def train(args):
     seed_all(args.seed)
     device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
-    #device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
-    #device = "cpu"
 
     metrics_dict = {'rsquared': Rsquared(),
                     'mae': MAE(),
@@ -436,18 +437,17 @@ def train_pcqm4m(args, device, metrics_dict):
     return val_metrics
 
 
+
 def train_ogbg(args, device, metrics_dict):
     dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset)
     # Need to define a noisy dataset to introduce noise in the training data (splits are equal)
     if args.noise_level > 0:
         dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
 
-    split_idx = dataset.get_idx_split()
-    if args.force_random_split == True:
-        all_idx = get_random_indices(len(dataset), args.seed_data)
-        split_idx["train"] = all_idx[:len(split_idx["train"])]
-        split_idx["valid"] = all_idx[len(split_idx["train"]):len(split_idx["train"])+len(split_idx["valid"])]
-        split_idx["test"] = all_idx[len(split_idx["train"])+len(split_idx["valid"]):]
+    if args.force_random_split == False:
+        split_idx = scaffold_split(args.dataset, frac_train=args.train_prop)
+    else:        
+        split_idx = random_split(len_dataset=len(dataset), frac_train=args.train_prop, seed_data=args.seed_data)
 
     collate_function = globals()[args.collate_function] if args.collate_params == {} else globals()[
         args.collate_function](**args.collate_params)
@@ -683,57 +683,4 @@ def get_arguments():
 if __name__ == '__main__':
     args = get_arguments()
 
-    if args.multithreaded_seeds != []:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = []
-            for seed in args.multithreaded_seeds:
-                args_copy = get_arguments()
-                args_copy.seed = seed
-                futures.append(executor.submit(train, args_copy))
-            results = [f.result() for f in
-                       futures]  # list of tuples of dictionaries with the validation results first and the test results second
-        all_val_metrics = defaultdict(list)
-        all_test_metrics = defaultdict(list)
-        log_dirs = []
-        for result in results:
-            val_metrics, test_metrics, log_dir = result
-            log_dirs.append(log_dir)
-            for key in val_metrics.keys():
-                all_val_metrics[key].append(val_metrics[key])
-                all_test_metrics[key].append(test_metrics[key])
-        files = [open(os.path.join(dir, 'multiple_seed_validation_statistics.txt'), 'w') for dir in log_dirs]
-        print('Validation results:')
-        for key, value in all_val_metrics.items():
-            metric = np.array(value)
-            for file in files:
-                file.write(f'\n{key:}\n')
-                file.write(f'mean: {metric.mean()}\n')
-                file.write(f'stddev: {metric.std()}\n')
-                file.write(f'stderr: {metric.std() / np.sqrt(len(metric))}\n')
-                file.write(f'values: {value}\n')
-            print(f'\n{key}:')
-            print(f'mean: {metric.mean()}')
-            print(f'stddev: {metric.std()}')
-            print(f'stderr: {metric.std() / np.sqrt(len(metric))}')
-            print(f'values: {value}')
-        for file in files:
-            file.close()
-        files = [open(os.path.join(dir, 'multiple_seed_test_statistics.txt'), 'w') for dir in log_dirs]
-        print('Test results:')
-        for key, value in all_test_metrics.items():
-            metric = np.array(value)
-            for file in files:
-                file.write(f'\n{key:}\n')
-                file.write(f'mean: {metric.mean()}\n')
-                file.write(f'stddev: {metric.std()}\n')
-                file.write(f'stderr: {metric.std() / np.sqrt(len(metric))}\n')
-                file.write(f'values: {value}\n')
-            print(f'\n{key}:')
-            print(f'mean: {metric.mean()}')
-            print(f'stddev: {metric.std()}')
-            print(f'stderr: {metric.std() / np.sqrt(len(metric))}')
-            print(f'values: {value}')
-        for file in files:
-            file.close()
-    else:
-        train(args)
+    train(args)

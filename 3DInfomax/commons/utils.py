@@ -26,8 +26,8 @@ def seed_all(seed):
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-    # "use_deterministic_algorithms" is not possible since some operations require non-deterministic algorithms
-    # torch.use_deterministic_algorithms(True)
+    os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'  # For PyTorch 1.8+. Required for running  torch.use_deterministic_algorithms()
+    torch.use_deterministic_algorithms(True)
     
 
 
