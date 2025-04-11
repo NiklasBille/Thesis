@@ -1,5 +1,5 @@
-experiment_name: '3DInfomax_esol_noise=0.02'
-logdir: 'runs/flip-pertubation/3DInfomax/esol/noise=0.02'
+experiment_name: '3DInfomax_esol_noise=0.2'
+logdir: 'runs/flip-pertubation/3DInfomax/esol/noise=0.2'
 
 multithreaded_seeds:
   - 1
@@ -12,7 +12,7 @@ transfer_layers:
 
 
 dataset: 'ogbg-molesol'
-noise_level: 0.02
+noise_level: 0.2
 num_epochs: 1000
 batch_size: 30
 log_iterations: 30
