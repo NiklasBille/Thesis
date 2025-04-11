@@ -19,6 +19,10 @@ If you wanna fine-tune on freesolve run:
 
     python train.py --config=configs_clean/tune_freesolv.yml
 
+If you wanna fine-tune on multiple seeds, specify 'multiple_seeds' in a config and run:
+    
+    python run_multiple.py --config=configs_clean/tune_freesolv_multiple_seeds.yml
+
 Sometimes errors regrading torch shapes can occur. Reinstalling ogb==1.3.3 has fixed this issue for me.
 
 ogb is funky: if you get a weird error related to this library try doing the following:

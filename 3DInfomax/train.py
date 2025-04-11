@@ -239,14 +239,7 @@ def load_model(args, data, device):
 
 def train(args):
     seed_all(args.seed)
-
-    if args.device.lower() == 'cpu':
-        device = torch.device('cpu')
-    elif args.device.isdigit() and torch.cuda.is_available():
-        device = torch.device(f'cuda:{args.device}')
-    else:
-        raise ValueError(f"Invalid device option '{args.device}'. Use 'cpu' or a GPU index like '0', '1'.")
-
+    device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
 
     metrics_dict = {'rsquared': Rsquared(),
                     'mae': MAE(),
