@@ -1,7 +1,7 @@
 experiment_name: '3DInfomax_lipo_noise=0'
 logdir: 'runs/flip-pertubation/3DInfomax/lipo/noise=0'
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3
