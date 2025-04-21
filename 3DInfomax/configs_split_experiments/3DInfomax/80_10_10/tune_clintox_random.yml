@@ -3,7 +3,7 @@ logdir: 'runs/3DInfomax/random/80_10_10'
 train_prop: 0.8
 force_random_split : True
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3
@@ -16,7 +16,7 @@ transfer_layers:
 
 dataset: 'ogbg-molclintox'
 num_epochs: 1000
-batch_size: 32
+batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120

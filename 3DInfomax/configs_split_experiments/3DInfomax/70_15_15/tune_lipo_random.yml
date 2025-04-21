@@ -3,7 +3,7 @@ logdir: 'runs/3DInfomax/random/70_15_15'
 train_prop: 0.7
 force_random_split : True
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3

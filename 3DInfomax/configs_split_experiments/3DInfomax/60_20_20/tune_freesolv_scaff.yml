@@ -2,7 +2,7 @@ experiment_name: 'tune_freesolv_scaffold'
 logdir: 'runs/3DInfomax/scaffold/60_20_20'
 train_prop: 0.6
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3

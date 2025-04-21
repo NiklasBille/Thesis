@@ -1,9 +1,9 @@
 experiment_name: 'tune_esol_random'
 logdir: 'runs/3DInfomax/random/60_20_20'
-train_prop: 0.8
+train_prop: 0.6
 force_random_split : True
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3
@@ -15,7 +15,7 @@ transfer_layers:
 
 dataset: 'ogbg-molesol'
 num_epochs: 1000
-batch_size: 32
+batch_size: 30
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
