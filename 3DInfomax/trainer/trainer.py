@@ -156,7 +156,8 @@ class Trainer():
             loss, predictions, targets = self.process_batch(batch, optim)
             with torch.no_grad():
                 if self.optim_steps % self.args.log_iterations == 0 and optim != None:
-                    metrics = self.evaluate_metrics(predictions, targets, val=True) # To also log the main metric on the train set we need to set val=True 
+                    #metrics = self.evaluate_metrics(predictions, targets, val=True) # To also log the main metric on the train set we need to set val=True 
+                    metrics = self.evaluate_metrics(predictions, targets)
                     metrics[type(self.loss_func).__name__] = loss.item()
                     self.run_tensorboard_functions(predictions, targets, step=self.optim_steps, data_split='train')
                     self.tensorboard_log(metrics, data_split='train', step=self.optim_steps, epoch=epoch)
