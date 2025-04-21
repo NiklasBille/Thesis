@@ -1,20 +1,21 @@
-experiment_name: '3DInfomax_lipo_noise=0.2'
-logdir: 'runs/flip-pertubation/3DInfomax/lipo/noise=0.2'
+experiment_name: 'GraphCL_esol_noise=0.2'
+logdir: 'runs/flip-pertubation/GraphCL/esol/noise=0.2'
 
 multiple_seeds:
   - 1
   - 2
   - 3
-pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
+pretrain_checkpoint: runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
+trainer: graphcl_trainer
 transfer_layers:
   - gnn.
 
 
 
-dataset: 'ogbg-mollipo'
+dataset: 'ogbg-molesol'
 noise_level: 0.2
 num_epochs: 1000
-batch_size: 30
+batch_size: 32
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
@@ -25,7 +26,9 @@ required_data:
 metrics:
   - mae
   - rmse
-
+collate_function: NodeDropCollate
+collate_params:
+  drop_ratio: 0.2
 
 
 optimizer: Adam

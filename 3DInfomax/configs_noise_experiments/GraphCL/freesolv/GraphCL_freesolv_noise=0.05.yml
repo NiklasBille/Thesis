@@ -1,27 +1,24 @@
-experiment_name: 'deterministic_test_noise'
-logdir: 'runs/deterministic_test_noise'
+experiment_name: 'GraphCL_freesolv_noise=0.05'
+logdir: 'runs/flip-pertubation/GraphCL/freesolv/noise=0.05'
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3
-  - 4
-  - 5
-  - 6
-pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
+pretrain_checkpoint: runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
+trainer: graphcl_trainer
 transfer_layers:
   - gnn.
 
 
 
 dataset: 'ogbg-molfreesolv'
-noise_level: 0.5
+noise_level: 0.05
 num_epochs: 1000
-batch_size: 30
+batch_size: 32
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
-device: cuda:0
 loss_func: L1Loss
 required_data:
   - dgl_graph
@@ -29,7 +26,9 @@ required_data:
 metrics:
   - mae
   - rmse
-
+collate_function: NodeDropCollate
+collate_params:
+  drop_ratio: 0.2
 
 
 optimizer: Adam
