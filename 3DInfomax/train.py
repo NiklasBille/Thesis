@@ -141,7 +141,7 @@ def parse_arguments():
                    help='parameters with keywords of the chosen collate function')
     p.add_argument('--use_e_features', default=True, type=bool, help='ignore edge features if set to False')
     p.add_argument('--targets', default=[], help='properties that should be predicted')
-    p.add_argument('--device', type=str, default='0', help="Device to use: 'cpu', '0' for cuda:0, '1' for cuda:1, etc.")
+    p.add_argument('--device', type=str, default='cuda:0', help="Device to use: 'cpu', '0' for cuda:0, '1' for cuda:1, etc.")
 
     p.add_argument('--dist_embedding', type=bool, default=False, help='add dist embedding to complete graphs edges')
     p.add_argument('--num_radial', type=int, default=6, help='number of frequencies for distance embedding')
