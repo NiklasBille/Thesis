@@ -2,7 +2,7 @@ experiment_name: 'tune_clintox_scaffold'
 logdir: 'runs/baseline/scaffold/80_10_10'
 train_prop: 0.8
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3

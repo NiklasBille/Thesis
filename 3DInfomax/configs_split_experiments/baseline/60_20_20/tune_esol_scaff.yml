@@ -1,17 +1,20 @@
-experiment_name: 'tune_freesolv_scaffold'
-logdir: 'runs/3DInfomax/scaffold/80_10_10'
-train_prop: 0.8
+experiment_name: 'tune_esol_scaffold'
+logdir: 'runs/baseline/scaffold/60_20_20'
+train_prop: 0.6
+
 multiple_seeds:
   - 1
   - 2
   - 3
-pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
+
+pretrain_checkpoint : runs/PNA_drugs_graphcl_123_31-03_15-29-27/best_checkpoint.pt
+trainer: graphcl_trainer
 transfer_layers:
   - gnn.
 
 
 
-dataset: 'ogbg-molfreesolv'
+dataset: 'ogbg-molesol'
 num_epochs: 1000
 batch_size: 30
 log_iterations: 30
@@ -25,6 +28,10 @@ metrics:
   - rmse
   - mae
 
+collate_function: NodeDropCollate
+collate_params:
+  drop_ratio: 0.2
+  
 
 
 optimizer: Adam

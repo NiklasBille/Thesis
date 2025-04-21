@@ -2,7 +2,7 @@ experiment_name: 'tune_lipo_scaffold'
 logdir: 'runs/3DInfomax/scaffold/70_15_15'
 train_prop: 0.7
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3

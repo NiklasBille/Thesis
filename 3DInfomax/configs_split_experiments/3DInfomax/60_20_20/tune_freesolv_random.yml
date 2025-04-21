@@ -1,9 +1,9 @@
 experiment_name: 'tune_freesolv_random'
 logdir: 'runs/3DInfomax/random/60_20_20'
-train_prop: 0.8
+train_prop: 0.6
 force_random_split : True
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3
