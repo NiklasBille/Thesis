@@ -1,10 +1,11 @@
 experiment_name: '3DInfomax_esol_noise=0.2'
 logdir: 'runs/flip-pertubation/3DInfomax/esol/noise=0.2'
 
-multithreaded_seeds:
+multiple_seeds:
   - 1
   - 2
   - 3
+  - 4
 pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
 transfer_layers:
   - gnn.
