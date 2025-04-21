@@ -8,8 +8,6 @@ __pycache__/
 # C extensions
 *.so
 
-# Personal files
-run_bash_script.sh
 
 # Distribution / packaging
 .Python
