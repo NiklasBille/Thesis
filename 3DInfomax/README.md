@@ -69,6 +69,11 @@ And you can attach again using
 
     screen -r flip_pertubation
 
+## Split experiment
+Follow the approach above, but use
 
-### Remarks
-Batch size for all experiments are set to 30, but 32 for Sider to 
+    chmod +x configs_split_experiments/3DInfomax/_test/test_run_all.sh
+    ./configs_split_experiments/3DInfomax/_test/test_run_all.sh
+
+## Remarks
+Batch size for all experiments are set to 30, but 32 for Sider due to issues with divisability of length of dataloader when batch size is 30.
