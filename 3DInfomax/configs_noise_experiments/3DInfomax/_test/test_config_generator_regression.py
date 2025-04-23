@@ -16,41 +16,28 @@ def flow_list_representer(dumper, data):
 CustomDumper.add_representer(bool, bool_representer)
 CustomDumper.add_representer(FlowList, flow_list_representer)
 
-# Define datasets and associated task counts
-dataset_dict = {
-    'hiv': {'tasks': 1, 'loss_func': 'BCEWithLogitsLoss', 'batch_size': 30},
-    'bace': {'tasks': 1, 'loss_func': 'BCEWithLogitsLoss', 'batch_size': 30},
-    'bbbp': {'tasks': 1, 'loss_func': 'BCEWithLogitsLoss', 'batch_size': 30},
-    'tox21': {'tasks': 12, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 30},
-    'toxcast': {'tasks': 617, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 30},
-    'sider': {'tasks': 27, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 32},
-    'clintox': {'tasks': 2, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 30},
-}
-
-datasets = list(dataset_dict.keys())
+# Define datasets and noise levels
+datasets = ['esol', 'freesolv', 'lipo']
 noise_levels = [0.0, 0.05, 0.1, 0.2]
 
 # Base config structure
 def create_config(dataset, noise):
-    tasks = dataset_dict[dataset]['tasks']
-    loss_func = dataset_dict[dataset]['loss_func']
-    batch_size = dataset_dict[dataset]['batch_size']
     return {
         'experiment_name': f'3DInfomax_{dataset}_noise={noise}',
-        'logdir': f'runs/flip-pertubation/3DInfomax/{dataset}/noise={noise}', 
-        'multiple_seeds': [1, 2, 3], 
+        'logdir': f'runs/flip-pertubation/3DInfomax/_test/{dataset}/noise={noise}', # remove test/ for actual runs
+        'multiple_seeds': [1, 2], # for testing, change to [1, 2, 3]
         'pretrain_checkpoint': 'runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt',
         'transfer_layers': ['gnn.'],
         'dataset': f'ogbg-mol{dataset}',
         'noise_level': noise,
-        'num_epochs': 1000,
-        'batch_size': batch_size,
+        'num_epochs': 2, # Set to 1 for testing, change to 1000 for actual runs
+        'batch_size': 30,
         'log_iterations': 30,
         'patience': 40,
         'minimum_epochs': 120,
-        'loss_func': loss_func,
+        'loss_func': 'L1Loss',
         'required_data': ['dgl_graph', 'targets'],
-        'metrics': ['prcauc', 'rocauc'],
+        'metrics': ['mae', 'rmse'],
         'optimizer': 'Adam',
         'optimizer_params': {
             'lr': 1.0e-3
@@ -69,7 +56,7 @@ def create_config(dataset, noise):
         },
         'model_type': 'PNA',
         'model_parameters': {
-            'target_dim': tasks,
+            'target_dim': 1,
             'hidden_dim': 200,
             'mid_batch_norm': True,
             'last_batch_norm': True,
@@ -89,7 +76,7 @@ def create_config(dataset, noise):
     }
 
 # Output base dir
-base_dir = "configs_noise_experiments/3DInfomax"
+base_dir = "configs_noise_experiments/3DInfomax/_test"
 os.makedirs(base_dir, exist_ok=True)
 
 # Generate config files

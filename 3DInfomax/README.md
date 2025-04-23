@@ -50,9 +50,9 @@ Since the original paper is from 2022, a few changes was needed to find a set of
 When extracting features for the different ogb/moleculenet datasets, it can require you to install ogb==1.3.6 first.
 We have created a script to automatically generate config files for all the OGB datasets. We have created a test script that only runs 2 epochs meant for testing whether or not the pipeline works. Run that first using the commands
 
-    chmod +x configs_noise_experiments/3DInfomax/test/test_run_all.sh
-    ./configs_noise_experiments/3DInfomax/test/test_run_all.sh
-Check that the results looks good under `runs/flip-pertubation/3DInfomax/test`. Ensure thatall files return valid test_metrics. 
+    chmod +x configs_noise_experiments/3DInfomax/_test/test_run_all.sh
+    ./configs_noise_experiments/3DInfomax/_test/test_run_all.sh
+Check that the results looks good under `runs/flip-pertubation/3DInfomax/_test`. Ensure thatall files return valid test_metrics. 
 Before running the full experiments ensure you that your teminal wont terminate while running. We recommend using `screen`:
 
     screen -S flip_pertubation
@@ -62,3 +62,9 @@ When ready run the full experiment using the following commands:
     ./configs_noise_experiments/3DInfomax/_run_all.sh
 You can track the progress by checking the `runs/flip-pertubation` folder.
 
+You can detach the screen session using 
+
+    Ctrl+A, then D
+And you can attach again using 
+
+    screen -r flip_pertubation

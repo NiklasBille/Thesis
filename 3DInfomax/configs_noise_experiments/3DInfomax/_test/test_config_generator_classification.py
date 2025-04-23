@@ -37,13 +37,13 @@ def create_config(dataset, noise):
     batch_size = dataset_dict[dataset]['batch_size']
     return {
         'experiment_name': f'3DInfomax_{dataset}_noise={noise}',
-        'logdir': f'runs/flip-pertubation/3DInfomax/{dataset}/noise={noise}', 
-        'multiple_seeds': [1, 2, 3], 
+        'logdir': f'runs/flip-pertubation/3DInfomax/_test/{dataset}/noise={noise}', # remove test/ for actual runs
+        'multiple_seeds': [1, 2], # for testing, change to [1, 2, 3]
         'pretrain_checkpoint': 'runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt',
         'transfer_layers': ['gnn.'],
         'dataset': f'ogbg-mol{dataset}',
         'noise_level': noise,
-        'num_epochs': 1000,
+        'num_epochs': 2, # Set to 2 for testing, change to 1000 for actual runs
         'batch_size': batch_size,
         'log_iterations': 30,
         'patience': 40,
@@ -89,7 +89,7 @@ def create_config(dataset, noise):
     }
 
 # Output base dir
-base_dir = "configs_noise_experiments/3DInfomax"
+base_dir = "configs_noise_experiments/3DInfomax/_test"
 os.makedirs(base_dir, exist_ok=True)
 
 # Generate config files
