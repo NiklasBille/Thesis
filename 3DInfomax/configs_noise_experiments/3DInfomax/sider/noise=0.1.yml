@@ -10,7 +10,7 @@ transfer_layers:
 dataset: ogbg-molsider
 noise_level: 0.1
 num_epochs: 1000
-batch_size: 30
+batch_size: 32
 log_iterations: 30
 patience: 40
 minimum_epochs: 120
