@@ -68,3 +68,7 @@ You can detach the screen session using
 And you can attach again using 
 
     screen -r flip_pertubation
+
+
+### Remarks
+Batch size for all experiments are set to 30, but 32 for Sider to 
