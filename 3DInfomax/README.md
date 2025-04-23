@@ -47,7 +47,18 @@ Since the original paper is from 2022, a few changes was needed to find a set of
 
 
 ## Noise experiment 
-Currently working on adding noise to the fine-tuning dataset of QM9. The folder noise_experiment contains a flip_pertubation_noise.py file that implements this file. Currently these methods are used in qm9_dataset.py when initializing the data_dict. For testing purposes we currently just add the noise to the atoms and edges for the first molecule.
-Also created a pre-train_QM9_small_test.yml script file for testing the noise experiment on a small version of QM9 first. 
-
 When extracting features for the different ogb/moleculenet datasets, it can require you to install ogb==1.3.6 first.
+We have created a script to automatically generate config files for all the OGB datasets. We have created a test script that only runs 2 epochs meant for testing whether or not the pipeline works. Run that first using the commands
+
+    chmod +x configs_noise_experiments/3DInfomax/test/test_run_all.sh
+    ./configs_noise_experiments/3DInfomax/test/test_run_all.sh
+Check that the results looks good under `runs/flip-pertubation/3DInfomax/test`. Ensure thatall files return valid test_metrics. 
+Before running the full experiments ensure you that your teminal wont terminate while running. We recommend using `screen`:
+
+    screen -S flip_pertubation
+When ready run the full experiment using the following commands:
+
+    chmod +x configs_noise_experiments/3DInfomax/run_all.sh
+    ./configs_noise_experiments/3DInfomax/_run_all.sh
+You can track the progress by checking the `runs/flip-pertubation` folder.
+
