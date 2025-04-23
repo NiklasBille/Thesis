@@ -80,7 +80,7 @@ def create_config(dataset, train_prop, split_type):
     }
 
 # Output base dir
-base_dir = "configs_split_experiments/3DInfomax/_test"
+base_dir = "configs_split_experiments/3DInfomax"
 os.makedirs(base_dir, exist_ok=True)
 
 # Generate config files
