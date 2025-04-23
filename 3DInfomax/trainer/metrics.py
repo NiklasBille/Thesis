@@ -130,6 +130,7 @@ class ROCAUCscore(nn.Module):
     """
     def __init__(self):
         super().__init__()
+        self.val_only = True
     
     def forward(self, preds, targets):
     
@@ -159,6 +160,7 @@ class PRCAUCscore(nn.Module):
     """
     def __init__(self):
         super().__init__()
+        self.val_only = True
     
     def forward(self, preds, targets):
         if torch is not None and isinstance(targets, torch.Tensor):
