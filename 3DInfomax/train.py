@@ -567,7 +567,7 @@ def train_geom(args, device, metrics_dict):
                              'mse_denormalized': QM9DenormalizedL2(dataset=all_data)})
     metrics = {metric: metrics_dict[metric] for metric in args.metrics}
     trainer = get_trainer(args=args, model=model, data=all_data, device=device, metrics=metrics)
-    val_metrics = trainer.train(train_loader, val_loader)
+    val_metrics = trainer.train(train_loader, val_loader, test_loader)
     if args.eval_on_test:
         test_metrics = trainer.evaluation(test_loader, data_split='test')
         return val_metrics, test_metrics, trainer.writer.log_dir
