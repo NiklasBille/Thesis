@@ -32,10 +32,31 @@ def test_data_format_OGBG():
 def test_noise_injector():
     dataset = OGBGDatasetExtension(name='ogbg-molesol', noise_level=0.1, return_types=['dgl_graph', 'targets'], device='cuda:1')
     graph, _ = dataset[1]
+
+def test_data():
+    list_of_datasets = [
+        'ogbg-molbace',
+        'ogbg-molbbbp',
+        'ogbg-molclintox',
+        # 'ogbg-molmuv',
+        # 'ogbg-molpcba',
+        'ogbg-molsider',
+        'ogbg-moltox21',
+        'ogbg-moltoxcast',
+        'ogbg-molhiv',
+        'ogbg-molesol',
+        'ogbg-molfreesolv',
+        'ogbg-mollipo',
+    ]
+    for dataset_name in list_of_datasets:
+        dataset = OGBGDatasetExtension(name=dataset_name, return_types=['dgl_graph', 'targets'], device='cuda:1')
+        # Do nothing, just check if the dataset loads
+
 if __name__ == '__main__':
     # test_data_format_QM9()
     # test_data_format_OGBG()
 
-    test_noise_injector()
+    # test_noise_injector()
     # print(noisy_node_features, noisy_edge_features)
+    test_data()
 
