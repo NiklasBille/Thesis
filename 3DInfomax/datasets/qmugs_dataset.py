@@ -1,5 +1,6 @@
 import copy
 import os
+import sys
 
 import torch
 import dgl
@@ -43,7 +44,6 @@ class QMugsDataset(Dataset):
         self.features_tensor = data_dict['atom_features']
 
         self.e_features_tensor = data_dict['edge_features']
-        self.coordinates = data_dict['coordinates'][:, :3].float()
         if 'conformations' in self.return_types or 'complete_graph_random_conformer' in self.return_types:
             self.conformations = data_dict['coordinates'].float()
             self.conformer_categorical = torch.distributions.Categorical(logits=torch.ones(num_conformers))
@@ -114,7 +114,7 @@ class QMugsDataset(Dataset):
             edge_indices = self.edge_indices[:, e_start: e_end]
             g = dgl.graph((edge_indices[0], edge_indices[1]), num_nodes=n_atoms, device=self.device)
             g.ndata['feat'] = self.features_tensor[start: start + n_atoms].to(self.device)
-            g.ndata['x'] = self.coordinates[start: start + n_atoms].to(self.device)
+            #g.ndata['x'] = self.coordinates[start: start + n_atoms].to(self.device)
             g.edata['feat'] = self.e_features_tensor[e_start: e_end].to(self.device)
             self.dgl_graphs[idx] = g.to('cpu')
             return g
@@ -230,6 +230,9 @@ class QMugsDataset(Dataset):
     def process(self):
         print('processing data from ({}) and saving it to ({})'.format(self.root,
                                                                        os.path.join(self.root, 'processed')))
+        from rdkit import RDLogger
+
+        RDLogger.DisableLog('rdApp.*')
         chembl_ids = os.listdir(os.path.join(self.root, 'structures'))
 
         targets = {'DFT:ATOMIC_ENERGY': [], 'DFT:TOTAL_ENERGY': [], 'DFT:HOMO_ENERGY': []}
@@ -244,56 +247,55 @@ class QMugsDataset(Dataset):
         coordinates = torch.tensor([])
         avg_degree = 0  # average degree in the dataset
         for mol_idx, chembl_id in tqdm(enumerate(chembl_ids)):
+
+            #if mol_idx > 7000:
+            #    print(f"Stopped processing after {mol_idx-1} molecules.")
+            #    break
+
             mol_path = os.path.join(self.root, 'structures', chembl_id)
             sdf_names = os.listdir(mol_path)
-            conformers = []
-            for conf_idx, sdf_name in enumerate(sdf_names):
-                sdf_path = os.path.join(mol_path, sdf_name)
-                suppl = Chem.SDMolSupplier(sdf_path)
-                mol = next(iter(suppl))
-                c = next(iter(mol.GetConformers()))
-                conformers.append(torch.tensor(c.GetPositions()))
-                if conf_idx == 0:
-                    n_atoms = len(mol.GetAtoms())
-                    n_atoms_list.append(n_atoms)
-                    atom_features_list = []
-                    for atom in mol.GetAtoms():
-                        atom_features_list.append(atom_to_feature_vector(atom))
-                    all_atom_features.append(torch.tensor(atom_features_list, dtype=torch.long))
+            sdf_name = sdf_names[0]
+        
+            sdf_path = os.path.join(mol_path, sdf_name)
+            suppl = Chem.SDMolSupplier(sdf_path)
+            mol = next(iter(suppl))
 
-                    edges_list = []
-                    edge_features_list = []
-                    for bond in mol.GetBonds():
-                        i = bond.GetBeginAtomIdx()
-                        j = bond.GetEndAtomIdx()
-                        edge_feature = bond_to_feature_vector(bond)
+            n_atoms = len(mol.GetAtoms())
+            n_atoms_list.append(n_atoms)
+            atom_features_list = []
+            for atom in mol.GetAtoms():
+                atom_features_list.append(atom_to_feature_vector(atom))
+            all_atom_features.append(torch.tensor(atom_features_list, dtype=torch.long))
 
-                        # add edges in both directions
-                        edges_list.append((i, j))
-                        edge_features_list.append(edge_feature)
-                        edges_list.append((j, i))
-                        edge_features_list.append(edge_feature)
-                    # Graph connectivity in COO format with shape [2, num_edges]
-                    edge_index = torch.tensor(edges_list, dtype=torch.long).T
-                    edge_features = torch.tensor(edge_features_list, dtype=torch.long)
+            edges_list = []
+            edge_features_list = []
+            for bond in mol.GetBonds():
+                i = bond.GetBeginAtomIdx()
+                j = bond.GetEndAtomIdx()
+                edge_feature = bond_to_feature_vector(bond)
 
-                    avg_degree += (len(edges_list) / 2) / n_atoms
+                # add edges in both directions
+                edges_list.append((i, j))
+                edge_features_list.append(edge_feature)
+                edges_list.append((j, i))
+                edge_features_list.append(edge_feature)
+            # Graph connectivity in COO format with shape [2, num_edges]
+            edge_index = torch.tensor(edges_list, dtype=torch.long).T
+            edge_features = torch.tensor(edge_features_list, dtype=torch.long)
 
-                    # get all 19 attributes that should be predicted, so we drop the first two entries (name and smiles)
-                    targets['DFT:HOMO_ENERGY'].append(float(mol.GetProp('DFT:HOMO_ENERGY')))
-                    targets['DFT:TOTAL_ENERGY'].append(float(mol.GetProp('DFT:TOTAL_ENERGY')))
-                    targets['DFT:ATOMIC_ENERGY'].append(float(mol.GetProp('DFT:ATOMIC_ENERGY')))
-                    edge_indices.append(edge_index)
-                    all_edge_features.append(edge_features)
+            avg_degree += (len(edges_list) / 2) / n_atoms
 
-                    total_edges += len(edges_list)
-                    total_atoms += n_atoms
-                    edge_slices.append(total_edges)
-                    atom_slices.append(total_atoms)
-            if len(conformers) < 3:  # if there are less than 10 conformers we add the first one a few times
-                conformers.extend([conformers[0]] * (3 - len(conformers)))
+            # get all 19 attributes that should be predicted, so we drop the first two entries (name and smiles)
+            targets['DFT:HOMO_ENERGY'].append(float(mol.GetProp('DFT:HOMO_ENERGY')))
+            targets['DFT:TOTAL_ENERGY'].append(float(mol.GetProp('DFT:TOTAL_ENERGY')))
+            targets['DFT:ATOMIC_ENERGY'].append(float(mol.GetProp('DFT:ATOMIC_ENERGY')))
+            edge_indices.append(edge_index)
+            all_edge_features.append(edge_features)
 
-            coordinates = torch.cat([coordinates, torch.cat(conformers, dim=1)], dim=0)
+            total_edges += len(edges_list)
+            total_atoms += n_atoms
+            edge_slices.append(total_edges)
+            atom_slices.append(total_atoms)
 
         data_dict = {'chembl_ids': chembl_ids,
                      'n_atoms': torch.tensor(n_atoms_list, dtype=torch.long),
@@ -302,7 +304,6 @@ class QMugsDataset(Dataset):
                      'edge_indices': torch.cat(edge_indices, dim=1),
                      'atom_features': torch.cat(all_atom_features, dim=0),
                      'edge_features': torch.cat(all_edge_features, dim=0),
-                     'coordinates': coordinates,
                      'targets': targets,
                      'avg_degree': avg_degree / len(chembl_ids)
                      }
