@@ -102,13 +102,25 @@ def log_scalars_to_tensorboard(writer, results, losses):
         writer.add_scalar(f'loss/{split}', loss, epoch)
 
 
+def seed_all(seed):
+    if not seed:
+        seed = 0
+
+    print("[ Using Seed : ", seed, " ]")
+
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.cuda.manual_seed(seed)
+    np.random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    #os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'  # For PyTorch 1.8+. Required for running  torch.use_deterministic_algorithms()
+    #torch.use_deterministic_algorithms(True)
+
 if __name__ == '__main__':
-    torch.manual_seed(args.runseed)
-    np.random.seed(args.runseed)
+    seed_all(args.runseed)
     device = torch.device('cuda:' + str(args.device)) \
         if torch.cuda.is_available() else torch.device('cpu')
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(args.runseed)
 
     # create writers for Tensorboard
     writer = SummaryWriter(args.output_model_dir)
