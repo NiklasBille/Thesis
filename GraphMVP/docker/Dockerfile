@@ -40,6 +40,7 @@ RUN conda init bash \
     && wget https://data.pyg.org/whl/torch-${TORCH}%2B${CUDA}/torch_sparse-0.6.12-cp37-cp37m-linux_x86_64.whl \
     && pip install torch_sparse-0.6.12-cp37-cp37m-linux_x86_64.whl \
     && pip install torch-geometric==1.7.2 \
-    && pip install pyaml<21.10.0
+    && pip install "pyaml<21.10.0" \
+    && pip install tensorboard
 
 RUN echo "conda activate GraphMVP" >> ~/.bashrc
