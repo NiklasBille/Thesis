@@ -1,0 +1,6 @@
+dataset: lipophilicity
+output_model_dir: "../results/lipo_seed3"
+input_model_file: "../weights/pretrained/GraphMVP_regression.pth"
+device: 0
+seed: 2 
+runseed: 2
