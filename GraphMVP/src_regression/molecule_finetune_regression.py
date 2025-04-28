@@ -223,11 +223,18 @@ if __name__ == '__main__':
 
     # Close Tensorboard writer
     writer.close()            
-
+    
+    # Print best validation metrics
     for metric in metric_list:
-        print('Best (RMSE), {} train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(
-            metric, train_result_list[best_val_idx][metric], val_result_list[best_val_idx][metric], test_result_list[best_val_idx][metric]))
-        
+        print(f'Best ({metric}):\t train: {train_result_list[best_val_idx][metric]:.6f}\t'
+                f'val: {val_result_list[best_val_idx][metric]:.6f}\t'
+                f'test: {test_result_list[best_val_idx][metric]:.6f}')
+    
+    # Write best validation test metrics to a .txt file
+    with open(join(args.output_model_dir, 'evaluation_test.txt'), 'w') as f:
+        f.write(f'mae: {test_result_list[best_val_idx]["MAE"]}\n'
+                f'rmse: {test_result_list[best_val_idx]["RMSE"]} ')
+    
     if args.output_model_dir is not '':
         output_model_path = join(args.output_model_dir, 'model_final.pth')
         saved_model_dict = {
