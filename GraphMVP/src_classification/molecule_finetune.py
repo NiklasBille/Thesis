@@ -1,6 +1,7 @@
 import copy
 import os
 from os.path import join
+import sys
 
 import numpy as np
 import pandas as pd
@@ -14,6 +15,7 @@ from sklearn.metrics import (accuracy_score, average_precision_score,
 from splitters import random_scaffold_split, random_split, scaffold_split
 from torch_geometric.data import DataLoader
 from util import get_num_task
+from torch.utils.tensorboard import SummaryWriter
 import pyaml
 from datasets import MoleculeDataset
 
@@ -45,10 +47,11 @@ def train(model, device, loader, optimizer):
     return total_loss / len(loader)
 
 
-def eval(model, device, loader):
+def eval(model, device, loader, compute_loss=False):
     model.eval()
     y_true, y_scores = [], []
 
+    total_loss = 0
     for step, batch in enumerate(loader):
         batch = batch.to(device)
         with torch.no_grad():
@@ -59,34 +62,85 @@ def eval(model, device, loader):
         y_true.append(true)
         y_scores.append(pred)
 
+        if compute_loss:
+            # Whether y is non-null or not.
+            is_valid = true ** 2 > 0
+            # Loss matrix
+            loss_mat = criterion(pred.double(), (true + 1) / 2)
+            # loss matrix after removing null target
+            loss_mat = torch.where(
+                is_valid, loss_mat,
+                torch.zeros(loss_mat.shape).to(device).to(loss_mat.dtype))
+            
+            loss = torch.sum(loss_mat) / torch.sum(is_valid)
+            total_loss += loss.detach().item()
+
     y_true = torch.cat(y_true, dim=0).cpu().numpy()
     y_scores = torch.cat(y_scores, dim=0).cpu().numpy()
 
-    
-    roc_list = []
-    for i in range(y_true.shape[1]):
-        # AUC is only defined when there is at least one positive data.
-        if np.sum(y_true[:, i] == 1) > 0 and np.sum(y_true[:, i] == -1) > 0:
-            is_valid = y_true[:, i] ** 2 > 0
-            roc_list.append(eval_metric((y_true[is_valid, i] + 1) / 2, y_scores[is_valid, i]))
-        else:
-            print('{} is invalid'.format(i))
+    roc_list, prc_list = calculate_roc_and_prc(y_true, y_scores)
 
     if len(roc_list) < y_true.shape[1]:
         print(len(roc_list))
         print('Some target is missing!')
         print('Missing ratio: %f' %(1 - float(len(roc_list)) / y_true.shape[1]))
 
-    return sum(roc_list) / len(roc_list), 0, y_true, y_scores
+    if compute_loss:
+        return {'ROC': sum(roc_list) / len(roc_list), 'PRC': sum(prc_list) / len(prc_list)}, y_true, y_scores, total_loss/len(loader)
+    else:
+        return {'ROC': sum(roc_list) / len(roc_list), 'PRC': sum(prc_list) / len(prc_list)}, y_true, y_scores
 
+def calculate_roc_and_prc(y_true, y_scores):
+    roc_list = []
+    prc_list = []
+    for i in range(y_true.shape[1]):
+        # AUC is only defined when there is at least one positive data.
+        if np.sum(y_true[:, i] == 1) > 0 and np.sum(y_true[:, i] == -1) > 0:
+            is_valid = y_true[:, i] ** 2 > 0
+            roc_list.append(roc_auc_score((y_true[is_valid, i] + 1) / 2, y_scores[is_valid, i]))
+            prc_list.append(average_precision_score((y_true[is_valid, i] + 1) / 2, y_scores[is_valid, i]))
+        else:
+            print('{} is invalid'.format(i))
+    return roc_list, prc_list
+
+def log_scalars_to_tensorboard(writer, results, losses):
+    """
+    Log ROC-AUC, PRC-AUC, and loss to TensorBoard for each data split.
+
+    Args:
+        writers (dict): TensorBoard SummaryWriter objects for per split.
+        results (dict): Dictionary with ROC-AUC and PRC-AUC metrics per split.
+        losses (dict): Dictionary with loss values per split.
+    """
+    for split in ['train', 'val', 'test']:
+        result = results[split]
+        loss = losses[split]
+        writer.add_scalar(f'rocauc/{split}', result['ROC'], epoch)
+        writer.add_scalar(f'prcauc/{split}', result['PRC'], epoch)
+        writer.add_scalar(f'loss/{split}', loss, epoch)
+
+def seed_all(seed):
+    if not seed:
+        seed = 0
+
+    print("[ Using Seed : ", seed, " ]")
+
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.cuda.manual_seed(seed)
+    np.random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    #os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'  # For PyTorch 1.8+. Required for running  torch.use_deterministic_algorithms()
+    #torch.use_deterministic_algorithms(True)
 
 if __name__ == '__main__':
-    torch.manual_seed(args.runseed)
-    np.random.seed(args.runseed)
+    seed_all(args.runseed)
     device = torch.device('cuda:' + str(args.device)) \
         if torch.cuda.is_available() else torch.device('cpu')
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(args.runseed)
+
+    # create writers for Tensorboard
+    writer = SummaryWriter(args.output_model_dir)
 
     # Bunch of classification tasks
     num_tasks = get_num_task(args.dataset)
@@ -96,7 +150,6 @@ if __name__ == '__main__':
         dataset_noise = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset, noise_level=args.noise_level)
     print(dataset)
 
-    eval_metric = roc_auc_score
 
     if args.split == 'scaffold':
         smiles_list = pd.read_csv(dataset_folder + args.dataset + '/processed/smiles.csv',
@@ -160,8 +213,9 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model_param_group, lr=args.lr,
                            weight_decay=args.decay)
     criterion = nn.BCEWithLogitsLoss(reduction='none')
-    train_roc_list, val_roc_list, test_roc_list = [], [], []
-    train_acc_list, val_acc_list, test_acc_list = [], [], []
+    
+    train_result_list, val_result_list, test_result_list = [], [], []
+    metric_list = ['ROC', 'PRC']
     best_val_roc, best_val_idx = -1, 0
 
     for epoch in range(1, args.epochs + 1):
@@ -169,23 +223,27 @@ if __name__ == '__main__':
         print('Epoch: {}\nLoss: {}'.format(epoch, loss_acc))
 
         if args.eval_train:
-            train_roc, train_acc, train_target, train_pred = eval(model, device, train_loader)
+            train_result, train_target, train_pred = eval(model, device, train_loader)
         else:
-            train_roc = train_acc = 0
-        val_roc, val_acc, val_target, val_pred = eval(model, device, val_loader)
-        test_roc, test_acc, test_target, test_pred = eval(model, device, test_loader)
+            train_result = {'ROC': 0, 'PRC': 0}
+    
+        val_result, val_target, val_pred, val_loss = eval(model, device, val_loader, compute_loss=True)
+        test_result, test_target, test_pred, test_loss = eval(model, device, test_loader, compute_loss=True)
 
-        train_roc_list.append(train_roc)
-        train_acc_list.append(train_acc)
-        val_roc_list.append(val_roc)
-        val_acc_list.append(val_acc)
-        test_roc_list.append(test_roc)
-        test_acc_list.append(test_acc)
-        print('train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(train_roc, val_roc, test_roc))
+        results = {'train': train_result, 'val': val_result, 'test': test_result}
+        losses = {'train': loss_acc, 'val': val_loss, 'test': test_loss}
+        log_scalars_to_tensorboard(writer, results, losses)
+
+        train_result_list.append(train_result)
+        val_result_list.append(val_result)
+        test_result_list.append(test_result)
+
+        for metric in metric_list:
+            print('{} train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(metric, train_result[metric], val_result[metric], test_result[metric]))
         print()
 
-        if val_roc > best_val_roc:
-            best_val_roc = val_roc
+        if val_result['ROC'] > best_val_roc:
+            best_val_roc = val_result['ROC']
             best_val_idx = epoch - 1
             if not args.output_model_dir == '':
                 output_model_path = join(args.output_model_dir, 'model_best.pth')
@@ -198,8 +256,15 @@ if __name__ == '__main__':
                 filename = join(args.output_model_dir, 'evaluation_best.pth')
                 np.savez(filename, val_target=val_target, val_pred=val_pred,
                          test_target=test_target, test_pred=test_pred)
+                
+    # Close Tensorboard writer
+    writer.close()  
 
-    print('best train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(train_roc_list[best_val_idx], val_roc_list[best_val_idx], test_roc_list[best_val_idx]))
+    # Print best validation metrics
+    for metric in metric_list:
+        print(f'Best ({metric}):\t train: {train_result_list[best_val_idx][metric]:.6f}\t'
+                f'val: {val_result_list[best_val_idx][metric]:.6f}\t'
+                f'test: {test_result_list[best_val_idx][metric]:.6f}')
 
     if args.output_model_dir is not '':
         output_model_path = join(args.output_model_dir, 'model_final.pth')
