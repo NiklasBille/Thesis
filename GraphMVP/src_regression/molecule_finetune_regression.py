@@ -85,9 +85,9 @@ def eval(model, device, loader, compute_loss=False):
         return {'RMSE': rmse, 'MAE': mae}, y_true, y_pred
 
 
-def log_scalars_to_tensorboard(writers, results, losses):
+def log_scalars_to_tensorboard(writer, results, losses):
     """
-    Log MAE, RMSE, MSE, and loss to TensorBoard for each data split.
+    Log MAE, RMSE, and loss to TensorBoard for each data split.
 
     Args:
         writers (dict): TensorBoard SummaryWriter objects for per split.
@@ -95,13 +95,11 @@ def log_scalars_to_tensorboard(writers, results, losses):
         losses (dict): Dictionary with loss values per split.
     """
     for split in ['train', 'val', 'test']:
-        writer = writers[split]
         result = results[split]
         loss = losses[split]
-        writer.add_scalar('mae', result["MAE"], epoch)
-        writer.add_scalar('rmse', result["RMSE"], epoch)
-        writer.add_scalar('mse', np.square(result["RMSE"]), epoch)
-        writer.add_scalar('loss', loss, epoch)
+        writer.add_scalar(f'mae/{split}', result["MAE"], epoch)
+        writer.add_scalar(f'rmse/{split}', result["RMSE"], epoch)
+        writer.add_scalar(f'loss/{split}', loss, epoch)
 
 
 if __name__ == '__main__':
@@ -113,10 +111,7 @@ if __name__ == '__main__':
         torch.cuda.manual_seed_all(args.runseed)
 
     # create writers for Tensorboard
-    train_writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb", "train"))
-    val_writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb", "val"))
-    test_writer = SummaryWriter(os.path.join(args.output_model_dir, "tsb", "test"))
-    writers = {'train': train_writer, 'val': val_writer, 'test': test_writer}
+    writer = SummaryWriter(args.output_model_dir)
     
     num_tasks = 1
     dataset_folder = '../datasets/molecule_datasets/'
@@ -200,7 +195,7 @@ if __name__ == '__main__':
         
         results = {'train': train_result, 'val': val_result, 'test': test_result}
         losses = {'train': loss_acc, 'val': val_loss, 'test': test_loss}
-        log_scalars_to_tensorboard(writers, results, losses)
+        log_scalars_to_tensorboard(writer, results, losses)
 
 
         train_result_list.append(train_result)
@@ -226,9 +221,8 @@ if __name__ == '__main__':
                 np.savez(filename, val_target=val_target, val_pred=val_pred,
                          test_target=test_target, test_pred=test_pred)
 
-    # Close Tensorboard writers
-    for writer in writers.values():
-        writer.close()            
+    # Close Tensorboard writer
+    writer.close()            
 
     for metric in metric_list:
         print('Best (RMSE), {} train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(
