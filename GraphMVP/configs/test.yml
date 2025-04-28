@@ -1,6 +1,7 @@
-dataset: lipophilicity
-output_model_dir: "../results/lipo_seed3"
+dataset: freesolv
+output_model_dir: "../results/del"
 input_model_file: "../weights/pretrained/GraphMVP_regression.pth"
-device: 1
-seed: 2 
-runseed: 2
+device: 0
+#seed: 2 
+#runseed: 2
+epochs: 1

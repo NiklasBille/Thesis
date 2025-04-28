@@ -7,6 +7,8 @@ parser.add_argument('--config', type=argparse.FileType(mode='r'), default=None)
 
 parser.add_argument('--seed', type=int, default=42)
 parser.add_argument('--runseed', type=int, default=0)
+parser.add_argument('--multiple_seeds', type=list, default=[],
+                   help='Can only be used through "run_multiple.py". If this is non empty, multiple but isolated runs are started')
 parser.add_argument('--device', type=int, default=0)
 
 # about dataset and dataloader
