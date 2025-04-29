@@ -141,29 +141,31 @@ if __name__ == '__main__':
     print('dataset_folder:', dataset_folder)
     print(dataset)
 
+    remaining_prop = (1-args.train_prop)/2
+
     if args.split == 'scaffold':
         smiles_list = pd.read_csv(dataset_folder + '/processed/smiles.csv', header=None)[0].tolist()
         # We only add noise to the train_dataset  
         train_dataset, valid_dataset, test_dataset = scaffold_split(
-            dataset, smiles_list, null_value=0, frac_train=0.8,
-            frac_valid=0.1, frac_test=0.1)
+            dataset, smiles_list, null_value=0, frac_train=args.train_prop,
+            frac_valid=remaining_prop, frac_test=remaining_prop)
         
         if args.noise_level > 0:
             train_dataset, _, _ = scaffold_split(
                 # Overwrite the train_dataset with noise
-                dataset_noise, smiles_list, null_value=0, frac_train=0.8,
-                frac_valid=0.1, frac_test=0.1)
+                dataset_noise, smiles_list, null_value=0, frac_train=args.train_prop,
+                frac_valid=remaining_prop, frac_test=remaining_prop)
         print('split via scaffold')
     elif args.split == 'random':
         train_dataset, valid_dataset, test_dataset = random_split(
-            dataset, null_value=0, frac_train=0.8, frac_valid=0.1,
-            frac_test=0.1, seed=args.seed)
+            dataset, null_value=0, frac_train=args.train_prop, frac_valid=remaining_prop,
+            frac_test=remaining_prop, seed=args.seed)
         print('randomly split')
     elif args.split == 'random_scaffold':
         smiles_list = pd.read_csv(dataset_folder + '/processed/smiles.csv', header=None)[0].tolist()
         train_dataset, valid_dataset, test_dataset = random_scaffold_split(
-            dataset, smiles_list, null_value=0, frac_train=0.8,
-            frac_valid=0.1, frac_test=0.1, seed=args.seed)
+            dataset, smiles_list, null_value=0, frac_train=args.train_prop,
+            frac_valid=remaining_prop, frac_test=remaining_prop, seed=args.seed)
         print('random scaffold')
     else:
         raise ValueError('Invalid split option.')
