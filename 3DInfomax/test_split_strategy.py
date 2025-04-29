@@ -217,6 +217,7 @@ def test_custom_scaffold_splits_contain_all_molecules():
 
 
             print(f"Dataset: {dataset_name}, train proportion: {train_prop}")
+            print(f"Length of train: {len(train_idx)}\nLength of valid: {len(valid_idx)}\nLength of test: {len(test_idx)}")
             print("Train, valid and test contains all indices: ", len(set(train_idx + valid_idx + test_idx)-set(all_idx))==0, "\n")
 
 def test_custom_random_splits_contain_all_molecules():
@@ -249,11 +250,12 @@ def test_custom_random_splits_contain_all_molecules():
 
 
             print(f"Dataset: {dataset_name}, train proportion: {train_prop}")
+            print(f"Length of train: {len(train_idx)}\nLength of valid: {len(valid_idx)}\nLength of test: {len(test_idx)}")
             print("Train, valid and test contains all indices: ", len(set(list(train_idx) + list(valid_idx) + list(test_idx))-set(all_idx))==0, "\n")
 
 if __name__ == "__main__":
     #test_scaffold_splits_for_different_models()
     #test_custom_80_10_10_scaffold_split_matches_ground_truth()
     #test_custom_80_10_10_random_split_matches_ground_truth()
-    test_custom_scaffold_splits_contain_all_molecules()
-    #test_custom_random_splits_contain_all_molecules()
+    #test_custom_scaffold_splits_contain_all_molecules()
+    test_custom_random_splits_contain_all_molecules()
