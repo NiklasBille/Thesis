@@ -1,7 +1,10 @@
-dataset: freesolv
+dataset: bace
 output_model_dir: "../results/del"
 input_model_file: "../weights/pretrained/GraphMVP_regression.pth"
-device: 0
+multiple_seeds:
+  - 0
+  - 1
+  - 2
 #seed: 2 
 #runseed: 2
 epochs: 1

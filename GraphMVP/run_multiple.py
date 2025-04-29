@@ -1,10 +1,10 @@
 import os
 import sys
 import argparse
-
 import subprocess
 
-# TODO: pass device correctly.
+sys.path.insert(0, 'src_classification')
+from config import args as runargs
 
 p = argparse.ArgumentParser()
 p.add_argument('--config', type=str)
@@ -16,16 +16,27 @@ if not args.config:
 else:
     config_path = os.path.join('/workspace/', args.config)
 
-multiple_seeds = [0, 1]
+dataset_task_type = {
+    'esol': 'regression',
+    'freesolv': 'regression',
+    'lipophilicity': 'regression',
+    'hiv': 'classification',
+    'bace': 'classification',
+    'bbbp': 'classification',
+    'tox21': 'classification',
+    'toxcast': 'classification',
+    'sider': 'classification',
+    'clintox': 'classification'
+}
 
-#dataset_task_type = {'freesolv': 'regression', 'bace': 'classification'}
-task_type = 'regression'
+assert runargs.dataset in dataset_task_type.keys(), f"{runargs.dataset} not valid dataset."
 
+task_type = dataset_task_type[runargs.dataset]
 train_script = 'molecule_finetune_regression.py' if task_type == 'regression' else 'molecule_finetune.py'
 src_folder = 'src_regression' if task_type == 'regression' else 'src_classification.py'
-processes = []
 
-for seed in multiple_seeds:
+processes = []
+for seed in runargs.multiple_seeds:
     cmd = [
         "python",
         train_script, 
