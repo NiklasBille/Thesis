@@ -1,0 +1,9 @@
+output_model_dir: ../results/split/GraphMVP/_test/lipo_random=0.7
+input_model_file: ../weights/pretrained/GraphMVP_regression.pth
+multiple_seeds:
+- 1
+- 2
+train_prop: 0.7
+split: random
+dataset: lipophilicity
+epochs: 2
