@@ -33,7 +33,7 @@ assert runargs.dataset in dataset_task_type.keys(), f"{runargs.dataset} not vali
 
 task_type = dataset_task_type[runargs.dataset]
 train_script = 'molecule_finetune_regression.py' if task_type == 'regression' else 'molecule_finetune.py'
-src_folder = 'src_regression' if task_type == 'regression' else 'src_classification.py'
+src_folder = 'src_regression' if task_type == 'regression' else 'src_classification'
 
 processes = []
 for seed in runargs.multiple_seeds:
