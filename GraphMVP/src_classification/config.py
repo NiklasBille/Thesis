@@ -9,7 +9,7 @@ parser.add_argument('--seed', type=int, default=42)
 parser.add_argument('--runseed', type=int, default=0)
 parser.add_argument('--multiple_seeds', type=list, default=[],
                    help='Can only be used through "run_multiple.py". If this is non empty, multiple but isolated runs are started')
-parser.add_argument('--device', type=int, default=0)
+parser.add_argument('--device', type=str, default='cuda:0', help="Device to use: 'cpu', '0' for cuda:0, '1' for cuda:1, etc.")
 
 # about dataset and dataloader
 parser.add_argument('--input_data_dir', type=str, default='')
@@ -109,4 +109,4 @@ if args.config is not None:
                 arg_dict[key].append(v)
         else:
             arg_dict[key] = value
-print('arguments\t', args)
+#print('arguments\t', args)

@@ -118,9 +118,16 @@ def seed_all(seed):
     #torch.use_deterministic_algorithms(True)
 
 if __name__ == '__main__':
+    print('Arguments:')
+    for k, v in vars(args).items():
+        print(f'  {k}: {v}')
+
     seed_all(args.runseed)
-    device = torch.device('cuda:' + str(args.device)) \
-        if torch.cuda.is_available() else torch.device('cpu')
+    device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
+
+    print(device)
+    sys.exit()
+
 
     # create writers for Tensorboard
     writer = SummaryWriter(args.output_model_dir)
