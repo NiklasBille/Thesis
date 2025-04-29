@@ -19,8 +19,11 @@ parser.add_argument('--num_workers', type=int, default=8)
 # about noise experiment
 parser.add_argument('--noise_level', type=float, default=0.0)
 
-# about training strategies
+# about split experiment
+parser.add_argument('--train_prop', type=float, default=0.8, choices=[0.6, 0.7, 0.8], help='Specifies the proportion of data in the train set')
 parser.add_argument('--split', type=str, default='scaffold')
+
+# about training strategies
 parser.add_argument('--batch_size', type=int, default=256)
 parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--lr', type=float, default=0.001)
