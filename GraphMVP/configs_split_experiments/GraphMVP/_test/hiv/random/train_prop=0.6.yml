@@ -1,4 +1,4 @@
-output_model_dir: ../results/split/GraphMVP/_test/hiv_random=0.6
+output_model_dir: ../results/split/GraphMVP/_test/hiv/random/train_prop=0.6
 input_model_file: ../weights/pretrained/GraphMVP_classification.pth
 multiple_seeds:
 - 1

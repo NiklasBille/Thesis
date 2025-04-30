@@ -1,9 +1,17 @@
-output_model_dir: ../results/split/GraphMVP/_test/esol/scaff/train_prop=0.8
+output_model_dir: ../results/del
 input_model_file: ../weights/pretrained/GraphMVP_regression.pth
 multiple_seeds:
 - 1
-- 2
+#- 2
+# - 3
+# - 4
+# - 5
+# - 6
+# - 7
+# - 8
+# - 9
+# - 10
 train_prop: 0.8
 split: scaffold
-dataset: esol
+dataset: freesolv
 epochs: 2
