@@ -27,7 +27,7 @@ def create_config(dataset, train_prop, split_type):
     split = 'scaffold' if split_type == 'scaff' else 'random'
     dataset_naming = 'lipo' if dataset == 'lipophilicity' else dataset
     return {
-        'output_model_dir': f'../results/split/GraphMVP/_test/{dataset_naming}_{split_type}={train_prop}',  # remove _test/ for actual runs
+        'output_model_dir': f'../results/split/GraphMVP/_test/{dataset_naming}/{split_type}/train_prop={train_prop}',  # remove _test/ for actual runs
         'input_model_file': f'../weights/pretrained/GraphMVP_regression.pth',
         'multiple_seeds': [1, 2], # for testing, change to [1, 2, 3]
         'train_prop': train_prop, 

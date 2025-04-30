@@ -26,7 +26,7 @@ train_props = [0.8, 0.7, 0.6]
 def create_config(dataset, train_prop, split_type):
     split = 'scaffold' if split_type == 'scaff' else 'random'
     return {
-        'output_model_dir': f'../results/split/GraphMVP/_test/{dataset}_{split_type}={train_prop}',  # remove _test/ for actual runs
+        'output_model_dir': f'../results/split/GraphMVP/_test/{dataset}/{split_type}/train_prop={train_prop}',  # remove _test/ for actual runs
         'input_model_file': f'../weights/pretrained/GraphMVP_classification.pth',
         'multiple_seeds': [1, 2], # for testing, change to [1, 2, 3]
         'train_prop': train_prop, 

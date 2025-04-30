@@ -14,7 +14,7 @@ parser.add_argument('--device', type=str, default='cuda:0', help="Device to use:
 # about dataset and dataloader
 parser.add_argument('--input_data_dir', type=str, default='')
 parser.add_argument('--dataset', type=str, default='bace')
-parser.add_argument('--num_workers', type=int, default=8)
+parser.add_argument('--num_workers', type=int, default=0) # Used to be 8, but causes issues when using run_multiple.py
 
 # about noise experiment
 parser.add_argument('--noise_level', type=float, default=0.0)
