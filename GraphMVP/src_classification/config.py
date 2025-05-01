@@ -29,7 +29,8 @@ parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--lr', type=float, default=0.001)
 parser.add_argument('--lr_scale', type=float, default=1)
 parser.add_argument('--decay', type=float, default=0)
-
+parser.add_argument('--patience', type=int, default=35)
+parser.add_argument('--minimum_epochs', type=int, default=120)
 # about molecule GNN
 parser.add_argument('--gnn_type', type=str, default='gin')
 parser.add_argument('--num_layer', type=int, default=5)

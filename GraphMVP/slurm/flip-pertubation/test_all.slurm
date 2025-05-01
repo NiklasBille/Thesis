@@ -19,12 +19,14 @@ if [ ! -f 3dinfomax-complete.sif ]; then
 fi
 
 # Run everything inside the container
-apptainer exec --nv --bind $PWD:/workspace 3dinfomax-complete.sif bash -c "
+apptainer exec --nv --bind $PWD:/workspace graphmvp.sif bash -c "
     cd /workspace && \
+    source /root/miniconda3/etc/profile.d/conda.sh
+    conda activate GraphMVP
     gpu_counter=0 && \
     # Loop over the different training proportions
-    for prop in 0.6 0.7 0.8; do
-        config=configs_split_experiments/3DInfomax/_test/$DATASET/random/train_prop=\$prop.yml
+    for noise in 0.0 0.05 0.1 0.2; do
+        config=configs_split_experiments/GraphMVP/_test/$DATASET/noise=\$noise.yml
         gpu=\$((gpu_counter % 3))  # use 0-3 GPUs
         echo Running RANDOM \$config on cuda:\$gpu
         python -u run_multiple.py --config=\$config --device=cuda:\$gpu &

@@ -205,6 +205,7 @@ if __name__ == '__main__':
     metric_list = ['RMSE', 'MAE']
     best_val_rmse, best_val_idx = 1e10, 0
 
+    epochs_no_improve = 0  # counts every epoch that the validation accuracy did not improve for early stopping
     for epoch in range(1, args.epochs + 1):
         loss_acc = train(model, device, train_loader, optimizer)
         print('Epoch: {}\nLoss: {}'.format(epoch, loss_acc))
@@ -231,6 +232,7 @@ if __name__ == '__main__':
         print()
 
         if val_result['RMSE'] < best_val_rmse:
+            epochs_no_improve = 0
             best_val_rmse = val_result['RMSE']
             best_val_idx = epoch - 1
             if not log_dir == '':
@@ -244,6 +246,12 @@ if __name__ == '__main__':
                 filename = join(log_dir, 'evaluation_best.pth')
                 np.savez(filename, val_target=val_target, val_pred=val_pred,
                          test_target=test_target, test_pred=test_pred)
+        else:
+            epochs_no_improve += 1
+
+        if epochs_no_improve >= args.patience and epoch > args.minimum_epochs:
+            print('Early stopping')
+            break
 
     # Close Tensorboard writer
     writer.close()            
