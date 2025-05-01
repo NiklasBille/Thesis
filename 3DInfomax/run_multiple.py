@@ -6,7 +6,7 @@ from train import get_arguments
 
 p = argparse.ArgumentParser()
 p.add_argument('--config', type=str)
-p.add_argument('--device', type=str, default='cuda:0', help="Device to use: 'cpu', '0' for cuda:0, '1' for cuda:1, etc.")
+p.add_argument('--device', type=str, default='cuda:0')
 args = p.parse_args()
 
 if not args.config:
