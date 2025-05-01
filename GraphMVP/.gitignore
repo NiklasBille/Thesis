@@ -3,6 +3,7 @@ weights/pretrained/
 src_classification/__pycache__/
 runs/
 results/
+graphmvp.sif
 # Ignore all .pyc files
 *.pyc
 

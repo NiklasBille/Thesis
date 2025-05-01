@@ -166,7 +166,7 @@ if __name__ == '__main__':
     print("[ Using device : ", device, " ]")
 
     # create writers for Tensorboard
-    writer = SummaryWriter(args.output_model_dir)
+    writer = SummaryWriter(log_dir)
 
     # Bunch of classification tasks
     num_tasks = get_num_task(args.dataset)
