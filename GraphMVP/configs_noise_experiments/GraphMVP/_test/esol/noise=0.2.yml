@@ -1,0 +1,8 @@
+output_model_dir: ../runs/noise/GraphMVP/_test/esol/noise=0.2
+input_model_file: ../weights/pretrained/GraphMVP_regression.pth
+multiple_seeds:
+- 1
+- 2
+dataset: esol
+noise_level: 0.2
+epochs: 2

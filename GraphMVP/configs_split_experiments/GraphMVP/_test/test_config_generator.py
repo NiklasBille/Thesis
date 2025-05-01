@@ -18,9 +18,22 @@ CustomDumper.add_representer(bool, bool_representer)
 CustomDumper.add_representer(FlowList, flow_list_representer)
 
 # Define datasets and noise levels
-datasets = ['esol', 'freesolv', 'lipophilicity']
+datasets = ['esol', 'freesolv', 'lipophilicity', 'hiv', 'bace', 'bbbp', 'tox21', 'toxcast', 'sider', 'clintox']
 split_types = ['scaff', 'random']
 train_props = [0.8, 0.7, 0.6]
+
+dataset_task_type = {
+    'esol': 'regression',
+    'freesolv': 'regression',
+    'lipophilicity': 'regression',
+    'hiv': 'classification',
+    'bace': 'classification',
+    'bbbp': 'classification',
+    'tox21': 'classification',
+    'toxcast': 'classification',
+    'sider': 'classification',
+    'clintox': 'classification'
+}
 
 # Base config structure
 def create_config(dataset, train_prop, split_type):
@@ -28,7 +41,7 @@ def create_config(dataset, train_prop, split_type):
     dataset_naming = 'lipo' if dataset == 'lipophilicity' else dataset
     return {
         'output_model_dir': f'../runs/split/GraphMVP/_test/{dataset_naming}/{split_type}/train_prop={train_prop}',  # remove _test/ for actual runs
-        'input_model_file': f'../weights/pretrained/GraphMVP_regression.pth',
+        'input_model_file': f'../weights/pretrained/GraphMVP_{dataset_task_type[dataset]}.pth',
         'multiple_seeds': [1, 2], # for testing, change to [1, 2, 3]
         'train_prop': train_prop, 
         'split': split,

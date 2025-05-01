@@ -1,0 +1,12 @@
+output_model_dir: ../runs/split/GraphMVP/toxcast/scaff/train_prop=0.6
+input_model_file: ../weights/pretrained/GraphMVP_classification.pth
+multiple_seeds:
+- 1
+- 2
+- 3
+train_prop: 0.6
+split: scaffold
+dataset: toxcast
+epochs: 1000
+patience: 35
+minimum_epochs: 120

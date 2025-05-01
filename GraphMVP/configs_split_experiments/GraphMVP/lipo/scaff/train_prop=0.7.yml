@@ -1,0 +1,12 @@
+output_model_dir: ../runs/split/GraphMVP/lipo/scaff/train_prop=0.7
+input_model_file: ../weights/pretrained/GraphMVP_regression.pth
+multiple_seeds:
+- 1
+- 2
+- 3
+train_prop: 0.7
+split: scaffold
+dataset: lipophilicity
+epochs: 1000
+patience: 35
+minimum_epochs: 120

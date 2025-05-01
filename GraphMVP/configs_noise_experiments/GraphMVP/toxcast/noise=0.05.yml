@@ -1,0 +1,11 @@
+output_model_dir: ../runs/noise/GraphMVP/toxcast/noise=0.05
+input_model_file: ../weights/pretrained/GraphMVP_classification.pth
+multiple_seeds:
+- 1
+- 2
+- 3
+dataset: toxcast
+noise_level: 0.05
+epochs: 1000
+patience: 35
+minimum_epochs: 120

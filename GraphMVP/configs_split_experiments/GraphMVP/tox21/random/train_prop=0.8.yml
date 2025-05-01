@@ -1,0 +1,12 @@
+output_model_dir: ../runs/split/GraphMVP/tox21/random/train_prop=0.8
+input_model_file: ../weights/pretrained/GraphMVP_classification.pth
+multiple_seeds:
+- 1
+- 2
+- 3
+train_prop: 0.8
+split: random
+dataset: tox21
+epochs: 1000
+patience: 35
+minimum_epochs: 120

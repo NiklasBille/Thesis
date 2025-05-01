@@ -1,0 +1,8 @@
+output_model_dir: ../runs/noise/GraphMVP/_test/clintox/noise=0.0
+input_model_file: ../weights/pretrained/GraphMVP_classification.pth
+multiple_seeds:
+- 1
+- 2
+dataset: clintox
+noise_level: 0.0
+epochs: 2

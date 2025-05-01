@@ -18,30 +18,47 @@ CustomDumper.add_representer(bool, bool_representer)
 CustomDumper.add_representer(FlowList, flow_list_representer)
 
 # Define datasets and noise levels
-datasets = ['hiv', 'bace', 'bbbp', 'tox21', 'toxcast', 'sider', 'clintox']
+datasets = ['esol', 'freesolv', 'lipophilicity', 'hiv', 'bace', 'bbbp', 'tox21', 'toxcast', 'sider', 'clintox']
 split_types = ['scaff', 'random']
 train_props = [0.8, 0.7, 0.6]
+
+dataset_task_type = {
+    'esol': 'regression',
+    'freesolv': 'regression',
+    'lipophilicity': 'regression',
+    'hiv': 'classification',
+    'bace': 'classification',
+    'bbbp': 'classification',
+    'tox21': 'classification',
+    'toxcast': 'classification',
+    'sider': 'classification',
+    'clintox': 'classification'
+}
 
 # Base config structure
 def create_config(dataset, train_prop, split_type):
     split = 'scaffold' if split_type == 'scaff' else 'random'
+    dataset_naming = 'lipo' if dataset == 'lipophilicity' else dataset
     return {
-        'output_model_dir': f'../runs/split/GraphMVP/_test/{dataset}/{split_type}/train_prop={train_prop}',  # remove _test/ for actual runs
-        'input_model_file': f'../weights/pretrained/GraphMVP_classification.pth',
-        'multiple_seeds': [1, 2], # for testing, change to [1, 2, 3]
+        'output_model_dir': f'../runs/split/GraphMVP/{dataset_naming}/{split_type}/train_prop={train_prop}', 
+        'input_model_file': f'../weights/pretrained/GraphMVP_{dataset_task_type[dataset]}.pth',
+        'multiple_seeds': [1, 2, 3], 
         'train_prop': train_prop, 
         'split': split,
         'dataset': dataset,
-        'epochs': 2, # Set to 2 for testing, change to 1000 for actual runs
+        'epochs': 1000,
+        'patience': 35,
+        'minimum_epochs': 120,
     }
 
 # Output base dir
-base_dir = "configs_split_experiments/GraphMVP/_test"
+base_dir = "configs_split_experiments/GraphMVP"
 os.makedirs(base_dir, exist_ok=True)
 
 # Generate config files
 for dataset in datasets:
-    dataset_dir = os.path.join(base_dir, dataset)
+    dataset_naming = 'lipo' if dataset == 'lipophilicity' else dataset
+    dataset_dir = os.path.join(base_dir, dataset_naming)
     os.makedirs(dataset_dir, exist_ok=True)
     for split_type in split_types:
         split_dir = os.path.join(dataset_dir, split_type) 
