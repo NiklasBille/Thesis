@@ -2,12 +2,15 @@ import copy
 import os
 from os.path import join
 import sys
+from sklearn.linear_model import LogisticRegression # without this import before the rest we deadlock (very funky) 
 
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import yaml
+from datetime import datetime 
 from config import args
 from models import GNN, GNN_graphpred
 from sklearn.metrics import (accuracy_score, average_precision_score,
@@ -48,6 +51,21 @@ def train(model, device, loader, optimizer):
 
 
 def eval(model, device, loader, compute_loss=False):
+    """
+    Evaluate a model on a dataset and compute ROC-AUC and PRC-AUC.
+
+    Args:
+        model: The PyTorch model to evaluate.
+        device: Device to run the model on.
+        loader: DataLoader for the evaluation dataset.
+        compute_loss (bool): Whether to compute and return average loss. 
+
+    Returns:
+        metrics (dict): ROC-AUC and PRC-AUC scores.
+        y_true (np.ndarray): True labels.
+        y_pred (np.ndarray): Predicted labels.
+        avg_loss (float, optional): Average loss if compute_loss is True.
+    """
     model.eval()
     y_true, y_scores = [], []
 
@@ -139,8 +157,13 @@ if __name__ == '__main__':
     for k, v in vars(args).items():
         print(f'  {k}: {v}')
 
+    split_naming = 'scaff' if args.split == 'scaffold' else 'random' # for directory naming reasons
+    log_dir = f"{args.output_model_dir}/{args.dataset}_{split_naming}_{args.runseed}_{datetime.now().strftime('%d-%m_%H-%M-%S')}"
+    print("[ Logs to : ", log_dir, " ]")
+
     seed_all(args.runseed)
     device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
+    print("[ Using device : ", device, " ]")
 
     # create writers for Tensorboard
     writer = SummaryWriter(args.output_model_dir)
@@ -158,6 +181,7 @@ if __name__ == '__main__':
     if args.split == 'scaffold':
         smiles_list = pd.read_csv(dataset_folder + args.dataset + '/processed/smiles.csv',
                                   header=None)[0].tolist()
+        # We only add noise to the train_dataset  
         train_dataset, valid_dataset, test_dataset = scaffold_split(
             dataset, smiles_list, null_value=0, frac_train=args.train_prop,
             frac_valid=remaining_prop, frac_test=remaining_prop)
@@ -191,11 +215,11 @@ if __name__ == '__main__':
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size,
                              shuffle=False, num_workers=args.num_workers)
 
-    if args.output_model_dir != '' and args.config is not None:
+    if log_dir != '' and args.config is not None:
         train_args = copy.copy(args)
         config_path = args.config if isinstance(args.config, str) else args.config.name
-        train_args.config = os.path.join(args.output_model_dir, os.path.basename(config_path))
-        with open(os.path.join(args.output_model_dir, 'train_arguments.yaml'), 'w') as yaml_path:
+        train_args.config = os.path.join(log_dir, os.path.basename(config_path))
+        with open(os.path.join(log_dir, 'train_arguments.yaml'), 'w') as yaml_path:
             pyaml.dump(train_args.__dict__, yaml_path)
             
     # set up model
@@ -249,15 +273,15 @@ if __name__ == '__main__':
         if val_result['ROC'] > best_val_roc:
             best_val_roc = val_result['ROC']
             best_val_idx = epoch - 1
-            if not args.output_model_dir == '':
-                output_model_path = join(args.output_model_dir, 'model_best.pth')
+            if not log_dir == '':
+                output_model_path = join(log_dir, 'model_best.pth')
                 saved_model_dict = {
                     'molecule_model': molecule_model.state_dict(),
                     'model': model.state_dict()
                 }
                 torch.save(saved_model_dict, output_model_path)
 
-                filename = join(args.output_model_dir, 'evaluation_best.pth')
+                filename = join(log_dir, 'evaluation_best.pth')
                 np.savez(filename, val_target=val_target, val_pred=val_pred,
                          test_target=test_target, test_pred=test_pred)
                 
@@ -271,12 +295,12 @@ if __name__ == '__main__':
                 f'test: {test_result_list[best_val_idx][metric]:.6f}')
         
     # Write best validation test metrics to a .txt file
-    with open(join(args.output_model_dir, 'evaluation_test.txt'), 'w') as f:
+    with open(join(log_dir, 'evaluation_test.txt'), 'w') as f:
         f.write(f'prcauc: {test_result_list[best_val_idx]["PRC"]}\n'
                 f'rocauc: {test_result_list[best_val_idx]["ROC"]} ')
 
-    if args.output_model_dir is not '':
-        output_model_path = join(args.output_model_dir, 'model_final.pth')
+    if log_dir is not '':
+        output_model_path = join(log_dir, 'model_final.pth')
         saved_model_dict = {
             'molecule_model': molecule_model.state_dict(),
             'model': model.state_dict()
