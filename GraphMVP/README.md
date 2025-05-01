@@ -10,7 +10,7 @@ Create a docker image from the dockerfile, navigate to /Thesis/GraphMVP and run:
     docker build --tag graphmvp docker/
 Run the new image as a container, while loading this directory into the container:
 
-    docker run --gpus all --rm -it --runtime=nvidia -v $(pwd):/workspace -w /workspace graphmvp
+        docker run --gpus all --rm -it --runtime=nvidia -v $(pwd):/workspace -w /workspace graphmvp
 
 ## Downloading data from paper
 To download the dataset used in the paper run:
