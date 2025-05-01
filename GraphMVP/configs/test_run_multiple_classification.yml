@@ -2,16 +2,16 @@ output_model_dir: ../runs/del
 input_model_file: ../weights/pretrained/GraphMVP_classification.pth
 multiple_seeds:
 - 1
-#- 2
-# - 3
-# - 4
-# - 5
-# - 6
-# - 7
-# - 8
-# - 9
-# - 10
-train_prop: 0.6
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+train_prop: 0.8
 split: scaffold
 dataset: bace
-epochs: 2
+epochs: 10
