@@ -26,8 +26,8 @@ apptainer exec --nv --bind $PWD:/workspace graphmvp.sif bash -c "
     gpu_counter=0 && \
     # Loop over the different training proportions
     for noise in 0.0 0.05 0.1 0.2; do
-        config=configs_split_experiments/GraphMVP/_test/$DATASET/noise=\$noise.yml
-        gpu=\$((gpu_counter % 3))  # use 0-3 GPUs
+        config=configs_noise_experiments/GraphMVP/_test/$DATASET/noise=\$noise.yml
+        gpu=\$((gpu_counter % 4))  # use 0-4 GPUs
         echo Running RANDOM \$config on cuda:\$gpu
         python -u run_multiple.py --config=\$config --device=cuda:\$gpu &
         ((gpu_counter++))
