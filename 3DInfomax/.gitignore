@@ -93,6 +93,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# Sif files
+*.sif
+
 # Spyder project settings
 .spyderproject
 .spyproject
