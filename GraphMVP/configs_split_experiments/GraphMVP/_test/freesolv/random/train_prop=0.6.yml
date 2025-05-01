@@ -1,9 +1,0 @@
-output_model_dir: ../results/split/GraphMVP/_test/freesolv/random/train_prop=0.6
-input_model_file: ../weights/pretrained/GraphMVP_regression.pth
-multiple_seeds:
-- 1
-- 2
-train_prop: 0.6
-split: random
-dataset: freesolv
-epochs: 2

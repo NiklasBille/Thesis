@@ -1,0 +1,9 @@
+output_model_dir: ../runs/split/GraphMVP/_test/hiv/scaff/train_prop=0.8
+input_model_file: ../weights/pretrained/GraphMVP_classification.pth
+multiple_seeds:
+- 1
+- 2
+train_prop: 0.8
+split: scaffold
+dataset: hiv
+epochs: 2
