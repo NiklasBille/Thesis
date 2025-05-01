@@ -141,9 +141,6 @@ if __name__ == '__main__':
 
     seed_all(args.runseed)
     device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
-    
-    print(device)
-    sys.exit()
 
     # create writers for Tensorboard
     writer = SummaryWriter(args.output_model_dir)

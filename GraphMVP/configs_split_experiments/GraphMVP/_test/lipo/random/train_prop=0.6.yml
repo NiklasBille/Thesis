@@ -1,4 +1,4 @@
-output_model_dir: ../results/split/GraphMVP/_test/lipo/random/train_prop=0.6
+output_model_dir: ../runs/split/GraphMVP/_test/lipo/random/train_prop=0.6
 input_model_file: ../weights/pretrained/GraphMVP_regression.pth
 multiple_seeds:
 - 1
