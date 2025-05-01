@@ -1,9 +1,0 @@
-output_model_dir: ../results/split/GraphMVP/_test/bace/scaff/train_prop=0.7
-input_model_file: ../weights/pretrained/GraphMVP_classification.pth
-multiple_seeds:
-- 1
-- 2
-train_prop: 0.7
-split: scaffold
-dataset: bace
-epochs: 2
