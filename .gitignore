@@ -1,1 +1,6 @@
 QMugs/
+
+# Ignore all .sif files
+*.sif
+# Ignore all .sif files in any subdirectory
+**/*.sif
