@@ -1,7 +1,7 @@
 datasets/
 weights/pretrained/
 src_classification/__pycache__/
-results/
+runs/
 # Ignore all .pyc files
 *.pyc
 
