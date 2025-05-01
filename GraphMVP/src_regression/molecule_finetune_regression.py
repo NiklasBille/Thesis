@@ -9,6 +9,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import yaml
+from datetime import datetime
 
 sys.path.insert(0, '../src_classification')
 from os.path import join
@@ -124,7 +125,8 @@ if __name__ == '__main__':
         print(f'  {k}: {v}')
 
     split_naming = 'scaff' if args.split == 'scaffold' else 'random' # for directory naming reasons
-    log_dir = f"{args.output_model_dir}/GraphMVP_{args.dataset}_{split_naming}_{args.runseed}"
+    log_dir = f"{args.output_model_dir}/{args.dataset}_{split_naming}_{args.runseed}_{datetime.now().strftime('%d-%m_%H-%M-%S')}"
+    print("[ Logs to : ", log_dir, " ]")
 
     seed_all(args.runseed)
     device = torch.device(args.device if torch.cuda.is_available() and args.device.startswith('cuda') else 'cpu')
