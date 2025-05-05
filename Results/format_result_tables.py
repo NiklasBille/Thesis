@@ -117,9 +117,23 @@ if __name__ == '__main__':
     # datasets = ["bbbp"]
     
     # table_primary_metric, table_secondary_metric = create_table(datasets, experiment="flip-pertubation", model="3DInfomax")
-    table_primary_metric, table_secondary_metric = create_table(datasets, experiment="flip-pertubation", model="3DInfomax")
+    model = "3DInfomax"
+    #experiment = "flip-pertubation"
+    experiment = "split"
+    table_primary_metric, table_secondary_metric = create_table(datasets, experiment=experiment, model=model)
+    print("\n" + "="*80)
+    print(f"MODEL: {model} | EXPERIMENT: {experiment}")
+    print("="*80)
+
     
-    print("***PRIMARY***\n", table_primary_metric)
-    print("***SECONDARY***\n", table_secondary_metric)
+    print("\n PRIMARY METRIC TABLE")
+    print(table_primary_metric.to_string())
+
+    print("\n" + "-"*80)
+
+    print("\n SECONDARY METRIC TABLE")
+    print(table_secondary_metric.to_string())
+
+    print("\n" + "="*80 + "\n")
 
     #print(table_secondary_metric)
