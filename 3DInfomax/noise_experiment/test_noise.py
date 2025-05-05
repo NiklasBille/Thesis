@@ -96,26 +96,26 @@ def test_ogb_splits():
         
     print("All splits are equal for all datasets")
 
-def test_static_noise():
+def test_static_and_dynamic_noise():
     seed_all(0)
+    # First test static noise
     dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', noise_level=0.1, return_types=['dgl_graph', 'targets'], device='cuda:0', dynamic_noise=False)
 
-    noisy_graph = dataset[0][0]
-    noisy_graph2 = dataset[0][0]
+    noisy_graph = dataset.__getitem__(0)[0] #[0] is to get the dgl_graph
+    noisy_graph2 = dataset.__getitem__(0)[0]
     # Check if the noisy graphs are the same
-
     assert torch.equal(noisy_graph.ndata['feat'], noisy_graph2.ndata['feat']), "Noisy graphs are not the same"
-    print("Noisy graphs are the same")
-
-def test_dynamic_noise():
-    seed_all(0)
+    assert torch.equal(noisy_graph.edata['feat'], noisy_graph2.edata['feat']), "Noisy graphs are not the same"
+    
+    # Now test dynamic noise
     dataset = OGBGDatasetExtension(name='ogbg-molfreesolv', noise_level=0.1, return_types=['dgl_graph', 'targets'], device='cuda:0', dynamic_noise=True)
+    noisy_graph = dataset.__getitem__(0)[0]
+    noisy_graph2 = dataset.__getitem__(0)[0]
+    # Check if the noisy graphs are different
+    assert not torch.equal(noisy_graph.ndata['feat'], noisy_graph2.ndata['feat']), "Dynamic graphs are the same"
+    assert not torch.equal(noisy_graph.edata['feat'], noisy_graph2.edata['feat']), "Dynamic graphs are the same"
 
-    noisy_graph = dataset[0][0]
-    noisy_graph2 = dataset[0][0]
-    # Check if the noisy graphs are the same
-    assert torch.equal(noisy_graph.ndata['feat'], noisy_graph2.ndata['feat']), "Noisy graphs are not the same"
-    print("Noisy graphs are the same")
+    print("Static and dynamic noise tests passed.")
 
 if __name__ == '__main__':
     # noise = test_noise_distribution()
@@ -124,8 +124,7 @@ if __name__ == '__main__':
 
     # test_ogb_splits()
     # test_noise_distribution_for_all_datasets()
-    test_static_noise()
-    test_dynamic_noise()
+    test_static_and_dynamic_noise()
 
     
 
