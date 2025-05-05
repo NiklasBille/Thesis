@@ -2,5 +2,5 @@ bace
 bbbp
 clintox
 esol
-fresolv
+freesolv
 sider

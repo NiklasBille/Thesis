@@ -24,7 +24,7 @@ apptainer exec --nv --bind $PWD:/workspace graphmvp.sif bash -c "
     conda activate GraphMVP
     gpu_counter=0 && \
     for prop in 0.6 0.7 0.8; do
-        config=configs_split_experiments/GraphMVP/_test/$DATASET/random/train_prop=\$prop.yml
+        config=configs_split_experiments/GraphMVP/$DATASET/random/train_prop=\$prop.yml
         gpu=\$((gpu_counter % 3))
         echo Running RANDOM \$config on cuda:\$gpu
         python -u run_multiple.py --config=\$config --device=cuda:\$gpu &
