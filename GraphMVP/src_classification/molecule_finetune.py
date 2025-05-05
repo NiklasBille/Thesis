@@ -173,7 +173,10 @@ if __name__ == '__main__':
     dataset_folder = '../datasets/molecule_datasets/'
     dataset = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset)
     if args.noise_level > 0:
-        dataset_noise = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset, noise_level=args.noise_level)
+        dataset_noise = MoleculeDataset(dataset_folder + args.dataset, 
+                                        dataset=args.dataset, 
+                                        noise_level=args.noise_level, 
+                                        dynamic_noise=args.dynamic_noise)
     print(dataset)
 
     remaining_prop = (1-args.train_prop)/2

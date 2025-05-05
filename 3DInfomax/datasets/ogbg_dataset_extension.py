@@ -32,14 +32,14 @@ class OGBGDatasetExtension(GraphPropPredDataset):
             self.add_static_noise()
 
     def add_static_noise(self):
+        # Define noise injector
+        noise_injector = FeatureNoiseInjector(
+            dataset_name=self.name,
+            noise_probability=self.noise_level,
+            device=torch.device(self.device)
+        )
         # Add noise to all dgl_graphs
         for idx in range(len(self.graphs)):
-            # Define noise injector
-            noise_injector = FeatureNoiseInjector(
-                dataset_name=self.name,
-                noise_probability=self.noise_level,
-                device=torch.device(self.device)
-            )
             # Apply noise to node features
             tensor_node_feat = torch.tensor(self.graphs[idx]['node_feat']).to(self.device)
             noisy_atom_features = noise_injector.apply_noise(tensor_node_feat, feature_type='node')

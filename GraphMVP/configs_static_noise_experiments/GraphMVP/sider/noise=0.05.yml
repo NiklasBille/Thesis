@@ -1,0 +1,12 @@
+output_model_dir: ../runs/static-noise/GraphMVP/sider/noise=0.05
+input_model_file: ../weights/pretrained/GraphMVP_classification.pth
+multiple_seeds:
+- 1
+- 2
+- 3
+dataset: sider
+noise_level: 0.05
+dynamic_noise: False
+epochs: 1000
+patience: 35
+minimum_epochs: 120

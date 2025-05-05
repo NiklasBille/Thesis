@@ -18,6 +18,7 @@ parser.add_argument('--num_workers', type=int, default=0) # Used to be 8, but ca
 
 # about noise experiment
 parser.add_argument('--noise_level', type=float, default=0.0)
+parser.add_argument('--dynamic_noise', type=bool, default=True, help='Specifies if the noise level should be dynamic or static')
 
 # about split experiment
 parser.add_argument('--train_prop', type=float, default=0.8, choices=[0.6, 0.7, 0.8], help='Specifies the proportion of data in the train set')

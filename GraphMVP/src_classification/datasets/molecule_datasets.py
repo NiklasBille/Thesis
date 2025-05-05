@@ -227,7 +227,7 @@ def create_standardized_mol_id(smiles):
 
 class MoleculeDataset(InMemoryDataset):
     def __init__(self, root, dataset='zinc250k', transform=None,
-                 pre_transform=None, pre_filter=None, empty=False, force_reload=False, noise_level=0.0):
+                 pre_transform=None, pre_filter=None, empty=False, force_reload=False, noise_level=0.0, dynamic_noise=True):
 
         self.root = root
         self.dataset = dataset
@@ -235,6 +235,7 @@ class MoleculeDataset(InMemoryDataset):
         self.pre_filter = pre_filter
         self.pre_transform = pre_transform
         self.noise_level = noise_level
+        self.dynamic_noise = dynamic_noise
 
         # Since some datasets does not have the correct features when downloading,
         # we wanna ensure we can process the dataset correctly
@@ -247,6 +248,20 @@ class MoleculeDataset(InMemoryDataset):
             self.data, self.slices = torch.load(self.processed_paths[0])
         print('Dataset: {}\nData: {}'.format(self.dataset, self.data))
 
+    
+        if not self.dynamic_noise and self.noise_level > 0:
+            # Define noise injector
+            noise_injector = FeatureNoiseInjector(
+                dataset_name=self.dataset,
+                noise_probability=self.noise_level
+            )
+            # Apply noise to node features
+            self.data.x = noise_injector.apply_noise(features_tensor=self.data.x, feature_type='node')
+            # Apply noise to edge features
+            self.data.edge_attr = noise_injector.apply_noise(features_tensor=self.data.edge_attr, feature_type='edge')
+
+
+
     def get(self, idx):
         data = Data()
         for key in self.data.keys:
@@ -254,7 +269,7 @@ class MoleculeDataset(InMemoryDataset):
             s = list(repeat(slice(None), item.dim()))
             s[data.__cat_dim__(key, item)] = slice(slices[idx], slices[idx + 1])
             data[key] = item[s]
-        if self.noise_level > 0:
+        if self.noise_level > 0 and self.dynamic_noise :
             noise_injector = FeatureNoiseInjector(
                 dataset_name=self.dataset,
                 noise_probability=self.noise_level
