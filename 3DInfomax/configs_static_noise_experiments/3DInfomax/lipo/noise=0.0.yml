@@ -1,0 +1,67 @@
+experiment_name: 3DInfomax_lipo_static_noise=0.0
+logdir: runs/static_noise/3DInfomax/lipo/noise=0.0
+multiple_seeds:
+- 1
+- 2
+- 3
+pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
+transfer_layers:
+- gnn.
+dataset: ogbg-mollipo
+noise_level: 0.0
+dynamic_noise: False
+num_epochs: 1000
+batch_size: 30
+log_iterations: 30
+patience: 40
+minimum_epochs: 120
+loss_func: L1Loss
+required_data:
+- dgl_graph
+- targets
+metrics:
+- mae
+- rmse
+optimizer: Adam
+optimizer_params:
+  lr: 0.001
+scheduler_step_per_batch: False
+lr_scheduler: WarmUpWrapper
+lr_scheduler_params:
+  warmup_steps: [700, 700, 350]
+  interpolation: linear
+  wrapped_scheduler: ReduceLROnPlateau
+  factor: 0.5
+  patience: 25
+  min_lr: 1.0e-06
+  mode: min
+  verbose: True
+model_type: PNA
+model_parameters:
+  target_dim: 1
+  hidden_dim: 200
+  mid_batch_norm: True
+  last_batch_norm: True
+  readout_batchnorm: True
+  batch_norm_momentum: 0.1
+  readout_hidden_dim: 200
+  readout_layers: 2
+  dropout: 0.0
+  propagation_depth: 7
+  aggregators:
+  - mean
+  - max
+  - min
+  - std
+  scalers:
+  - identity
+  - amplification
+  - attenuation
+  readout_aggregators:
+  - min
+  - max
+  - mean
+  - sum
+  pretrans_layers: 2
+  posttrans_layers: 1
+  residual: True

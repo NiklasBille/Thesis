@@ -9,7 +9,7 @@ from torch.utils.data import Subset
 from noise_experiment.feature_noise_injector import FeatureNoiseInjector
 
 class OGBGDatasetExtension(GraphPropPredDataset):
-    def __init__(self, return_types, name, device, noise_level=0.0, root='dataset', meta_dict=None, num_freq=10):
+    def __init__(self, return_types, name, device, noise_level=0.0, dynamic_noise=True, root='dataset', meta_dict=None, num_freq=10):
         super(OGBGDatasetExtension, self).__init__(name=name, root=root, meta_dict=meta_dict)
         '''
             - name (str): name of the dataset
@@ -24,8 +24,36 @@ class OGBGDatasetExtension(GraphPropPredDataset):
         self.pos_enc = {}
         self.num_freq = num_freq
         self.noise_level = noise_level
+        self.dynamic_noise = dynamic_noise
         self.device = device
         self.labels = torch.tensor(self.labels)
+
+        if not self.dynamic_noise and noise_level > 0.0:
+            self.add_static_noise()
+
+    def add_static_noise(self):
+        # Add noise to all dgl_graphs
+        for idx in range(len(self.graphs)):
+            # Define noise injector
+            noise_injector = FeatureNoiseInjector(
+                dataset_name=self.name,
+                noise_probability=self.noise_level,
+                device=torch.device(self.device)
+            )
+            # Apply noise to node features
+            tensor_node_feat = torch.tensor(self.graphs[idx]['node_feat']).to(self.device)
+            noisy_atom_features = noise_injector.apply_noise(tensor_node_feat, feature_type='node')
+            # Apply noise to edge features
+            tensor_edge_feat = torch.tensor(self.graphs[idx]['edge_feat']).to(self.device)
+            noisy_edge_features = noise_injector.apply_noise(tensor_edge_feat, feature_type='edge')
+
+            # Create noisy graph
+            noisy_graph = self.get_graph(idx)
+            noisy_graph = noisy_graph.to(self.device)
+            noisy_graph.ndata['feat'] = noisy_atom_features
+            noisy_graph.edata['feat'] = noisy_edge_features
+            self.dgl_graphs[idx] = noisy_graph
+        
 
     def get_all_indices(self):
         split_idx = self.get_idx_split()
@@ -41,7 +69,7 @@ class OGBGDatasetExtension(GraphPropPredDataset):
 
     def data_by_type(self, idx, return_type):
         if return_type == 'dgl_graph':  
-            if self.noise_level > 0.0:
+            if self.noise_level > 0.0 and self.dynamic_noise:
                 # Define noise injector
                 noise_injector = FeatureNoiseInjector(
                     dataset_name=self.name,

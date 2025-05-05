@@ -163,6 +163,7 @@ def parse_arguments():
     p.add_argument('--reuse_pre_train_data', type=bool, default=False, help='use all data instead of ignoring that used during pre-training')
     p.add_argument('--transfer_3d', type=bool, default=False, help='set true to load the 3d network instead of the 2d network')
     p.add_argument('--noise_level', type=float, default=0.0, help='Specifies the noise level for the noise injection')
+    p.add_argument('--dynamic_noise', type=bool, default=True, help='Specifies if the noise level should be dynamic or static')
     p.add_argument('--train_prop', type=float, default=0.8, choices=[0.6, 0.7, 0.8], help='Specifies the proportion of data in the train set')
     return p.parse_args()
 
@@ -442,7 +443,10 @@ def train_ogbg(args, device, metrics_dict):
     dataset = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset)
     # Need to define a noisy dataset to introduce noise in the training data (splits are equal)
     if args.noise_level > 0:
-        dataset_noise = OGBGDatasetExtension(return_types=args.required_data, device=device, name=args.dataset, noise_level=args.noise_level)
+        dataset_noise = OGBGDatasetExtension(return_types=args.required_data, 
+                                             device=device, name=args.dataset, 
+                                             noise_level=args.noise_level, 
+                                             dynamic_noise=args.dynamic_noise)
 
     if args.force_random_split == False:
         split_idx = scaffold_split(args.dataset, frac_train=args.train_prop)
