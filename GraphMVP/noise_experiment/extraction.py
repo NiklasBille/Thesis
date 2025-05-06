@@ -1,8 +1,10 @@
 import sys
 import os
+
+# from src_regression.datasets_complete_feature.molecule_datasets import MoleculeDatasetComplete
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-
+from src_regression.datasets_complete_feature.molecule_datasets import MoleculeDatasetComplete
 from src_classification.datasets.molecule_datasets import MoleculeDataset
 import torch
 from collections import defaultdict
@@ -50,8 +52,16 @@ def extract_feature_values(dataset, dataset_name, save=True):
     
 
 def extract_from_all_datasets():
-    dataset_names = ['tox21', 'hiv', 'bace', 'bbbp', 'clintox', 'muv', 'sider', 'toxcast', 'lipophilicity', 'freesolv', 'esol']
-    for name in dataset_names:
+    dataset_regression_names = ['freesolv', 'lipophilicity', 'esol']
+    dataset_classification_names = ['tox21', 'hiv', 'bace', 'bbbp', 'clintox', 'sider', 'toxcast']
+    
+    for name in dataset_regression_names:
+        dataset_folder = 'datasets/molecule_datasets'
+        dataset_folder = os.path.join(dataset_folder, name)
+        dataset = MoleculeDatasetComplete(dataset_folder, dataset=name)
+        extract_feature_values(dataset, name, save=True)
+        print('Done with dataset:', name)
+    for name in dataset_classification_names:
         dataset_folder = 'datasets/molecule_datasets'
         dataset_folder = os.path.join(dataset_folder, name)
         dataset = MoleculeDataset(dataset_folder, dataset=name)
@@ -59,11 +69,11 @@ def extract_from_all_datasets():
         print('Done with dataset:', name)
 
 if __name__ == '__main__':
-    # extract_from_all_datasets()
-    node_features_freesolv = load_features('noise_experiment/feature_values/freesolv_node_features.pkl')
-    edge_features_freesolv = load_features('noise_experiment/feature_values/freesolv_edge_features.pkl')
-    print('Node features (freesolv):', node_features_freesolv)
-    print('Edge features (freesolv):', edge_features_freesolv)
+    extract_from_all_datasets()
+    # node_features_freesolv = load_features('noise_experiment/feature_values/hiv_node_features.pkl')
+    # edge_features_freesolv = load_features('noise_experiment/feature_values/hiv_edge_features.pkl')
+    # print('Node features (hiv):', node_features_freesolv)
+    # print('Edge features (hiv):', edge_features_freesolv)
     # extract_feature_values(MoleculeDataset("datasets/molecule_datasets/freesolv", dataset='freesolv'), 'freesolv', save=True)
 
     
