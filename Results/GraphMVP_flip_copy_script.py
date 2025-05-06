@@ -1,8 +1,8 @@
 import os
 import shutil
 
-base_root = "GraphMVP/runs/noise/GraphMVP"
-target_root = "Results/flip-pertubation/GraphMVP"
+base_root = "GraphMVP/runs/static-noise/GraphMVP"
+target_root = "Results/static-noise/GraphMVP"
 
 # Metrics to extract
 allowed_metrics = {"mae", "rmse", "prcauc", "rocauc"}
