@@ -1,0 +1,206 @@
+batch_size: 500
+
+checkpoint:
+
+collate_function: conformer_collate
+
+collate_params: {}
+
+config: runs/pre-train_3DInfomax_smaller_model/PNA_drugs_NTXentMultiplePositives_140000_drugs_123_06-05_13-47-31/pre-train_3DInfomax_GEOM-Drugs_smaller_model.yml
+
+critic_loss: MSELoss
+
+critic_loss_params: {}
+
+critic_parameters:
+
+critic_type:
+
+dataset: drugs
+
+device: cuda:1
+
+dist_embedding: no
+
+dynamic_noise: yes
+
+eval_on_test: yes
+
+eval_per_epochs: 0
+
+exclude_from_transfer: []
+
+expensive_log_iterations: 100
+
+experiment_name: NTXentMultiplePositives_140000_drugs
+
+force_random_split: no
+
+frozen_layers: []
+
+linear_probing_samples: 500
+
+log_iterations: 50
+
+logdir: runs/pre-train_3DInfomax_smaller_model
+
+loss_func: NTXentMultiplePositives
+
+loss_params:
+  tau: 0.1
+
+lr_scheduler: WarmUpWrapper
+
+lr_scheduler_params:
+  cooldown: 20
+  factor: 0.6
+  min_lr: 1.0e-06
+  mode: min
+  patience: 25
+  threshold: 0.0001
+  verbose: yes
+  warmup_steps:
+    - 700
+  wrapped_scheduler: ReduceLROnPlateau
+
+main_metric: loss
+
+main_metric_goal: min
+
+metrics:
+  - positive_similarity
+  - negative_similarity
+  - contrastive_accuracy
+  - true_negative_rate
+  - true_positive_rate
+  - uniformity
+  - alignment
+  - batch_variance
+  - dimension_covariance
+
+minimum_epochs: 0
+
+model3d_parameters:
+  batch_norm: yes
+  batch_norm_momentum: 0.93
+  dropout: 0.0
+  fourier_encodings: 4
+  hidden_dim: 20
+  hidden_edge_dim: 20
+  message_net_layers: 1
+  node_wise_output_layers: 0
+  propagation_depth: 1
+  readout_aggregators:
+    - min
+    - max
+    - mean
+  readout_batchnorm: yes
+  readout_hidden_dim: 20
+  readout_layers: 1
+  reduce_func: mean
+  target_dim: 256
+  update_net_layers: 1
+
+model3d_type: Net3D
+
+model_parameters:
+  aggregators:
+    - mean
+    - max
+    - min
+    - std
+  batch_norm_momentum: 0.93
+  dropout: 0.0
+  hidden_dim: 50
+  last_batch_norm: yes
+  mid_batch_norm: yes
+  posttrans_layers: 1
+  pretrans_layers: 2
+  propagation_depth: 3
+  readout_aggregators:
+    - min
+    - max
+    - mean
+  readout_batchnorm: yes
+  readout_hidden_dim: 50
+  readout_layers: 2
+  residual: yes
+  scalers:
+    - identity
+    - amplification
+    - attenuation
+  target_dim: 256
+
+model_type: PNA
+
+models_to_save:
+  - 5
+  - 10
+  - 20
+  - 35
+  - 50
+  - 65
+  - 80
+  - 100
+  - 125
+  - 150
+  - 200
+  - 300
+  - 400
+
+multiple_seeds: []
+
+noise_level: 0.0
+
+num_conformers: 5
+
+num_epochs: 1000
+
+num_epochs_local_only: 1
+
+num_radial: 6
+
+num_train: 140000
+
+num_val:
+
+optimizer: Adam
+
+optimizer_params:
+  lr: 8.0e-05
+
+patience: 35
+
+pretrain_checkpoint:
+
+required_data:
+  - dgl_graph
+  - conformations
+
+reuse_pre_train_data: no
+
+scheduler_step_per_batch: no
+
+seed: 123
+
+seed_data: 123
+
+targets: []
+
+tensorboard_functions: []
+
+train_prop: 0.8
+
+train_sampler:
+
+trainer: contrastive
+
+transfer_3d: no
+
+transfer_layers: []
+
+transferred_lr:
+
+use_e_features: yes
+
+val_per_batch: yes
