@@ -6,14 +6,14 @@ multiple_seeds:
 - 3
 train_prop: 0.6
 force_random_split: False
-pretrain_checkpoint: runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt
+pretrain_checkpoint: runs/PNA_3DInfomax_drugs_smaller/best_checkpoint.pt
 transfer_layers:
 - gnn.
 dataset: ogbg-molhiv
 num_epochs: 1000
 batch_size: 30
 log_iterations: 30
-patience: 40
+patience: 60
 minimum_epochs: 120
 loss_func: BCEWithLogitsLoss
 required_data:
@@ -39,15 +39,15 @@ lr_scheduler_params:
 model_type: PNA
 model_parameters:
   target_dim: 1
-  hidden_dim: 200
+  hidden_dim: 50
   mid_batch_norm: True
   last_batch_norm: True
   readout_batchnorm: True
   batch_norm_momentum: 0.1
-  readout_hidden_dim: 200
+  readout_hidden_dim: 50
   readout_layers: 2
   dropout: 0.0
-  propagation_depth: 7
+  propagation_depth: 3
   aggregators:
   - mean
   - max

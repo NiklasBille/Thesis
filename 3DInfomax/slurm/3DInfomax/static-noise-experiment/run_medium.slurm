@@ -1,16 +1,16 @@
 #!/bin/bash -l
 #SBATCH --account p200709
-#SBATCH --time 06:00:00
+#SBATCH --time 09:00:00
 #SBATCH --partition gpu
 #SBATCH --qos default
 #SBATCH --nodes 1
-#SBATCH --gpus-per-node 4
+#SBATCH --job-name=ds_test_%A_%a
 
 # Load Apptainer
 module load Apptainer/1.3.4-GCCcore-13.3.0
 
-
-DATASET=toxcast
+# Get dataset name from array index
+DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/3DInfomax/medium_datasets.txt)
 echo ">>> Starting run for dataset: $DATASET"
 
 # Pull the image if not already present
@@ -22,13 +22,12 @@ fi
 apptainer exec --nv --bind $PWD:/workspace 3dinfomax-complete.sif bash -c "
     cd /workspace && \
     gpu_counter=0 && \
-    # Loop over the different training proportions
-    for prop in 0.6 0.7 0.8; do
-        config=configs_split_experiments/3DInfomax/$DATASET/scaff/train_prop=\$prop.yml
-        gpu=\$((gpu_counter % 3))  # use 0-3 GPUs
-        echo Running SCAFF \$config on cuda:\$gpu
-        python -u run_multiple.py --config=\$config --device=cuda:\$gpu &
+    for noise in 0.0 0.05 0.1 0.2; do
+        config=configs_static_noise_experiments/3DInfomax/$DATASET/noise=\$noise.yml
+        gpu=\$((gpu_counter % 4))
+        echo Running \$config on cuda:\$gpu
+        python run_multiple.py --config=\$config --device=cuda:\$gpu &
         ((gpu_counter++))
-    done
-    wait  # Wait for all scaff runs to finish
+    done && \
+    wait
 "

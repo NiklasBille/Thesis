@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #SBATCH --account p200709
-#SBATCH --time 06:00:00
+#SBATCH --time 05:00:00
 #SBATCH --partition gpu
 #SBATCH --qos default
 #SBATCH --nodes 1
@@ -9,8 +9,8 @@
 # Load Apptainer
 module load Apptainer/1.3.4-GCCcore-13.3.0
 
-
-DATASET=toxcast
+# Get dataset name from array index
+DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/3DInfomax/medium_datasets.txt)
 echo ">>> Starting run for dataset: $DATASET"
 
 # Pull the image if not already present

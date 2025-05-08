@@ -39,24 +39,24 @@ def create_config(dataset, train_prop, split_type):
     force_random_split = True if split_type == 'random' else False
     return {
         'experiment_name': f'3DInfomax_{dataset}_{split_type}={train_prop}',
-        'logdir': f'runs/split/3DInfomax/{dataset}/{split_type}/train_prop={train_prop}', # remove test/ for actual runs
-        'multiple_seeds': [1, 2, 3], # for testing, change to [1, 2, 3]
+        'logdir': f'runs/split/3DInfomax/{dataset}/{split_type}/train_prop={train_prop}',
+        'multiple_seeds': [1, 2, 3], 
         'train_prop': train_prop, 
         'force_random_split': force_random_split,
-        'pretrain_checkpoint': 'runs/PNA_qmugs_NTXentMultiplePositives_620000_123_25-08_09-19-52/best_checkpoint_35epochs.pt',
+        'pretrain_checkpoint': 'runs/PNA_3DInfomax_drugs_smaller/best_checkpoint.pt',
         'transfer_layers': ['gnn.'],
         'dataset': f'ogbg-mol{dataset}',
-        'num_epochs': 1000, # Set to 2 for testing, change to 1000 for actual runs
+        'num_epochs': 1000,
         'batch_size': batch_size,
         'log_iterations': 30,
-        'patience': 40,
+        'patience': 60,
         'minimum_epochs': 120,
         'loss_func': loss_func,
         'required_data': ['dgl_graph', 'targets'],
         'metrics': ['prcauc', 'rocauc'],
         'optimizer': 'Adam',
         'optimizer_params': {
-            'lr': 1.0e-3
+            'lr': 0.001
         },
         'scheduler_step_per_batch': False,
         'lr_scheduler': 'WarmUpWrapper',
@@ -66,22 +66,22 @@ def create_config(dataset, train_prop, split_type):
             'wrapped_scheduler': 'ReduceLROnPlateau',
             'factor': 0.5,
             'patience': 25,
-            'min_lr': 1.0e-6,
+            'min_lr': 0.000001,
             'mode': 'min',
             'verbose': True
         },
         'model_type': 'PNA',
         'model_parameters': {
             'target_dim': tasks,
-            'hidden_dim': 200,
+            'hidden_dim': 50,
             'mid_batch_norm': True,
             'last_batch_norm': True,
             'readout_batchnorm': True,
             'batch_norm_momentum': 0.1,
-            'readout_hidden_dim': 200,
+            'readout_hidden_dim': 50,
             'readout_layers': 2,
             'dropout': 0.0,
-            'propagation_depth': 7,
+            'propagation_depth': 3,
             'aggregators': ['mean', 'max', 'min', 'std'],
             'scalers': ['identity', 'amplification', 'attenuation'],
             'readout_aggregators': ['min', 'max', 'mean', 'sum'],
