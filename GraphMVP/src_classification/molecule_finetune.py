@@ -246,6 +246,7 @@ if __name__ == '__main__':
     criterion = nn.BCEWithLogitsLoss(reduction='none')
     
     train_result_list, val_result_list, test_result_list = [], [], []
+    train_loss_list, val_loss_list, test_loss_list = [], [], []
     metric_list = ['ROC', 'PRC']
     best_val_roc, best_val_idx = -1, 0
 
@@ -269,6 +270,10 @@ if __name__ == '__main__':
         train_result_list.append(train_result)
         val_result_list.append(val_result)
         test_result_list.append(test_result)
+
+        train_loss_list.append(loss_acc)
+        val_loss_list.append(val_loss)
+        test_loss_list.append(test_loss)
 
         for metric in metric_list:
             print('{} train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(metric, train_result[metric], val_result[metric], test_result[metric]))
@@ -307,8 +312,19 @@ if __name__ == '__main__':
     # Write best validation test metrics to a .txt file
     with open(join(log_dir, 'evaluation_test.txt'), 'w') as f:
         f.write(f'prcauc: {test_result_list[best_val_idx]["PRC"]}\n'
-                f'rocauc: {test_result_list[best_val_idx]["ROC"]} ')
+                f'rocauc: {test_result_list[best_val_idx]["ROC"]}\n'
+                f'loss: {test_loss_list[best_val_idx]}')
+        
+    with open(join(log_dir, 'evaluation_train.txt'), 'w') as f:
+        f.write(f'prcauc: {train_result_list[best_val_idx]["PRC"]}\n'
+                f'rocauc: {train_result_list[best_val_idx]["ROC"]}\n'
+                f'loss: {train_loss_list[best_val_idx]}')
 
+    with open(join(log_dir, 'evaluation_val.txt'), 'w') as f:
+        f.write(f'prcauc: {val_result_list[best_val_idx]["PRC"]}\n'
+                f'rocauc: {val_result_list[best_val_idx]["ROC"]}\n'
+                f'loss: {val_loss_list[best_val_idx]}')
+        
     if log_dir is not '':
         output_model_path = join(log_dir, 'model_final.pth')
         saved_model_dict = {

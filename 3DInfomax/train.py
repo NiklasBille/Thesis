@@ -481,7 +481,8 @@ def train_ogbg(args, device, metrics_dict):
     val_metrics = trainer.train(train_loader, val_loader, test_loader)
     if args.eval_on_test:
         test_metrics = trainer.evaluation(test_loader, data_split='test')
-        return val_metrics, test_metrics, trainer.writer.log_dir
+        train_metrics = trainer.evaluation(train_loader, data_split='train')
+        return val_metrics, test_metrics, train_metrics, trainer.writer.log_dir
     return val_metrics
 
 
