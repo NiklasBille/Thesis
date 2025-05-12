@@ -5,7 +5,7 @@ base_root = "GraphMVP/runs/static-noise/GraphMVP"
 target_root = "Results/static-noise/GraphMVP"
 
 # Metrics to extract
-allowed_metrics = {"mae", "rmse", "prcauc", "rocauc"}
+allowed_metrics = {"mae", "rmse", "prcauc", "rocauc", "loss"}
 
 # Walk through all datasets
 for dataset in os.listdir(base_root):
@@ -45,8 +45,43 @@ for dataset in os.listdir(base_root):
                             filtered_lines.append(line)
 
                 if filtered_lines:
-                    with open(os.path.join(seed_folder, "evaluation_test.txt"), "w") as out_f:
-                        out_f.writelines(filtered_lines)
+                    with open(os.path.join(seed_folder, "evaluation.txt"), "w") as out_f:
+                        for line in filtered_lines:
+                            out_f.write(f'test_{line}')
+                        out_f.write("\n")
+
+            # Filter and copy evaluation_train.txt
+            train_path = os.path.join(folder_path, "evaluation_train.txt")
+            if os.path.exists(train_path):
+                filtered_lines = []
+                with open(train_path, "r") as f:
+                    for line in f:
+                        key = line.split(":")[0].strip()
+                        if key in allowed_metrics:
+                            filtered_lines.append(line)
+
+                if filtered_lines:
+                    # Append
+                    with open(os.path.join(seed_folder, "evaluation.txt"), "a") as out_f:
+                        for line in filtered_lines:
+                            out_f.write(f'train_{line}')
+                        out_f.write("\n")
+
+            # Filter and copy evaluation_val.txt
+            val_path = os.path.join(folder_path, "evaluation_val.txt")
+            if os.path.exists(val_path):
+                filtered_lines = []
+                with open(val_path, "r") as f:
+                    for line in f:
+                        key = line.split(":")[0].strip()
+                        if key in allowed_metrics:
+                            filtered_lines.append(line)
+
+                if filtered_lines:
+                    # Append
+                    with open(os.path.join(seed_folder, "evaluation.txt"), "a") as out_f:
+                        for line in filtered_lines:
+                            out_f.write(f'val_{line}')
 
             # Copy events file if present
             for fname in os.listdir(folder_path):
