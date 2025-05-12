@@ -122,15 +122,27 @@ if __name__ == '__main__':
     parser.add_argument('--model', required=True, choices=["3DInfomax", "GraphMVP", "GraphCL"], help="Model name")
     parser.add_argument('--experiment', required=True, choices=["static-noise", "split"], help="Experiment type")
     parser.add_argument('--partition', required=True, choices=["train", "val", "test"], help="Data partition")
+    parser.add_argument('--print_decimals', default=3, type=int, help="How many decimals to print")
     args = parser.parse_args()
 
     datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "tox21", "toxcast"]
     table_primary_metric, table_secondary_metric = create_table(datasets, experiment=args.experiment, model=args.model, partition=args.partition)
+    
+    for df in [table_primary_metric, table_secondary_metric]:
+        # Get all columns except 'metric'
+        value_columns = df.columns.drop("metric")
+        
+        # Convert those columns to float and round them
+        df[value_columns] = (
+            df[value_columns]
+            .apply(pd.to_numeric, errors="coerce")  # safely convert to float
+            .round(decimals=args.print_decimals)  # round to 2 decimals
+        )
+
     print("\n" + "="*80)
     print(f"MODEL: {args.model} | EXPERIMENT: {args.experiment} | PARITION: {args.partition}")
     print("="*80)
 
-    
     print("\n PRIMARY METRIC TABLE")
     print(table_primary_metric.to_string())
 
@@ -138,7 +150,5 @@ if __name__ == '__main__':
 
     print("\n SECONDARY METRIC TABLE")
     print(table_secondary_metric.to_string())
-
+     
     print("\n" + "="*80 + "\n")
-
-    #print(table_secondary_metric)
