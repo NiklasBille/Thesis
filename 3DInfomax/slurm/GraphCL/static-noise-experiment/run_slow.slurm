@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #SBATCH --account p200709
-#SBATCH --time 2:00:00
+#SBATCH --time 36:00:00
 #SBATCH --partition gpu
 #SBATCH --qos default
 #SBATCH --nodes 1
@@ -10,7 +10,7 @@
 module load Apptainer/1.3.4-GCCcore-13.3.0
 
 # Get dataset name from array index
-DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/GraphCL/fast_datasets.txt)
+DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/GraphCL/slow_datasets.txt)
 echo ">>> Starting run for dataset: $DATASET"
 
 # Pull the image if not already present

@@ -1,10 +1,10 @@
 #!/bin/bash -l
 #SBATCH --account p200709
-#SBATCH --time 2:00:00
+#SBATCH --time 02:00:00
 #SBATCH --partition gpu
 #SBATCH --qos default
 #SBATCH --nodes 1
-#SBATCH --job-name=ds_test_%A_%a
+#SBATCH --gpus-per-node 4
 
 # Load Apptainer
 module load Apptainer/1.3.4-GCCcore-13.3.0
@@ -22,12 +22,13 @@ fi
 apptainer exec --nv --bind $PWD:/workspace 3dinfomax-complete.sif bash -c "
     cd /workspace && \
     gpu_counter=0 && \
-    for noise in 0.0 0.05 0.1 0.2; do
-        config=configs_static_noise_experiments/GraphCL/$DATASET/noise=\$noise.yml
-        gpu=\$((gpu_counter % 4))
-        echo Running \$config on cuda:\$gpu
-        python run_multiple.py --config=\$config --device=cuda:\$gpu &
+    # Loop over the different training proportions
+    for prop in 0.6 0.7 0.8; do
+        config=configs_split_experiments/GraphCL/$DATASET/scaff/train_prop=\$prop.yml
+        gpu=\$((gpu_counter % 3))  # use 0-3 GPUs
+        echo Running SCAFF \$config on cuda:\$gpu
+        python -u run_multiple.py --config=\$config --device=cuda:\$gpu &
         ((gpu_counter++))
-    done && \
-    wait
+    done
+    wait  # Wait for all scaff runs to finish
 "
