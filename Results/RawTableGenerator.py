@@ -22,8 +22,6 @@ class RawTableGenerator:
         if self.model not in self.allowed_models:
             raise ValueError(f"Invalid model '{self.model}'. Must be one of {self.allowed_models}")
         
-        if self.partition not in self.allowed_partitions:
-            raise ValueError(f"Invalid partition '{self.partition}'. Must be one of {self.allowed_partitions}")
         
     def get_dataset_task_type(self, dataset):
         dataset_task_types = {
@@ -137,7 +135,7 @@ class RawTableGenerator:
                     continue # Skip computations if no evaluation file exists
 
                 if experiment == "split":
-                    sub_experiment_key = tuple(sub_experiment.split("\\")) # In split we have scaff/train_prop=0.8 etc
+                    sub_experiment_key = tuple(os.path.normpath(sub_experiment).split(os.sep)) # In split we have scaff/train_prop=0.8 etc
                 else:
                     sub_experiment_key = (sub_experiment,)                 # In perturbation we have noise=0.05 etc
                 # Insert values in both tables
