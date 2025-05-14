@@ -3,12 +3,11 @@ import pandas as pd
 import os
 
 class RawTableGenerator:
-    def __init__(self, model, experiment, parition, decimals=None, secondary_metric=None):
+    def __init__(self, model, experiment, partition, decimals=None):
         self.model = model
         self.experiment = experiment
-        self.partition = parition
+        self.partition = partition
         self.decimals = decimals
-        self.secondary_metric = secondary_metric
         self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
         self.allowed_experiments = ["noise", "split"]
         self.allowed_models = ["3DInfomax", "GraphMVP", "GraphCL"]
