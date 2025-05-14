@@ -29,7 +29,7 @@ def get_task_type_metrics(task_type):
 
 
 def create_table(datasets, experiment=None, model=None, partition=None):
-    allowed_experiments = ["static-noise", "split"]
+    allowed_experiments = ["noise", "split"]
     if experiment not in allowed_experiments:
         raise ValueError(f"Invalid experiment '{experiment}'. Must be one of {allowed_experiments}")
     
@@ -41,7 +41,7 @@ def create_table(datasets, experiment=None, model=None, partition=None):
     if partition not in allowed_partitions:
         raise ValueError(f"Invalid partition '{partition}'. Must be one of {allowed_partitions}")
     
-    if experiment == "static-noise":
+    if experiment == "noise":
         possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
         columns = pd.MultiIndex.from_product(
             [possible_sub_experiments, ["mean", "std"]],
@@ -64,7 +64,7 @@ def create_table(datasets, experiment=None, model=None, partition=None):
 
     for dataset in datasets:
         path_to_sub_experiments = os.path.join("Results", experiment, model, dataset)
-        if experiment == "static-noise":
+        if experiment == "noise":
             sub_experiments = os.listdir(path_to_sub_experiments)
         else:
             sub_experiments = []
@@ -120,7 +120,7 @@ def create_table(datasets, experiment=None, model=None, partition=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate metric tables for experiments.")
     parser.add_argument('--model', required=True, choices=["3DInfomax", "GraphMVP", "GraphCL"], help="Model name")
-    parser.add_argument('--experiment', required=True, choices=["static-noise", "split"], help="Experiment type")
+    parser.add_argument('--experiment', required=True, choices=["noise", "split"], help="Experiment type")
     parser.add_argument('--partition', required=True, choices=["train", "val", "test"], help="Data partition")
     parser.add_argument('--print_decimals', default=3, type=int, help="How many decimals to print")
     args = parser.parse_args()
