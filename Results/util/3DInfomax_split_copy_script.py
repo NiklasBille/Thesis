@@ -5,8 +5,8 @@ base_root = "3DInfomax/runs/split/3DInfomax"
 target_root = "Results/split/3DInfomax"
 
 # Metrics to extract
-allowed_metrics = {"mae", "rmse", "prcauc", "rocauc", "BCEWithLogitsLoss", "OGBNanLabelBCEWithLogitsLoss", "L1Loss"}
-loss_alias = ["BCEWithLogitsLoss", "OGBNanLabelBCEWithLogitsLoss", "L1Loss"]
+allowed_metrics = {"mae", "rmse", "prcauc", "rocauc", "BCEWithLogitsLoss", "OGBNanLabelBCEWithLogitsLoss", "L1Loss", "OGBNanLabelloss"}
+loss_alias = ["BCEWithLogitsLoss", "OGBNanLabelBCEWithLogitsLoss", "L1Loss", "OGBNanLabelloss"]
 
 # Walk through all datasets
 for dataset in os.listdir(base_root):

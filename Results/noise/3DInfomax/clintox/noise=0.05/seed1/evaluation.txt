@@ -1,9 +1,9 @@
 test_prcauc: 0.6783510558138599
 test_rocauc: 0.8155814478851702
-test_OGBNanLabelloss: 0.29325016140937804
+test_loss: 0.29325016140937804
 train_prcauc: 0.9429750979761595
 train_rocauc: 0.9890160468907613
-train_OGBNanLabelloss: 0.09457916053943335
+train_loss: 0.09457916053943335
 val_prcauc: 1.0
 val_rocauc: 1.0
-val_OGBNanLabelloss: 0.03756969410460442
+val_loss: 0.03756969410460442
