@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 
-class TableGenerator:
+class RawTableGenerator:
     def __init__(self, model, experiment, parition, decimals=None, secondary_metric=None):
         self.model = model
         self.experiment = experiment
@@ -74,19 +74,7 @@ class TableGenerator:
         secondary_metric = "mae" if task_type == "regression" else "prcauc"
         return primary_metric, secondary_metric
     
-    def create_table(self, experiment=None, model=None, partition=None):
-        allowed_experiments = ["noise", "split"]
-        if experiment not in allowed_experiments:
-            raise ValueError(f"Invalid experiment '{experiment}'. Must be one of {allowed_experiments}")
-        
-        allowed_models = ["3DInfomax", "GraphMVP", "GraphCL"]
-        if model not in allowed_models:
-            raise ValueError(f"Invalid model '{model}'. Must be one of {allowed_models}")
-        
-        allowed_partitions = ["train", "val", "test"]
-        if partition not in allowed_partitions:
-            raise ValueError(f"Invalid partition '{partition}'. Must be one of {allowed_partitions}")
-        
+    def create_table(self, experiment=None, model=None, partition=None):     
         # Create empty MultiIndex table
         if experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 

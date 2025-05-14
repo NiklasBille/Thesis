@@ -1,5 +1,5 @@
 import argparse
-import TableGenerator as tg 
+import RawTableGenerator as tg 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate metric tables for experiments.")
@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
 
     # Create an instance of the TableGenerator class
-    table_generator = tg.TableGenerator(
+    table_generator = tg.RawTableGenerator(
         model=args.model,
         experiment=args.experiment,
         parition=args.partition,
