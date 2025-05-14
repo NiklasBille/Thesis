@@ -28,7 +28,8 @@ You can monitor the progress using
     # Get image
     apptainer pull 3dinfomax-complete.sif docker://niklasbille 3dinfomax-complete-image:latest
 
-    # Open container binding current workspace apptainer shell --nv --bind $PWD:/workspace 3dinfomax-complete.sif
+    # Open container binding current workspace
+    apptainer shell --nv --bind $PWD:/workspace 3dinfomax-complete.sif
 
     # cd workspace 
     cd /workspace/

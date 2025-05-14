@@ -1,16 +1,17 @@
 #!/bin/bash -l
 #SBATCH --account p200709
-#SBATCH --time 2:00:00
+#SBATCH --time 07:00:00
 #SBATCH --partition gpu
 #SBATCH --qos default
 #SBATCH --nodes 1
-#SBATCH --job-name=ds_test_%A_%a
+#SBATCH --gpus-per-node 4
+#SBATCH --job-name=GraphCL_seed_4to7_random
 
 # Load Apptainer
 module load Apptainer/1.3.4-GCCcore-13.3.0
 
 # Get dataset name from array index
-DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/3DInfomax/fast_datasets.txt)
+DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/GraphCL/regression_datasets.txt)
 echo ">>> Starting run for dataset: $DATASET"
 
 # Pull the image if not already present
@@ -22,12 +23,13 @@ fi
 apptainer exec --nv --bind $PWD:/workspace 3dinfomax-complete.sif bash -c "
     cd /workspace && \
     gpu_counter=0 && \
-    for noise in 0.0 0.05 0.1 0.2; do
-        config=configs_static_noise_experiments/3DInfomax/$DATASET/noise=\$noise.yml
-        gpu=\$((gpu_counter % 4))
-        echo Running \$config on cuda:\$gpu
-        python run_multiple.py --config=\$config --device=cuda:\$gpu &
+    # Loop over the different training proportions
+    for prop in 0.6 0.7 0.8; do
+        config=configs_split_experiments/GraphCL/$DATASET/random/train_prop=\$prop.yml
+        gpu=\$((gpu_counter % 3))  # use 0-3 GPUs
+        echo Running RANDOM \$config on cuda:\$gpu
+        python -u run_multiple.py --config=\$config --device=cuda:\$gpu &
         ((gpu_counter++))
-    done && \
-    wait
+    done
+    wait  # Wait for all random runs to finish
 "

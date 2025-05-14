@@ -1,16 +1,16 @@
 #!/bin/bash -l
 #SBATCH --account p200709
-#SBATCH --time 2:00:00
+#SBATCH --time 07:00:00
 #SBATCH --partition gpu
 #SBATCH --qos default
 #SBATCH --nodes 1
-#SBATCH --job-name=ds_test_%A_%a
+#SBATCH --job-name=3DInfomax_seed_4to7_noise
 
 # Load Apptainer
 module load Apptainer/1.3.4-GCCcore-13.3.0
 
 # Get dataset name from array index
-DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/3DInfomax/fast_datasets.txt)
+DATASET=$(sed -n "$((SLURM_ARRAY_TASK_ID+1))p" slurm/3DInfomax/regression_datasets.txt)
 echo ">>> Starting run for dataset: $DATASET"
 
 # Pull the image if not already present
