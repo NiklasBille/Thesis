@@ -5,8 +5,6 @@ class DeltaTableGenerator(tg.RawTableGenerator):
         super().__init__(model, experiment, partition, decimals, secondary_metric)
         print(self.datasets)
 
-        def process_table(self, table):
-            pass
             
             
 

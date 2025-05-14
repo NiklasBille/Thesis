@@ -1,12 +1,20 @@
 import DeltaTableGenerator as dtg
-
+import LossDifferenceTableGenerator as ldtg
+import RawTableGenerator as tg
 if __name__ == "__main__":
     # Create an instance of the DeltaTableGenerator class
-    delta_table_generator = dtg.DeltaTableGenerator(
+    loss_diff_table_generator = ldtg.LossDifferenceTableGenerator(
         model="3DInfomax",
-        experiment="noise",
-        partition="test",
-        decimals=3,
-        secondary_metric=True
+        experiment="split",
+        decimals=3
     )
+    loss_diff_table_generator.print_result_table()
+
+    # raw_table_generator = tg.RawTableGenerator(
+    #     model="GraphMVP",
+    #     experiment="split",
+    #     partition="train",
+    #     decimals=3
+    # )
+    # raw_table_generator.print_result_table(print_secondary_metric=True)
 

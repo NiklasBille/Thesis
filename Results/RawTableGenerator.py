@@ -3,10 +3,10 @@ import pandas as pd
 import os
 
 class RawTableGenerator:
-    def __init__(self, model, experiment, parition, decimals=None, secondary_metric=None):
+    def __init__(self, model, experiment, partition, decimals, secondary_metric=False):
         self.model = model
         self.experiment = experiment
-        self.partition = parition
+        self.partition = partition
         self.decimals = decimals
         self.secondary_metric = secondary_metric
         self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
@@ -23,8 +23,6 @@ class RawTableGenerator:
         if self.model not in self.allowed_models:
             raise ValueError(f"Invalid model '{self.model}'. Must be one of {self.allowed_models}")
         
-        if self.partition not in self.allowed_partitions:
-            raise ValueError(f"Invalid partition '{self.partition}'. Must be one of {self.allowed_partitions}")
         
     def get_dataset_task_type(self, dataset):
         dataset_task_types = {
@@ -138,7 +136,7 @@ class RawTableGenerator:
                     continue # Skip computations if no evaluation file exists
 
                 if experiment == "split":
-                    sub_experiment_key = tuple(sub_experiment.split("\\")) # In split we have scaff/train_prop=0.8 etc
+                    sub_experiment_key = tuple(os.path.normpath(sub_experiment).split(os.sep)) # In split we have scaff/train_prop=0.8 etc
                 else:
                     sub_experiment_key = (sub_experiment,)                 # In perturbation we have noise=0.05 etc
                 # Insert values in both tables
