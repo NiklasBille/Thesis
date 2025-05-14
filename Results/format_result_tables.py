@@ -41,6 +41,7 @@ def create_table(datasets, experiment=None, model=None, partition=None):
     if partition not in allowed_partitions:
         raise ValueError(f"Invalid partition '{partition}'. Must be one of {allowed_partitions}")
     
+    # Create empty MultiIndex table
     if experiment == "noise":
         possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
         columns = pd.MultiIndex.from_product(
@@ -54,11 +55,11 @@ def create_table(datasets, experiment=None, model=None, partition=None):
             [possible_sub_experiments, train_props, ["mean", "std"]],
             names=["sub_experiment", "train_prop", "stat"]
         )
-        
     
     table_primary_metric = pd.DataFrame(index=datasets, columns=columns)
     table_secondary_metric = pd.DataFrame(index=datasets, columns=columns)
 
+    # Insert a column for information on metrics
     table_primary_metric.insert(0, "metric", pd.NA)
     table_secondary_metric.insert(0, "metric", pd.NA)
 
@@ -117,20 +118,31 @@ def create_table(datasets, experiment=None, model=None, partition=None):
     
     return table_primary_metric, table_secondary_metric
 
+def print_experiment_metadata(args):
+    print("\n" + "="*80)
+    print(f"MODEL: {args.model} | EXPERIMENT: {args.experiment} | PARITION: {args.partition}")
+    print("="*80)
+
+def print_result_table(result_df, title):
+    print(f"\n {title}")
+    print(result_df.to_string())
+    print("\n" + "-"*80)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate metric tables for experiments.")
     parser.add_argument('--model', required=True, choices=["3DInfomax", "GraphMVP", "GraphCL"], help="Model name")
     parser.add_argument('--experiment', required=True, choices=["noise", "split"], help="Experiment type")
     parser.add_argument('--partition', required=True, choices=["train", "val", "test"], help="Data partition")
     parser.add_argument('--print_decimals', default=3, type=int, help="How many decimals to print")
+    parser.add_argument('--print_secondary_metric', action='store_true', help="Whether the table with secondary metrics is part of output")
     args = parser.parse_args()
 
-    datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "tox21", "toxcast"]
+    datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
     table_primary_metric, table_secondary_metric = create_table(datasets, experiment=args.experiment, model=args.model, partition=args.partition)
     
     for df in [table_primary_metric, table_secondary_metric]:
         # Get all columns except 'metric'
-        value_columns = df.columns.drop("metric")
+        value_columns = df.columns.drop("metric", level=0)
         
         # Convert those columns to float and round them
         df[value_columns] = (
@@ -139,16 +151,9 @@ if __name__ == '__main__':
             .round(decimals=args.print_decimals)  # round to 2 decimals
         )
 
-    print("\n" + "="*80)
-    print(f"MODEL: {args.model} | EXPERIMENT: {args.experiment} | PARITION: {args.partition}")
-    print("="*80)
-
-    print("\n PRIMARY METRIC TABLE")
-    print(table_primary_metric.to_string())
-
-    print("\n" + "-"*80)
-
-    print("\n SECONDARY METRIC TABLE")
-    print(table_secondary_metric.to_string())
+    print_experiment_metadata(args)
+    print_result_table(table_primary_metric, title="PRIMARY METRIC TABLE")
+    if args.print_secondary_metric:
+        print_result_table(table_secondary_metric, title="SECONDARY METRIC TABLE")
      
-    print("\n" + "="*80 + "\n")
+    
