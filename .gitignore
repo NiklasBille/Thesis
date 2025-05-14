@@ -4,3 +4,5 @@ QMugs/
 *.sif
 # Ignore all .sif files in any subdirectory
 **/*.sif
+# Ignore all .pyc files
+*.pyc
