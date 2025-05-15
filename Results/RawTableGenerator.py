@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
 import os
+import warnings
+
+warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning) # To supress an annoying warning
 
 class RawTableGenerator:
     def __init__(self, model, experiment, partition, decimals=None):
@@ -57,7 +60,7 @@ class RawTableGenerator:
     def round_table(self, table):
          if self.decimals is not None:
             # Get all columns except 'metric'
-            value_columns = table.columns.drop("metric", level=0)
+            value_columns = table.columns.drop("metric")
             
             # Convert those columns to float and round them
             table[value_columns] = (
@@ -140,8 +143,16 @@ class RawTableGenerator:
                     sub_experiment_key = (sub_experiment,)                 # In perturbation we have noise=0.05 etc
                 # Insert values in both tables
                 for table, metric in [(table_primary_metric, primary_metric), (table_secondary_metric, secondary_metric)]:
-                    table.loc[dataset, (*sub_experiment_key, "mean")] = np.mean(results[f'{partition}_{metric}'])
-                    table.loc[dataset, (*sub_experiment_key, "std")] = np.std(results[f'{partition}_{metric}'])
+                    if metric in ['rocauc', 'prcauc']:
+                        result_mean = np.mean([100*result for result in results[f'{partition}_{metric}']]) 
+                        result_std = np.std([100*result for result in results[f'{partition}_{metric}']]) 
+                        
+                    else:
+                        result_mean = np.mean(results[f'{partition}_{metric}'])
+                        result_std = np.std(results[f'{partition}_{metric}'])
+
+                    table.loc[dataset, (*sub_experiment_key, "mean")] = result_mean
+                    table.loc[dataset, (*sub_experiment_key, "std")] = result_std
                     table.loc[dataset, "metric"] = metric
         
         return table_primary_metric, table_secondary_metric
