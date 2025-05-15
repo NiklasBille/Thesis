@@ -3,7 +3,7 @@ import RawTableGenerator as tg
 
 from typing_extensions import override #to explicitly state when overriding metho
 
-class DeltaTableGenerator(tg.RawTableGenerator):
+class MetricDifferenceTableGenerator(tg.RawTableGenerator):
     def __init__(self, model, experiment, partition, decimals=None):
         super().__init__(model, experiment, partition, decimals)
         self.primary_table, self.secondary_table = self.create_table(experiment, model, partition)

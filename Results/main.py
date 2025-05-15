@@ -1,4 +1,4 @@
-import DeltaTableGenerator as dtg
+import MetricDifferenceTableGenerator as mdtg
 import LossDifferenceTableGenerator as ldtg
 import RawTableGenerator as tg
 if __name__ == "__main__":

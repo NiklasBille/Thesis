@@ -1,5 +1,5 @@
 import argparse
-import DeltaTableGenerator as dtg
+import MetricDifferenceTableGenerator as mdtg
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate metric tables for experiments.")
@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
 
     # Create an instance of the DeltaTableGenerator class
-    delta_table_generator = dtg.DeltaTableGenerator(
+    delta_table_generator = mdtg.MetricDifferenceTableGenerator(
         model=args.model,
         experiment=args.experiment,
         partition=args.partition,
