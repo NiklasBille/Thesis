@@ -18,6 +18,5 @@ if __name__ == "__main__":
         partition=args.partition,
         decimals=args.print_decimals
     )
-    delta_table_generator.process_table()
     delta_table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
 

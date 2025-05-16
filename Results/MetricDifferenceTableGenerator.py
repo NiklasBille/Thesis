@@ -6,57 +6,61 @@ from typing_extensions import override #to explicitly state when overriding meth
 class MetricDifferenceTableGenerator(tg.RawTableGenerator):
     def __init__(self, model, experiment, partition, decimals=None):
         super().__init__(model, experiment, partition, decimals)
-        self.primary_table, self.secondary_table = self.create_table(experiment, model, partition)
+        self.raw_primary_table, self.raw_secondary_table =  super().create_table(experiment, model, partition)
 
+    def _compute_metric_diff_table(self, df):
+        metric_diff_table = df.copy(deep=True)
+        # For each dataset
+        for index, row in metric_diff_table.iterrows():
+            # The table for each experiment is different, so they are processed in different ways
+            if self.experiment == 'noise':
+                noise_levels = row.index.get_level_values(0).unique()
+                noise_levels = noise_levels[(noise_levels != 'metric') & (noise_levels != 'noise=0.0')] 
+            
+                baseline = row.loc['noise=0.0', 'mean']
+                for noise_level in noise_levels:
+                    readout = row.loc[noise_level, 'mean']
+                    metric_diff_table.loc[index, (noise_level, 'mean')] = baseline - readout
 
-    def process_table(self):
-        # Process both primary metrics and secondary metrics
-        for df in [self.primary_table, self.secondary_table]:
+            elif self.experiment =='split':
+                train_props = row.index.get_level_values(1).unique()
+                train_props = train_props[(train_props != '') & (train_props != 'train_prop=0.8')]
 
-            # For each dataset
-            for index, row in df.iterrows():
-                # The table for each experiment is different, so they are processed in different ways
-
-                if self.experiment == 'noise':
-                    noise_levels = row.index.get_level_values(0).unique()
-                    noise_levels = noise_levels[(noise_levels != 'metric') & (noise_levels != 'noise=0.0')] 
+                strategies = row.index.get_level_values(0).unique()   #random, scaff
+                strategies = strategies[strategies != 'metric']
                 
-                    baseline = row.loc['noise=0.0', 'mean']
-                    for noise_level in noise_levels:
-                        readout = row.loc[noise_level, 'mean']
-                        df.loc[index, (noise_level, 'mean')] = baseline - readout
+                for strategy in strategies:
+                    baseline = row.loc[strategy, 'train_prop=0.8', 'mean']
+                    for train_prop in train_props:
+                        readout = row.loc[strategy, train_prop, 'mean']
+                        metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = baseline - readout
 
-                elif self.experiment =='split':
-                    train_props = row.index.get_level_values(1).unique()
-                    train_props = train_props[(train_props != '') & (train_props != 'train_prop=0.8')]
+        return metric_diff_table
 
-                    strategies = row.index.get_level_values(0).unique()   #random, scaff
-                    strategies = strategies[strategies != 'metric']
-                    
-                    for strategy in strategies:
-                        baseline = row.loc[strategy, 'train_prop=0.8', 'mean']
-                        for train_prop in train_props:
-                            readout = row.loc[strategy, train_prop, 'mean']
-                            df.loc[index, (strategy, train_prop, 'mean')] = baseline - readout
+    @override
+    def create_table(self):
+        primary_table = self._compute_metric_diff_table(self.raw_primary_table)
+        secondary_table = self._compute_metric_diff_table(self.raw_secondary_table)
 
-                else:
-                    pass
+        return primary_table, secondary_table
+
 
     @override
     def print_result_table(self, print_secondary_metric=False):
         print("\n" + "="*80)
         print(f"MODEL: {self.model} | EXPERIMENT: {self.experiment} | PARITION: {self.partition} | FORMAT: Relative changes")
         print("="*80)
+        primary_table, secondary_table = self.create_table()
         if self.decimals is not None:
-            self.round_table(self.primary_table)
-            self.round_table(self.secondary_table)
+            self.round_table(primary_table)
+            self.round_table(secondary_table)
 
         print("\n PRIMARY METRIC TABLE")
-        print(self.primary_table.to_string())
+        print(primary_table.to_string())
         print("\n" + "-"*80)
         if print_secondary_metric:
             print("\n SECONDARY METRIC TABLE")
-            print(self.secondary_table.to_string())
+            print(secondary_table.to_string())
             print("\n" + "-"*80)
 
 
