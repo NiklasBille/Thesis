@@ -56,7 +56,7 @@ class DeltaSplitTableGenerator(tg.RawTableGenerator):
         print(primary_table.to_string())
         print("\n" + "-"*80)
         if print_secondary_metric:
-            print("\n SECONDARY DELTA TABLE")
+            print("\n SECONDARY METRIC DELTA TABLE")
             print(secondary_table.to_string())
             print("\n" + "-"*80)
 

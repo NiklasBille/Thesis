@@ -6,11 +6,12 @@ import warnings
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning) # To supress an annoying warning
 
 class RawTableGenerator:
-    def __init__(self, model, experiment, partition, decimals=None):
+    def __init__(self, model=None, experiment=None, partition=None, decimals=None, isComparingModels=False):
         self.model = model
         self.experiment = experiment
         self.partition = partition
         self.decimals = decimals
+        self.isComparingModels = isComparingModels    # Flag is only True when using model_comparison scripts
         self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
         self.allowed_experiments = ["noise", "split"]
         self.allowed_models = ["3DInfomax", "GraphMVP", "GraphCL"]
@@ -22,7 +23,7 @@ class RawTableGenerator:
         if self.experiment not in self.allowed_experiments:
             raise ValueError(f"Invalid experiment '{self.experiment}'. Must be one of {self.allowed_experiments}")
         
-        if self.model not in self.allowed_models:
+        if self.model not in self.allowed_models and not self.isComparingModels:
             raise ValueError(f"Invalid model '{self.model}'. Must be one of {self.allowed_models}")
         
         
@@ -74,7 +75,7 @@ class RawTableGenerator:
         secondary_metric = "mae" if task_type == "regression" else "prcauc"
         return primary_metric, secondary_metric
     
-    def create_table(self, experiment=None, model=None, partition=None):     
+    def create_table(self, experiment=None, model=None, partition=None):
         # Create empty MultiIndex table
         if experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
