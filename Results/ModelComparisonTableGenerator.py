@@ -35,8 +35,6 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
             # Add each sub experiment metrics to the correct colunm
             for sub_experiment in possible_sub_experiments:
                 R = raw_table.loc[self.datasets, sub_experiment]
-                R = R.drop('std', axis=1)      # Remove 'std' column  
-                R.columns.name = None          # Remove index name 'stat'
                 table.loc[:, (model, sub_experiment)] = R['mean']
 
         return table
