@@ -13,7 +13,13 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         for model in self.allowed_models:
             raw_primary_table, raw_secondary_table =  super().create_table(experiment, model, partition)
             self.raw_table_dict[model] = {'primary': raw_primary_table, 'secondary': raw_secondary_table}
-        
+    
+    def set_table_dict(self, table_dict):
+        """
+        Can be used to inject precomputed metric tables for comparisson
+        """
+        self.raw_table_dict = table_dict
+
     def _compute_model_comparison_table(self, raw_table_dict, metric_type: Literal['primary', 'secondary']):
 
         # Create empty MultiIndex table
