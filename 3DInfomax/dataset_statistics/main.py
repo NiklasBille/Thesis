@@ -1,16 +1,22 @@
-import RegressionLabelPlotter as rlp
+import LabelPlotter as lp
 import FeatureCounter as fc
 
 if __name__ == '__main__':
     
     # Visualize the label distribution
-    # plotter = rlp.RegressionLabelPlotter()
-    # plotter.visualize_label_distribution('lipo')
-    # plotter.visualize_label_distribution('freesolv')
-    # plotter.visualize_label_distribution('esol')
+    datasets = ['lipo', 'freesolv', 'esol', 'tox21', 'toxcast', 'clintox', 'bace', 'bbbp', 'hiv', 'sider']
 
-    feature_counter  = fc.FeatureCounter()
-    feature_counter.print_features('hiv')
+    plotter = lp.LabelPlotter()
+    # plotter.visualize_label_distribution("sider")
+    # plotter.visualize_label_distribution("tox21")
+
+    plotter.visualize_label_distribution("clintox")
+    plotter.visualize_label_distribution("toxcast")
+    plotter.visualize_label_distribution("sider")
+    plotter.visualize_label_distribution("tox21")
+
+
+    
 
 
 

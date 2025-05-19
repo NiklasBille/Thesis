@@ -6,6 +6,8 @@ from datasets.ogbg_dataset_extension import OGBGDatasetExtension
 import pandas as pd
 from rdkit import Chem
 import pickle
+import matplotlib.pyplot as plt
+
 class FeatureCounter:
     def __init__(self):
         pass
@@ -26,13 +28,30 @@ class FeatureCounter:
             for val, count in sorted(value_counts.items()):
                 print(f"  Value {val}: {count} times")
 
-    def visualize_features(self, dataset_name=None):
-        node_features_count, edge_features_count = self.count_features(dataset_name, save=True)
-        # Convert the counts to DataFrames for easier visualization
-        node_df = pd.DataFrame.from_dict(node_features_count, orient='index').fillna(0)
-        edge_df = pd.DataFrame.from_dict(edge_features_count, orient='index').fillna(0)
-
-        # 
+    def visualize_atom_distribution(self, dataset_name=None):
+        node_features_count, _ = self.count_features(dataset_name, save=True)
+        atom_counts = node_features_count[0]  # Assuming the first feature is the atom type
+               
+        # sort the dictionary by atom type
+        atom_counts = dict(sorted(atom_counts.items()))
+                        
+        # Make a pin plot and save to figures
+        output_dir = "dataset_statistics/figures/atom_distribution"
+        os.makedirs(output_dir, exist_ok=True)
+        df = pd.DataFrame(list(atom_counts.items()), columns=['Atom Type', 'Count'])
+        df['Atom Type'] = df['Atom Type'].apply(lambda x: Chem.GetPeriodicTable().GetElementSymbol(x))
+        df = df.sort_values(by='Count', ascending=False)
+        plt.figure(figsize=(10, 6))
+        plt.bar(df['Atom Type'], df['Count'])
+        plt.title(f"Atom Type Distribution for {dataset_name}")
+        plt.xlabel("Atom Type")
+        plt.ylabel("Count")
+        plt.xticks(rotation=45)
+        plt.grid()
+        plt.tight_layout()
+        output_path = f"{output_dir}/{dataset_name}_atom_distribution.png"
+        plt.savefig(output_path)
+        plt.show()
 
     def count_features(self, dataset_name=None, save=False):
         # If the dataset statistics have already been calculated, load them
