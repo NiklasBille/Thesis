@@ -44,7 +44,7 @@ class RawTableGenerator:
 
     def print_result_table(self, print_secondary_metric=False):
         print("\n" + "="*80)
-        print(f"MODEL: {self.model} | EXPERIMENT: {self.experiment} | PARITION: {self.partition}")
+        print(f"MODEL: {self.model} | EXPERIMENT: {self.experiment} | PARTITION: {self.partition}")
         print("="*80)
         table_primary_metric, table_secondary_metric = self.create_table(self.experiment, self.model, self.partition)
         if self.decimals is not None:

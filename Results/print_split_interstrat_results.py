@@ -1,5 +1,5 @@
 import argparse
-import DeltaSplitTableGenerator as dstg
+import SplitInterStratTableGenerator as InterStratTG
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate metric tables for experiments.")
@@ -11,12 +11,12 @@ if __name__ == "__main__":
 
 
     # Create an instance of the DeltaTableGenerator class
-    delta_split_table_generator = dstg.DeltaSplitTableGenerator(
+    inter_strat_table_generator = InterStratTG.SplitInterStratTableGenerator(
         model=args.model,
         experiment='split',
         partition=args.partition,
         decimals=args.print_decimals
     )
 
-    delta_split_table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
+    inter_strat_table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
 

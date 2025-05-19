@@ -5,7 +5,7 @@ import pandas as pd
 import RawTableGenerator as tg
 
 
-class DeltaSplitTableGenerator(tg.RawTableGenerator):
+class SplitInterStratTableGenerator(tg.RawTableGenerator):
     def __init__(self, model, experiment, partition, decimals=None):
         super().__init__(model, experiment, partition, decimals)
         self.raw_primary_table, self.raw_secondary_table = super().create_table(experiment, model, partition)
