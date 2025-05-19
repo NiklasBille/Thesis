@@ -20,7 +20,7 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
                 baseline = row.loc['noise=0.0', 'mean']
                 for noise_level in noise_levels:
                     readout = row.loc[noise_level, 'mean']
-                    metric_diff_table.loc[index, (noise_level, 'mean')] = baseline - readout
+                    metric_diff_table.loc[index, (noise_level, 'mean')] = readout - baseline
 
             elif self.experiment =='split':
                 train_props = row.index.get_level_values(1).unique()
@@ -33,7 +33,7 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
                     baseline = row.loc[strategy, 'train_prop=0.8', 'mean']
                     for train_prop in train_props:
                         readout = row.loc[strategy, train_prop, 'mean']
-                        metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = baseline - readout
+                        metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = readout - baseline
 
         return metric_diff_table
 

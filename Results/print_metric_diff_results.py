@@ -44,5 +44,9 @@ if __name__ == "__main__":
         model_comparison_table_generator.set_table_dict(table_dict)
         model_comparison_table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
 
+        
+
+
+
 
 
