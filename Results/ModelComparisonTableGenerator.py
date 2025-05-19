@@ -20,9 +20,10 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         if self.experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
             columns = pd.MultiIndex.from_product(
-                [self.allowed_models, possible_sub_experiments],
-                names=["model", "sub_experiment"]
+                [possible_sub_experiments, self.allowed_models],
+                names=["sub_experiment", "model"]
                 )
+            
         table = pd.DataFrame(index=self.datasets, columns=columns)
 
         # Insert a column for information on metrics
@@ -35,7 +36,7 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
             # Add each sub experiment metrics to the correct colunm
             for sub_experiment in possible_sub_experiments:
                 R = raw_table.loc[self.datasets, sub_experiment]
-                table.loc[:, (model, sub_experiment)] = R['mean']
+                table.loc[:, (sub_experiment, model)] = R['mean']
 
         return table
 
