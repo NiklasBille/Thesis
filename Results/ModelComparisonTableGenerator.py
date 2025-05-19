@@ -80,7 +80,7 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         if self.decimals is not None:
             self.round_table(primary_table)
             self.round_table(secondary_table)
-        print("\n PRIMARY METRIC")
+        print("PRIMARY METRIC")
     
         if self.experiment == 'noise':
             print(primary_table.to_string())
@@ -100,7 +100,7 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
 
             if print_secondary_metric:
                 secondary_table.set_index('metric', append=True, inplace=True) # keep metric column when slicing
-                print("\n SECONDARY METRIC")
+                print("SECONDARY METRIC")
                 print("[RANDOM]")
                 print(secondary_table.loc[:, 'random'].to_string(), '\n')
                 print("[SCAFFOLD]")

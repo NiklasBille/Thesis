@@ -50,13 +50,33 @@ class RawTableGenerator:
         if self.decimals is not None:
             self.round_table(table_primary_metric)
             self.round_table(table_secondary_metric)
-        print("\n PRIMARY METRIC TABLE")
-        print(table_primary_metric.to_string())
-        print("\n" + "-"*80)
-        if print_secondary_metric:
-            print("\n SECONDARY METRIC TABLE")
-            print(table_secondary_metric.to_string())
+        print("PRIMARY METRIC")
+    
+        if self.experiment == 'noise':
+            print(table_primary_metric.to_string())
             print("\n" + "-"*80)
+            if print_secondary_metric:
+                print("\n SECONDARY METRIC")
+                print(table_secondary_metric.to_string())
+                print("\n" + "-"*80)
+            
+        # Split table is very large so we present it as two tables, one for random and one for scaffold
+        else: 
+            print("[RANDOM]")
+            table_primary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+            print(table_primary_metric.loc[:, 'random'].to_string(), '\n')
+            print("[SCAFFOLD]")
+            print(table_primary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+
+            if print_secondary_metric:
+                table_secondary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+                print("SECONDARY METRIC")
+                print("[RANDOM]")
+                print(table_secondary_metric.loc[:, 'random'].to_string(), '\n')
+                print("[SCAFFOLD]")
+                print(table_secondary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+
+        
     
     def round_table(self, table):
          if self.decimals is not None:
@@ -137,7 +157,17 @@ class RawTableGenerator:
                 
                 if not eval_file_exists:
                     continue # Skip computations if no evaluation file exists
+                
+                if primary_metric == 'rmse':
+                    k = 5   # keep k best runs 
+                    runs_to_keep = np.argsort(np.argsort(results[f'test_{primary_metric}'])) < k
 
+                    from itertools import compress
+                    for key in results.keys():
+                        results[key] = list(compress(results[key], runs_to_keep))
+                
+                
+        
                 if experiment == "split":
                     sub_experiment_key = tuple(os.path.normpath(sub_experiment).split(os.sep)) # In split we have scaff/train_prop=0.8 etc
                 else:
