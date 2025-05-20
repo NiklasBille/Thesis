@@ -26,7 +26,8 @@ dataset_task_type = {
     'tox21': 'classification',
     'toxcast': 'classification',
     'sider': 'classification',
-    'clintox': 'classification'
+    'clintox': 'classification',
+    'muv': 'classification'
 }
 
 assert runargs.dataset in dataset_task_type.keys(), f"{runargs.dataset} not valid dataset."

@@ -18,7 +18,7 @@ CustomDumper.add_representer(bool, bool_representer)
 CustomDumper.add_representer(FlowList, flow_list_representer)
 
 # Define datasets and noise levels
-datasets = ['esol', 'freesolv', 'lipophilicity', 'hiv', 'bace', 'bbbp', 'tox21', 'toxcast', 'sider', 'clintox']
+datasets = ['esol', 'freesolv', 'lipophilicity', 'hiv', 'bace', 'bbbp', 'tox21', 'toxcast', 'sider', 'clintox', 'muv']
 noise_levels = [0.0, 0.05, 0.1, 0.2]
 
 dataset_task_type = {
@@ -31,7 +31,8 @@ dataset_task_type = {
     'tox21': 'classification',
     'toxcast': 'classification',
     'sider': 'classification',
-    'clintox': 'classification'
+    'clintox': 'classification',
+    'muv': 'classification'
 }
 # Base config structure
 def create_config(dataset, noise_level):

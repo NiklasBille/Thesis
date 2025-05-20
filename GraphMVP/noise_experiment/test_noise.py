@@ -104,7 +104,8 @@ def test_static_and_dynamic_noise():
 if __name__ == '__main__':
     # noise_fraction = test_noise_distribution_for_dataset('datasets/molecule_datasets/toxcast', 'toxcast', regression=True)
     # print(f"Noise fraction for freesolv dataset: {noise_fraction:.4f}")
-    test_noise_distribution_for_all_datasets()
-
+    # test_noise_distribution_for_all_datasets()
+    noise_fraction = test_noise_distribution_for_dataset('datasets/molecule_datasets/muv', 'muv', regression=False)
+    print(f"Noise fraction for muv dataset: {noise_fraction:.4f}")
     # test_static_and_dynamic_noise()
 
