@@ -25,6 +25,7 @@ dataset_dict = {
     'toxcast': {'tasks': 617, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 30},
     'sider': {'tasks': 27, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 32},
     'clintox': {'tasks': 2, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 30},
+    'muv': {'tasks': 17, 'loss_func': 'OGBNanLabelBCEWithLogitsLoss', 'batch_size': 30},
 }
 
 datasets = list(dataset_dict.keys())

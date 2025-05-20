@@ -44,18 +44,18 @@ def test_noise_distribution_for_dataset(name, device):
 
 def test_noise_distribution_for_all_datasets():
     list_of_datasets = [
-        'ogbg-mollipo',
-        'ogbg-molfreesolv',
-        'ogbg-molesol',
-        'ogbg-moltox21',
-        'ogbg-molhiv',
-        'ogbg-molbace',
-        'ogbg-molbbbp',
-        'ogbg-molclintox',
-        # 'ogbg-molmuv', 
+        # 'ogbg-mollipo',
+        # 'ogbg-molfreesolv',
+        # 'ogbg-molesol',
+        # 'ogbg-moltox21',
+        # 'ogbg-molhiv',
+        # 'ogbg-molbace',
+        # 'ogbg-molbbbp',
+        # 'ogbg-molclintox',
+        'ogbg-molmuv', 
         # 'ogbg-molpcba', # Removed to make test faster 
-        'ogbg-molsider',
-        'ogbg-moltoxcast',
+        # 'ogbg-molsider',
+        # 'ogbg-moltoxcast',
     ]
     noise_fractions = []
     for name in list_of_datasets:

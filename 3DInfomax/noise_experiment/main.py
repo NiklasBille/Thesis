@@ -38,7 +38,7 @@ def test_data():
         'ogbg-molbace',
         'ogbg-molbbbp',
         'ogbg-molclintox',
-        # 'ogbg-molmuv',
+        'ogbg-molmuv',
         # 'ogbg-molpcba',
         'ogbg-molsider',
         'ogbg-moltox21',
