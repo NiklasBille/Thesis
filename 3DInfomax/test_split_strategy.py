@@ -3,6 +3,7 @@ from datasets.qm9_dataset import QM9Dataset
 from train import get_arguments, parse_arguments
 from commons.utils import get_random_indices, seed_all
 from commons.splitters import generate_scaffold, scaffold_split, random_split
+from rdkit import Chem
 
 import sys
 import os
@@ -253,9 +254,56 @@ def test_custom_random_splits_contain_all_molecules():
             print(f"Length of train: {len(train_idx)}\nLength of valid: {len(valid_idx)}\nLength of test: {len(test_idx)}")
             print("Train, valid and test contains all indices: ", len(set(list(train_idx) + list(valid_idx) + list(test_idx))-set(all_idx))==0, "\n")
 
+def test_if_SMILES_in_3DInfomax_are_the_same_as_in_GraphMVP():
+    """
+    Test how many SMILES are shared in the different model's repositories
+
+    Must mount container in Thesis instead of Thesis/3DInfomax to run this since we load smiles from GraphMVP
+    """
+    from rdkit import RDLogger   
+    RDLogger.DisableLog('rdApp.*') 
+
+    args = get_arguments()
+    device = torch.device("cuda:0" if torch.cuda.is_available() and args.device == 'cuda' else "cpu")
+
+    datasets = ["ogbg-molbace", "ogbg-molbbbp", "ogbg-molclintox", "ogbg-molsider", "ogbg-moltox21", "ogbg-moltoxcast", "ogbg-molhiv", "ogbg-molesol", "ogbg-molfreesolv", "ogbg-mollipo"]
+    #datasets = ["ogbg-molclintox"]
+
+    for dataset in datasets:
+        # 3DInfomax
+        path_to_mol_info_3DInfomax = f"/workspace/3DInfomax/dataset/{dataset.replace('-','_')}/mapping/mol.csv.gz"
+
+        df_3DInfomax = pd.read_csv(path_to_mol_info_3DInfomax, compression="gzip")
+        df_smiles_3DInfomax = df_3DInfomax["smiles"].to_list()
+
+        # GraphMVP
+        dataset_naming_GraphMVP = dataset.replace("ogbg-mol", "", 1) 
+        if dataset_naming_GraphMVP == 'lipo':
+            dataset_naming_GraphMVP = 'lipophilicity'
+
+        path_to_mol_info_GraphMVP = os.path.join('/workspace/GraphMVP/datasets/molecule_datasets', dataset_naming_GraphMVP, 'processed/smiles.csv')
+        df_smiles_GraphMVP = pd.read_csv(path_to_mol_info_GraphMVP, header=None)[0].tolist()
+    
+        print(f"\n===SMILES of molecules in {dataset.replace('ogbg-mol', '', 1) }===")
+        
+        print(f'#SMILES in 3DInfomax: {len(df_smiles_3DInfomax)}')
+        print(f'#SMILES in GraphMVP: {len(df_smiles_GraphMVP)}')
+        print(f'#SMILES in common {len([smile for smile in df_smiles_3DInfomax if smile in df_smiles_GraphMVP])}')
+
+        canonical_SMILES_in_common = []
+        for i in range(len(df_3DInfomax)):
+            mol1 = Chem.MolFromSmiles(df_smiles_3DInfomax[i])
+            mol2 = Chem.MolFromSmiles(df_smiles_GraphMVP[i])
+            canonical1 = Chem.MolToSmiles(mol1)
+            canonical2 = Chem.MolToSmiles(mol2)
+            canonical_SMILES_in_common.append(canonical1==canonical2)
+
+        print(f'#canonical SMILES in common: {sum(canonical_SMILES_in_common)}\n')
+
 if __name__ == "__main__":
     #test_scaffold_splits_for_different_models()
     #test_custom_80_10_10_scaffold_split_matches_ground_truth()
     #test_custom_80_10_10_random_split_matches_ground_truth()
     #test_custom_scaffold_splits_contain_all_molecules()
-    test_custom_random_splits_contain_all_molecules()
+    #test_custom_random_splits_contain_all_molecules()
+    test_if_SMILES_in_3DInfomax_are_the_same_as_in_GraphMVP()

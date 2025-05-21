@@ -74,7 +74,7 @@ if __name__ == '__main__':
     # edge_features_freesolv = load_features('noise_experiment/feature_values/hiv_edge_features.pkl')
     # print('Node features (hiv):', node_features_freesolv)
     # print('Edge features (hiv):', edge_features_freesolv)
-    # extract_feature_values(MoleculeDataset("datasets/molecule_datasets/freesolv", dataset='freesolv'), 'freesolv', save=True)
+    extract_feature_values(MoleculeDataset("datasets/molecule_datasets/muv", dataset='muv'), 'muv', save=True)
 
     
 

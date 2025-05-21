@@ -49,11 +49,11 @@ def extract_feature_values(dataset, dataset_name, save=True):
     
 
 if __name__ == '__main__':
-    dataset_name = 'ogbg-molhiv'
+    dataset_name = 'ogbg-molmuv'
 
-    # dataset = OGBGDatasetExtension(name=dataset_name, return_types=['dgl_graph', 'targets'], device='cuda')
+    dataset = OGBGDatasetExtension(name=dataset_name, return_types=['dgl_graph', 'targets'], device='cuda')
     
-    # node_dict, edge_dict = extract_feature_values(dataset=dataset, dataset_name=dataset_name, save=False)
+    node_dict, edge_dict = extract_feature_values(dataset=dataset, dataset_name=dataset_name, save=False)
     node_dict = load_features(f'noise_experiment/feature_values/{dataset_name}_node_features.pkl')
     edge_dict = load_features(f'noise_experiment/feature_values/{dataset_name}_edge_features.pkl')
     print("Dataset :", dataset_name)
