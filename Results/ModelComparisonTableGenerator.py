@@ -73,9 +73,12 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         return primary_table, secondary_table
     
     @override
-    def print_result_table(self, print_secondary_metric=False):
+    def print_result_table(self, print_secondary_metric=False, use_percentage=False):
         print("\n" + "="*80)
-        print(f"EXPERIMENT: {self.experiment} | PARTITION: {self.partition} | Comparing models")
+        if use_percentage is True:
+            print(f"EXPERIMENT: {self.experiment} | PARTITION: {self.partition} | Comparing models | Change in percentage")
+        else:
+            print(f"EXPERIMENT: {self.experiment} | PARTITION: {self.partition} | Comparing models")
         print("="*80)
         primary_table, secondary_table = self.create_table()
         if self.decimals is not None:

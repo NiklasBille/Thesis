@@ -4,8 +4,9 @@ import RawTableGenerator as tg
 from typing_extensions import override #to explicitly state when overriding metho
 
 class MetricDifferenceTableGenerator(tg.RawTableGenerator):
-    def __init__(self, model, experiment, partition, decimals=None):
+    def __init__(self, model, experiment, partition, decimals=None, use_percentage=False):
         super().__init__(model, experiment, partition, decimals)
+        self.use_percentage = use_percentage
         self.raw_primary_table, self.raw_secondary_table =  super().create_table(experiment, model, partition)
 
     def _compute_metric_diff_table(self, df):
@@ -20,7 +21,10 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
                 baseline = row.loc['noise=0.0', 'mean']
                 for noise_level in noise_levels:
                     readout = row.loc[noise_level, 'mean']
-                    metric_diff_table.loc[index, (noise_level, 'mean')] = readout - baseline
+                    if self.use_percentage is True:
+                        metric_diff_table.loc[index, (noise_level, 'mean')] = 100*(readout - baseline)/baseline
+                    else:
+                        metric_diff_table.loc[index, (noise_level, 'mean')] = readout - baseline
 
             elif self.experiment =='split':
                 train_props = row.index.get_level_values(1).unique()
@@ -31,6 +35,7 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
                 
                 for strategy in strategies:
                     baseline = row.loc[strategy, 'train_prop=0.8', 'mean']
+                    # TODO percentage for split
                     for train_prop in train_props:
                         readout = row.loc[strategy, train_prop, 'mean']
                         metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = readout - baseline
