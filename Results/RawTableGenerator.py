@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
+import sys
 import warnings
 
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning) # To supress an annoying warning
@@ -14,7 +15,7 @@ class RawTableGenerator:
         self.isComparingModels = isComparingModels    # Flag is only True when using model_comparison scripts
         self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
         self.allowed_experiments = ["noise", "split"]
-        self.allowed_models = ["3DInfomax", "GraphMVP", "GraphCL"]
+        self.allowed_models = ["3DInfomax", "GraphMVP", "GraphCL_1", "GraphCL_2"]
         self.allowed_partitions = ["train", "val", "test"]
 
         self.validate_inputs()
@@ -118,8 +119,15 @@ class RawTableGenerator:
         table_primary_metric.insert(0, "metric", pd.NA)
         table_secondary_metric.insert(0, "metric", pd.NA)
 
+        if model == "GraphCL_1":
+            model_dir_name = "3DInfomax_GraphCL"
+        elif model == "GraphCL_2":
+            model_dir_name = "GraphMVP_GraphCL"
+        else:
+            model_dir_name = model
+
         for dataset in self.datasets:
-            path_to_sub_experiments = os.path.join("Results", experiment, model, dataset)
+            path_to_sub_experiments = os.path.join("Results", experiment, model_dir_name, dataset)
             if experiment == "noise":
                 sub_experiments = os.listdir(path_to_sub_experiments)
             else:
