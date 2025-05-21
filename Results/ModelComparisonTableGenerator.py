@@ -6,11 +6,11 @@ from typing import Literal
 from typing_extensions import override #to explicitly state when overriding metho
 
 class ModelComparisonTableGenerator(tg.RawTableGenerator):
-    def __init__(self, experiment, partition, decimals=None):
+    def __init__(self, experiment, partition, list_of_models, decimals=None):
         super().__init__(experiment=experiment, partition=partition, decimals=decimals, isComparingModels=True)
-
-        self.raw_table_dict = dict.fromkeys(self.allowed_models)
-        for model in self.allowed_models:
+        self.list_of_models = list_of_models
+        self.raw_table_dict = dict.fromkeys(self.list_of_models)
+        for model in self.list_of_models:
             raw_primary_table, raw_secondary_table =  super().create_table(experiment, model, partition)
             self.raw_table_dict[model] = {'primary': raw_primary_table, 'secondary': raw_secondary_table}
     
@@ -26,21 +26,22 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         if self.experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
             columns = pd.MultiIndex.from_product(
-                [possible_sub_experiments, self.allowed_models],
+                [possible_sub_experiments, self.list_of_models],
                 names=["sub_experiment", "model"]
                 )
         else:
             possible_sub_experiments = ["random", "scaff"]
             train_props = ["train_prop=0.8", "train_prop=0.7", "train_prop=0.6"]
             columns = pd.MultiIndex.from_product(
-                [possible_sub_experiments, train_props, self.allowed_models],
+                [possible_sub_experiments, train_props, self.list_of_models],
                 names=["sub_experiment", "train_prop", "model"]
             )
             
         table = pd.DataFrame(index=self.datasets, columns=columns)
 
         # Insert a column for information on metrics
-        table.insert(0, 'metric', raw_table_dict['3DInfomax'][metric_type]['metric'])
+        first_entry_key = list(raw_table_dict)[0]
+        table.insert(0, 'metric', raw_table_dict[first_entry_key][metric_type]['metric'])
 
         # Fill table
         for model, raw_tables in raw_table_dict.items():

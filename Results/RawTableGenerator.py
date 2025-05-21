@@ -96,7 +96,7 @@ class RawTableGenerator:
         secondary_metric = "mae" if task_type == "regression" else "prcauc"
         return primary_metric, secondary_metric
     
-    def create_table(self, experiment=None, model=None, partition=None):
+    def create_table(self, experiment, model, partition):
         # Create empty MultiIndex table
         if experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
