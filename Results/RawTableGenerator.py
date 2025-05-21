@@ -158,13 +158,13 @@ class RawTableGenerator:
                 if not eval_file_exists:
                     continue # Skip computations if no evaluation file exists
                 
-                if primary_metric == 'rmse':
-                    k = 5   # keep k best runs 
-                    runs_to_keep = np.argsort(np.argsort(results[f'test_{primary_metric}'])) < k
+                # if primary_metric == 'rmse':
+                #     k = 10   # keep k best runs 
+                #     runs_to_keep = np.argsort(np.argsort(results[f'test_{primary_metric}'])) < k
 
-                    from itertools import compress
-                    for key in results.keys():
-                        results[key] = list(compress(results[key], runs_to_keep))
+                #     from itertools import compress
+                #     for key in results.keys():
+                #         results[key] = list(compress(results[key], runs_to_keep))
                 
                 
         
