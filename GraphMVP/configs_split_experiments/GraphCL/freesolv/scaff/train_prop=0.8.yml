@@ -1,0 +1,12 @@
+output_model_dir: ../runs/split/GraphCL/freesolv/scaff/train_prop=0.8
+input_model_file: ../weights/pretrained/GraphCL_regression.pth
+multiple_seeds:
+- 1
+- 2
+- 3
+train_prop: 0.8
+split: scaffold
+dataset: freesolv
+epochs: 1000
+patience: 35
+minimum_epochs: 120

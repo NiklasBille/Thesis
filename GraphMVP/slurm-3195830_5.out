@@ -1,0 +1,3487 @@
+>>> Starting run for dataset: hiv
+FATAL:   Image file already exists: "graphmvp.sif" - will not overwrite
+Running RANDOM configs_static_noise_experiments/GraphCL/hiv/noise=0.0.yml on cuda:0
+Running RANDOM configs_static_noise_experiments/GraphCL/hiv/noise=0.05.yml on cuda:1
+Running RANDOM configs_static_noise_experiments/GraphCL/hiv/noise=0.1.yml on cuda:2
+Running RANDOM configs_static_noise_experiments/GraphCL/hiv/noise=0.2.yml on cuda:3
+Starting process for seed 1: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.05.yml --runseed 1 --device cuda:1
+Starting process for seed 1: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.1.yml --runseed 1 --device cuda:2
+Starting process for seed 2: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.05.yml --runseed 2 --device cuda:1
+Starting process for seed 2: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.1.yml --runseed 2 --device cuda:2
+Starting process for seed 3: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.05.yml --runseed 3 --device cuda:1
+Starting process for seed 3: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.1.yml --runseed 3 --device cuda:2
+Starting process for seed 1: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.0.yml --runseed 1 --device cuda:0
+Starting process for seed 1: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.2.yml --runseed 1 --device cuda:3
+Starting process for seed 2: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.0.yml --runseed 2 --device cuda:0
+Starting process for seed 2: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.2.yml --runseed 2 --device cuda:3
+Starting process for seed 3: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.0.yml --runseed 3 --device cuda:0
+Starting process for seed 3: python molecule_finetune.py --config /workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.2.yml --runseed 3 --device cuda:3
+[14:43:45] WARNING: not removing hydrogen atom without neighbors
+[14:43:45] WARNING: not removing hydrogen atom without neighbors
+[14:43:45] WARNING: not removing hydrogen atom without neighbors
+[14:43:45] WARNING: not removing hydrogen atom without neighbors
+[14:43:45] WARNING: not removing hydrogen atom without neighbors
+[14:43:45] WARNING: not removing hydrogen atom without neighbors
+[14:43:47] WARNING: not removing hydrogen atom without neighbors
+[14:43:47] WARNING: not removing hydrogen atom without neighbors
+[14:43:47] WARNING: not removing hydrogen atom without neighbors
+[14:43:47] WARNING: not removing hydrogen atom without neighbors
+[14:43:47] WARNING: not removing hydrogen atom without neighbors
+[14:43:47] WARNING: not removing hydrogen atom without neighbors
+[14:43:49] WARNING: not removing hydrogen atom without neighbors
+[14:43:49] WARNING: not removing hydrogen atom without neighbors
+[14:43:49] WARNING: not removing hydrogen atom without neighbors
+[14:43:49] WARNING: not removing hydrogen atom without neighbors
+[14:43:49] WARNING: not removing hydrogen atom without neighbors
+[14:43:49] WARNING: not removing hydrogen atom without neighbors
+[14:43:54] WARNING: not removing hydrogen atom without neighbors
+[14:43:54] WARNING: not removing hydrogen atom without neighbors
+[14:43:54] WARNING: not removing hydrogen atom without neighbors
+[14:43:54] WARNING: not removing hydrogen atom without neighbors
+[14:43:54] WARNING: not removing hydrogen atom without neighbors
+[14:43:54] WARNING: not removing hydrogen atom without neighbors
+[14:44:01] WARNING: not removing hydrogen atom without neighbors
+[14:44:01] WARNING: not removing hydrogen atom without neighbors
+[14:44:01] WARNING: not removing hydrogen atom without neighbors
+[14:44:01] WARNING: not removing hydrogen atom without neighbors
+[14:44:02] WARNING: not removing hydrogen atom without neighbors
+[14:44:02] WARNING: not removing hydrogen atom without neighbors
+[14:44:03] WARNING: not removing hydrogen atom without neighbors
+[14:44:03] WARNING: not removing hydrogen atom without neighbors
+[14:44:04] WARNING: not removing hydrogen atom without neighbors
+[14:44:04] WARNING: not removing hydrogen atom without neighbors
+[14:44:04] WARNING: not removing hydrogen atom without neighbors
+[14:44:04] WARNING: not removing hydrogen atom without neighbors
+[14:44:08] WARNING: not removing hydrogen atom without neighbors
+[14:44:08] WARNING: not removing hydrogen atom without neighbors
+[14:44:08] WARNING: not removing hydrogen atom without neighbors
+[14:44:08] WARNING: not removing hydrogen atom without neighbors
+[14:44:08] WARNING: not removing hydrogen atom without neighbors
+[14:44:08] WARNING: not removing hydrogen atom without neighbors
+Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.0.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 1
+  multiple_seeds: [1, 2, 3]
+  device: cuda:0
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.0
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.0/hiv_scaff_1_20-05_14-43-32  ]
+[ Using Seed :  1  ]
+[ Using device :  cuda:0  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2548631638022328
+ROC train: 0.742014	val: 0.715449	test: 0.701510
+PRC train: 0.195424	val: 0.184640	test: 0.183368
+
+Epoch: 2
+Loss: 0.14128490606721197
+ROC train: 0.767906	val: 0.727176	test: 0.725756
+PRC train: 0.303662	val: 0.248392	test: 0.191313
+
+Epoch: 3
+Loss: 0.13579907776309297
+ROC train: 0.790924	val: 0.739378	test: 0.743182
+PRC train: 0.312262	val: 0.243284	test: 0.223128
+
+Epoch: 4
+Loss: 0.13296312586020165
+ROC train: 0.806467	val: 0.753135	test: 0.740368
+PRC train: 0.360653	val: 0.265388	test: 0.231841
+
+Epoch: 5
+Loss: 0.12902641023115594
+ROC train: 0.818475	val: 0.763289	test: 0.725866
+PRC train: 0.374243	val: 0.328726	test: 0.187006
+
+Epoch: 6
+Loss: 0.1274886922982752
+ROC train: 0.809852	val: 0.723773	test: 0.741358
+PRC train: 0.347632	val: 0.345538	test: 0.273132
+
+Epoch: 7
+Loss: 0.1255853321368953
+ROC train: 0.832191	val: 0.771758	test: 0.732467
+PRC train: 0.395098	val: 0.334192	test: 0.210996
+
+Epoch: 8
+Loss: 0.12551834547236007
+ROC train: 0.832007	val: 0.775022	test: 0.714535
+PRC train: 0.396631	val: 0.313644	test: 0.203268
+
+Epoch: 9
+Loss: 0.1218761508017385
+ROC train: 0.846490	val: 0.780099	test: 0.681066
+PRC train: 0.427816	val: 0.340569	test: 0.126234
+
+Epoch: 10
+Loss: 0.12099090912980534
+ROC train: 0.848723	val: 0.759939	test: 0.732455
+PRC train: 0.418364	val: 0.297425	test: 0.156988
+
+Epoch: 11
+Loss: 0.12021020157325918
+ROC train: 0.849269	val: 0.778188	test: 0.702233
+PRC train: 0.448198	val: 0.346824	test: 0.201153
+
+Epoch: 12
+Loss: 0.11654886785880805
+ROC train: 0.852688	val: 0.771268	test: 0.721862
+PRC train: 0.448910	val: 0.321992	test: 0.209980
+
+Epoch: 13
+Loss: 0.1155218407878047
+ROC train: 0.866324	val: 0.774143	test: 0.736959
+PRC train: 0.459899	val: 0.314688	test: 0.148935
+
+Epoch: 14
+Loss: 0.11487668819645239
+ROC train: 0.865298	val: 0.755018	test: 0.720555
+PRC train: 0.462938	val: 0.341090	test: 0.196356
+
+Epoch: 15
+Loss: 0.11386678898171712
+ROC train: 0.868956	val: 0.787202	test: 0.750654
+PRC train: 0.482051	val: 0.383988	test: 0.187566
+
+Epoch: 16
+Loss: 0.11330238328265158
+ROC train: 0.873372	val: 0.766341	test: 0.729064
+PRC train: 0.468526	val: 0.359932	test: 0.165486
+
+Epoch: 17
+Loss: 0.11169553683557527
+ROC train: 0.874329	val: 0.792059	test: 0.748249
+PRC train: 0.489120	val: 0.321515	test: 0.176254
+
+Epoch: 18
+Loss: 0.11071429398778652
+ROC train: 0.881542	val: 0.770772	test: 0.726370
+PRC train: 0.478454	val: 0.351390	test: 0.196256
+
+Epoch: 19
+Loss: 0.11129111533132821
+ROC train: 0.885059	val: 0.775340	test: 0.751293
+PRC train: 0.507784	val: 0.334396	test: 0.182858
+
+Epoch: 20
+Loss: 0.1098832347039572
+ROC train: 0.886553	val: 0.782312	test: 0.744798
+PRC train: 0.501817	val: 0.267735	test: 0.200764
+
+Epoch: 21
+Loss: 0.10894425822812193
+ROC train: 0.888576	val: 0.766586	test: 0.726717
+PRC train: 0.519851	val: 0.345971	test: 0.184532
+
+Epoch: 22
+Loss: 0.10857069387654236
+ROC train: 0.896578	val: 0.771106	test: 0.748508
+PRC train: 0.517368	val: 0.361104	test: 0.236077
+
+Epoch: 23
+Loss: 0.10820330368600616
+ROC train: 0.888341	val: 0.780818	test: 0.745681
+PRC train: 0.497995	val: 0.349854	test: 0.144014
+
+Epoch: 24
+Loss: 0.1068767614757497
+ROC train: 0.895467	val: 0.789119	test: 0.745919
+PRC train: 0.535426	val: 0.361336	test: 0.247796
+
+Epoch: 25
+Loss: 0.10612537305864655
+ROC train: 0.890614	val: 0.794193	test: 0.740762
+PRC train: 0.518915	val: 0.329058	test: 0.212664
+
+Epoch: 26
+Loss: 0.10543358525585826
+ROC train: 0.900223	val: 0.779097	test: 0.743346
+PRC train: 0.547696	val: 0.328200	test: 0.156740
+
+Epoch: 27
+Loss: 0.10475968225874294
+ROC train: 0.909459	val: 0.777273	test: 0.755494
+PRC train: 0.562764	val: 0.372260	test: 0.180552
+
+Epoch: 28
+Loss: 0.10441827797281764
+ROC train: 0.902241	val: 0.760818	test: 0.726909
+PRC train: 0.553048	val: 0.322086	test: 0.130171
+
+Epoch: 29
+Loss: 0.10382439459482536
+ROC train: 0.907890	val: 0.762741	test: 0.743319
+PRC train: 0.558508	val: 0.337704	test: 0.157150
+
+Epoch: 30
+Loss: 0.10289514407094567
+ROC train: 0.911549	val: 0.791679	test: 0.741438
+PRC train: 0.568288	val: 0.323842	test: 0.194052
+
+Epoch: 31
+Loss: 0.10218986376109811
+ROC train: 0.906799	val: 0.769520	test: 0.728772
+PRC train: 0.551025	val: 0.316978	test: 0.188933
+
+Epoch: 32
+Loss: 0.1023645490222677
+ROC train: 0.911257	val: 0.775589	test: 0.746314
+PRC train: 0.560378	val: 0.364959	test: 0.250084
+
+Epoch: 33
+Loss: 0.10126004438264466Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.0.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 2
+  multiple_seeds: [1, 2, 3]
+  device: cuda:0
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.0
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.0/hiv_scaff_2_20-05_14-43-32  ]
+[ Using Seed :  2  ]
+[ Using device :  cuda:0  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2498363853895565
+ROC train: 0.759063	val: 0.769725	test: 0.641231
+PRC train: 0.235498	val: 0.215175	test: 0.164118
+
+Epoch: 2
+Loss: 0.14011481477075138
+ROC train: 0.790566	val: 0.775350	test: 0.752027
+PRC train: 0.321127	val: 0.307643	test: 0.235355
+
+Epoch: 3
+Loss: 0.13532998944973001
+ROC train: 0.804587	val: 0.768865	test: 0.711939
+PRC train: 0.349714	val: 0.284143	test: 0.188903
+
+Epoch: 4
+Loss: 0.1305336100982286
+ROC train: 0.809214	val: 0.788317	test: 0.731040
+PRC train: 0.316770	val: 0.322314	test: 0.196991
+
+Epoch: 5
+Loss: 0.12913201544758418
+ROC train: 0.818765	val: 0.759881	test: 0.708254
+PRC train: 0.362149	val: 0.294686	test: 0.195136
+
+Epoch: 6
+Loss: 0.12720201950329685
+ROC train: 0.830756	val: 0.785837	test: 0.736936
+PRC train: 0.395390	val: 0.321381	test: 0.205639
+
+Epoch: 7
+Loss: 0.12473219509048392
+ROC train: 0.828321	val: 0.788841	test: 0.729155
+PRC train: 0.406022	val: 0.295593	test: 0.162641
+
+Epoch: 8
+Loss: 0.1233820809860021
+ROC train: 0.835033	val: 0.795362	test: 0.749120
+PRC train: 0.420490	val: 0.321246	test: 0.148099
+
+Epoch: 9
+Loss: 0.12141843321103896
+ROC train: 0.844522	val: 0.774927	test: 0.737764
+PRC train: 0.401210	val: 0.343011	test: 0.145714
+
+Epoch: 10
+Loss: 0.11923541524186321
+ROC train: 0.846073	val: 0.787885	test: 0.770260
+PRC train: 0.383131	val: 0.358704	test: 0.261155
+
+Epoch: 11
+Loss: 0.12049133802231443
+ROC train: 0.842705	val: 0.784110	test: 0.717768
+PRC train: 0.397561	val: 0.252477	test: 0.138496
+
+Epoch: 12
+Loss: 0.11919718457533554
+ROC train: 0.853740	val: 0.799658	test: 0.766612
+PRC train: 0.434688	val: 0.366683	test: 0.233337
+
+Epoch: 13
+Loss: 0.11667255348508182
+ROC train: 0.867942	val: 0.790390	test: 0.759478
+PRC train: 0.472967	val: 0.365209	test: 0.194763
+
+Epoch: 14
+Loss: 0.11676199516773061
+ROC train: 0.869877	val: 0.790763	test: 0.748419
+PRC train: 0.488466	val: 0.370744	test: 0.210947
+
+Epoch: 15
+Loss: 0.11382798292940663
+ROC train: 0.875256	val: 0.798287	test: 0.757275
+PRC train: 0.488178	val: 0.347231	test: 0.176884
+
+Epoch: 16
+Loss: 0.11407067790003057
+ROC train: 0.871361	val: 0.794177	test: 0.743697
+PRC train: 0.486265	val: 0.356092	test: 0.164656
+
+Epoch: 17
+Loss: 0.1126240881968058
+ROC train: 0.871450	val: 0.778436	test: 0.708247
+PRC train: 0.472169	val: 0.331185	test: 0.100138
+
+Epoch: 18
+Loss: 0.1123254653174895
+ROC train: 0.872928	val: 0.779437	test: 0.738682
+PRC train: 0.469788	val: 0.288368	test: 0.118945
+
+Epoch: 19
+Loss: 0.11128924531871617
+ROC train: 0.883696	val: 0.794349	test: 0.747594
+PRC train: 0.498360	val: 0.307008	test: 0.179826
+
+Epoch: 20
+Loss: 0.11000742936142073
+ROC train: 0.888324	val: 0.810837	test: 0.766768
+PRC train: 0.521390	val: 0.320116	test: 0.214979
+
+Epoch: 21
+Loss: 0.11082907644840481
+ROC train: 0.888909	val: 0.793819	test: 0.758058
+PRC train: 0.516818	val: 0.395532	test: 0.184058
+
+Epoch: 22
+Loss: 0.10782210897949879
+ROC train: 0.895128	val: 0.781774	test: 0.763929
+PRC train: 0.530335	val: 0.361634	test: 0.207984
+
+Epoch: 23
+Loss: 0.10813659544815879
+ROC train: 0.891801	val: 0.798430	test: 0.761249
+PRC train: 0.527642	val: 0.355415	test: 0.189063
+
+Epoch: 24
+Loss: 0.10846380436266584
+ROC train: 0.893375	val: 0.777606	test: 0.745965
+PRC train: 0.525824	val: 0.348812	test: 0.176841
+
+Epoch: 25
+Loss: 0.10677549873980825
+ROC train: 0.900932	val: 0.787150	test: 0.766836
+PRC train: 0.551456	val: 0.343524	test: 0.214362
+
+Epoch: 26
+Loss: 0.10555561490774842
+ROC train: 0.894666	val: 0.797965	test: 0.741251
+PRC train: 0.526728	val: 0.385179	test: 0.210577
+
+Epoch: 27
+Loss: 0.10575332928003899
+ROC train: 0.904636	val: 0.790032	test: 0.738195
+PRC train: 0.561113	val: 0.324347	test: 0.176794
+
+Epoch: 28
+Loss: 0.1057439212340527
+ROC train: 0.902730	val: 0.788409	test: 0.761158
+PRC train: 0.559641	val: 0.351518	test: 0.218183
+
+Epoch: 29
+Loss: 0.10613969659369706
+ROC train: 0.912098	val: 0.805712	test: 0.755671
+PRC train: 0.571630	val: 0.349868	test: 0.200768
+
+Epoch: 30
+Loss: 0.10444473961823025
+ROC train: 0.910286	val: 0.782937	test: 0.759970
+PRC train: 0.558670	val: 0.366111	test: 0.217268
+
+Epoch: 31
+Loss: 0.10219215577416257
+ROC train: 0.911513	val: 0.793602	test: 0.753114
+PRC train: 0.566142	val: 0.373491	test: 0.195874
+
+Epoch: 32
+Loss: 0.10348988285130555
+ROC train: 0.914507	val: 0.803951	test: 0.764553
+PRC train: 0.573597	val: 0.358814	test: 0.178004
+
+Epoch: 33
+Loss: 0.10189078327949892Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.0.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 3
+  multiple_seeds: [1, 2, 3]
+  device: cuda:0
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.0
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.0/hiv_scaff_3_20-05_14-43-32  ]
+[ Using Seed :  3  ]
+[ Using device :  cuda:0  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.25657398444418233
+ROC train: 0.760594	val: 0.748111	test: 0.692879
+PRC train: 0.244172	val: 0.188307	test: 0.174924
+
+Epoch: 2
+Loss: 0.1390052170243343
+ROC train: 0.778021	val: 0.753564	test: 0.726470
+PRC train: 0.277010	val: 0.252700	test: 0.188939
+
+Epoch: 3
+Loss: 0.13347218249352163
+ROC train: 0.796228	val: 0.790381	test: 0.698118
+PRC train: 0.320090	val: 0.266798	test: 0.141311
+
+Epoch: 4
+Loss: 0.1328251244253959
+ROC train: 0.797738	val: 0.767015	test: 0.710800
+PRC train: 0.341661	val: 0.304321	test: 0.201169
+
+Epoch: 5
+Loss: 0.1300277829590124
+ROC train: 0.817775	val: 0.775037	test: 0.705757
+PRC train: 0.376553	val: 0.262211	test: 0.138034
+
+Epoch: 6
+Loss: 0.1283345448672079
+ROC train: 0.815608	val: 0.782885	test: 0.725773
+PRC train: 0.348214	val: 0.323417	test: 0.208345
+
+Epoch: 7
+Loss: 0.12532558563351817
+ROC train: 0.823581	val: 0.776195	test: 0.716835
+PRC train: 0.395227	val: 0.284083	test: 0.204717
+
+Epoch: 8
+Loss: 0.12399763696607158
+ROC train: 0.846826	val: 0.785093	test: 0.718378
+PRC train: 0.426112	val: 0.302489	test: 0.131925
+
+Epoch: 9
+Loss: 0.12142582374260813
+ROC train: 0.844159	val: 0.786817	test: 0.712047
+PRC train: 0.424651	val: 0.330624	test: 0.157708
+
+Epoch: 10
+Loss: 0.12213018234929213
+ROC train: 0.849214	val: 0.806777	test: 0.741803
+PRC train: 0.448963	val: 0.323767	test: 0.168127
+
+Epoch: 11
+Loss: 0.11909643121353142
+ROC train: 0.861551	val: 0.794064	test: 0.746138
+PRC train: 0.463857	val: 0.337177	test: 0.188181
+
+Epoch: 12
+Loss: 0.1180759008917697
+ROC train: 0.858463	val: 0.801964	test: 0.733616
+PRC train: 0.457867	val: 0.362764	test: 0.226507
+
+Epoch: 13
+Loss: 0.11551840408573487
+ROC train: 0.868591	val: 0.787499	test: 0.753556
+PRC train: 0.454165	val: 0.357521	test: 0.187766
+
+Epoch: 14
+Loss: 0.11468322935250604
+ROC train: 0.871516	val: 0.786434	test: 0.742849
+PRC train: 0.457547	val: 0.348210	test: 0.173809
+
+Epoch: 15
+Loss: 0.11458037439100617
+ROC train: 0.866170	val: 0.783819	test: 0.740290
+PRC train: 0.455898	val: 0.316224	test: 0.178453
+
+Epoch: 16
+Loss: 0.11346067917994981
+ROC train: 0.866687	val: 0.793972	test: 0.771471
+PRC train: 0.484844	val: 0.348891	test: 0.251644
+
+Epoch: 17
+Loss: 0.11283004908832195
+ROC train: 0.873185	val: 0.799713	test: 0.758568
+PRC train: 0.483767	val: 0.358796	test: 0.236290
+
+Epoch: 18
+Loss: 0.11258200989448452
+ROC train: 0.885655	val: 0.789386	test: 0.746449
+PRC train: 0.508692	val: 0.374917	test: 0.172045
+
+Epoch: 19
+Loss: 0.11092323019190012
+ROC train: 0.883463	val: 0.787248	test: 0.730966
+PRC train: 0.489386	val: 0.354512	test: 0.236205
+
+Epoch: 20
+Loss: 0.11068625064707319
+ROC train: 0.877889	val: 0.774306	test: 0.713293
+PRC train: 0.512717	val: 0.344772	test: 0.234285
+
+Epoch: 21
+Loss: 0.10978878685955772
+ROC train: 0.899753	val: 0.787346	test: 0.726482
+PRC train: 0.530794	val: 0.341878	test: 0.199271
+
+Epoch: 22
+Loss: 0.10906454497143715
+ROC train: 0.893595	val: 0.778473	test: 0.752741
+PRC train: 0.524159	val: 0.337641	test: 0.181590
+
+Epoch: 23
+Loss: 0.10830681815574451
+ROC train: 0.882252	val: 0.761213	test: 0.736383
+PRC train: 0.446826	val: 0.275153	test: 0.120085
+
+Epoch: 24
+Loss: 0.10774893748485197
+ROC train: 0.899812	val: 0.768730	test: 0.733450
+PRC train: 0.530185	val: 0.352906	test: 0.195217
+
+Epoch: 25
+Loss: 0.1068428124659972
+ROC train: 0.889182	val: 0.779985	test: 0.750640
+PRC train: 0.522083	val: 0.324770	test: 0.198913
+
+Epoch: 26
+Loss: 0.10597176343897424
+ROC train: 0.897122	val: 0.799282	test: 0.751088
+PRC train: 0.529009	val: 0.332826	test: 0.198387
+
+Epoch: 27
+Loss: 0.10629497729761109
+ROC train: 0.908855	val: 0.803305	test: 0.733404
+PRC train: 0.556620	val: 0.329186	test: 0.165994
+
+Epoch: 28
+Loss: 0.10561095023188424
+ROC train: 0.908697	val: 0.804245	test: 0.741264
+PRC train: 0.564911	val: 0.339482	test: 0.179652
+
+Epoch: 29
+Loss: 0.1032213712606402
+ROC train: 0.910433	val: 0.795332	test: 0.720914
+PRC train: 0.560559	val: 0.354917	test: 0.159852
+
+Epoch: 30
+Loss: 0.1057555640050376
+ROC train: 0.911017	val: 0.803657	test: 0.743651
+PRC train: 0.556751	val: 0.366583	test: 0.213862
+
+Epoch: 31
+Loss: 0.10165506270140437
+ROC train: 0.912713	val: 0.801768	test: 0.742173
+PRC train: 0.561344	val: 0.309643	test: 0.166969
+
+Epoch: 32
+Loss: 0.1016057429911851
+ROC train: 0.917780	val: 0.811395	test: 0.772238
+PRC train: 0.579443	val: 0.352423	test: 0.193597
+
+Epoch: 33
+Loss: 0.1028001655255779Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.05.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 1
+  multiple_seeds: [1, 2, 3]
+  device: cuda:1
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.05
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.05
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.05/hiv_scaff_1_20-05_14-43-32  ]
+[ Using Seed :  1  ]
+[ Using device :  cuda:1  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.25640611632891414
+ROC train: 0.741960	val: 0.726356	test: 0.677497
+PRC train: 0.197517	val: 0.181886	test: 0.189837
+
+Epoch: 2
+Loss: 0.14354536576873286
+ROC train: 0.772662	val: 0.758644	test: 0.722656
+PRC train: 0.258518	val: 0.291164	test: 0.202523
+
+Epoch: 3
+Loss: 0.1377045695425228
+ROC train: 0.795128	val: 0.763570	test: 0.696800
+PRC train: 0.309225	val: 0.259533	test: 0.186896
+
+Epoch: 4
+Loss: 0.1340599483577736
+ROC train: 0.812476	val: 0.760267	test: 0.719838
+PRC train: 0.344110	val: 0.291848	test: 0.202506
+
+Epoch: 5
+Loss: 0.13179319189072589
+ROC train: 0.815763	val: 0.770521	test: 0.730507
+PRC train: 0.355058	val: 0.345661	test: 0.225204
+
+Epoch: 6
+Loss: 0.13004897837733193
+ROC train: 0.812741	val: 0.771311	test: 0.757363
+PRC train: 0.337953	val: 0.287996	test: 0.259351
+
+Epoch: 7
+Loss: 0.12775854588362334
+ROC train: 0.837424	val: 0.777560	test: 0.736175
+PRC train: 0.386126	val: 0.340621	test: 0.214142
+
+Epoch: 8
+Loss: 0.12655572582536675
+ROC train: 0.839841	val: 0.770892	test: 0.749819
+PRC train: 0.392518	val: 0.320398	test: 0.199466
+
+Epoch: 9
+Loss: 0.12454713883451317
+ROC train: 0.846400	val: 0.793485	test: 0.736260
+PRC train: 0.423648	val: 0.320406	test: 0.152839
+
+Epoch: 10
+Loss: 0.12265218997301747
+ROC train: 0.842822	val: 0.774780	test: 0.739694
+PRC train: 0.376588	val: 0.384813	test: 0.228725
+
+Epoch: 11
+Loss: 0.1199026033921253
+ROC train: 0.851408	val: 0.798253	test: 0.736401
+PRC train: 0.436389	val: 0.369789	test: 0.280748
+
+Epoch: 12
+Loss: 0.12081476995129585
+ROC train: 0.863038	val: 0.768865	test: 0.753473
+PRC train: 0.443748	val: 0.326794	test: 0.162008
+
+Epoch: 13
+Loss: 0.11924846194089264
+ROC train: 0.859532	val: 0.771158	test: 0.746258
+PRC train: 0.465335	val: 0.365378	test: 0.219610
+
+Epoch: 14
+Loss: 0.1167604115370414
+ROC train: 0.873269	val: 0.775227	test: 0.745679
+PRC train: 0.481709	val: 0.371426	test: 0.193569
+
+Epoch: 15
+Loss: 0.11544328364517453
+ROC train: 0.876527	val: 0.775466	test: 0.732585
+PRC train: 0.496901	val: 0.322225	test: 0.197749
+
+Epoch: 16
+Loss: 0.1141462720476188
+ROC train: 0.871161	val: 0.782144	test: 0.732813
+PRC train: 0.465766	val: 0.316078	test: 0.176525
+
+Epoch: 17
+Loss: 0.11241769112341216
+ROC train: 0.888902	val: 0.794089	test: 0.745816
+PRC train: 0.515303	val: 0.331884	test: 0.195085
+
+Epoch: 18
+Loss: 0.11179318006922973
+ROC train: 0.881717	val: 0.794722	test: 0.720673
+PRC train: 0.489704	val: 0.358840	test: 0.241593
+
+Epoch: 19
+Loss: 0.11190221989573329
+ROC train: 0.881338	val: 0.783403	test: 0.750553
+PRC train: 0.509416	val: 0.369311	test: 0.211654
+
+Epoch: 20
+Loss: 0.1106222572847234
+ROC train: 0.892710	val: 0.788075	test: 0.763176
+PRC train: 0.543157	val: 0.370669	test: 0.228319
+
+Epoch: 21
+Loss: 0.10968734593360659
+ROC train: 0.894751	val: 0.796061	test: 0.752288
+PRC train: 0.515965	val: 0.405067	test: 0.196388
+
+Epoch: 22
+Loss: 0.10723794301368089
+ROC train: 0.898531	val: 0.770824	test: 0.723929
+PRC train: 0.517476	val: 0.287934	test: 0.152627
+
+Epoch: 23
+Loss: 0.10863525367192624
+ROC train: 0.909569	val: 0.785843	test: 0.751430
+PRC train: 0.552713	val: 0.366926	test: 0.208735
+
+Epoch: 24
+Loss: 0.10458760446770037
+ROC train: 0.905140	val: 0.790029	test: 0.733446
+PRC train: 0.559263	val: 0.326412	test: 0.185063
+
+Epoch: 25
+Loss: 0.10592008635104819
+ROC train: 0.911201	val: 0.779440	test: 0.771618
+PRC train: 0.579442	val: 0.375155	test: 0.209227
+
+Epoch: 26
+Loss: 0.1039069309633894
+ROC train: 0.917355	val: 0.780785	test: 0.741202
+PRC train: 0.591531	val: 0.377921	test: 0.174829
+
+Epoch: 27
+Loss: 0.10330398401505275
+ROC train: 0.911049	val: 0.799517	test: 0.728550
+PRC train: 0.569429	val: 0.361441	test: 0.185670
+
+Epoch: 28
+Loss: 0.1025369890129278
+ROC train: 0.919394	val: 0.798584	test: 0.758674
+PRC train: 0.606276	val: 0.370577	test: 0.185999
+
+Epoch: 29
+Loss: 0.1025470423420062
+ROC train: 0.922744	val: 0.803541	test: 0.747326
+PRC train: 0.606237	val: 0.385129	test: 0.150936
+
+Epoch: 30
+Loss: 0.10029132562140243
+ROC train: 0.921791	val: 0.793963	test: 0.756662
+PRC train: 0.597921	val: 0.381560	test: 0.240406
+
+Epoch: 31
+Loss: 0.09880760403487979
+ROC train: 0.930704	val: 0.786495	test: 0.752697
+PRC train: 0.636094	val: 0.379631	test: 0.214305
+
+Epoch: 32
+Loss: 0.09813729397260487
+ROC train: 0.931677	val: 0.800035	test: 0.728336Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.05.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 2
+  multiple_seeds: [1, 2, 3]
+  device: cuda:1
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.05
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.05
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.05/hiv_scaff_2_20-05_14-43-32  ]
+[ Using Seed :  2  ]
+[ Using device :  cuda:1  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2591130315908973
+ROC train: 0.750571	val: 0.713217	test: 0.657812
+PRC train: 0.195119	val: 0.179666	test: 0.208755
+
+Epoch: 2
+Loss: 0.14418607324252536
+ROC train: 0.772626	val: 0.761158	test: 0.692032
+PRC train: 0.271417	val: 0.221389	test: 0.191149
+
+Epoch: 3
+Loss: 0.1390238712369487
+ROC train: 0.761275	val: 0.764700	test: 0.754408
+PRC train: 0.256500	val: 0.245462	test: 0.279072
+
+Epoch: 4
+Loss: 0.13552682531823648
+ROC train: 0.797530	val: 0.772814	test: 0.721725
+PRC train: 0.303349	val: 0.285948	test: 0.201849
+
+Epoch: 5
+Loss: 0.13368335989939792
+ROC train: 0.803381	val: 0.771293	test: 0.738718
+PRC train: 0.335611	val: 0.284802	test: 0.251971
+
+Epoch: 6
+Loss: 0.1305359618580216
+ROC train: 0.812612	val: 0.762646	test: 0.739462
+PRC train: 0.348882	val: 0.317351	test: 0.272440
+
+Epoch: 7
+Loss: 0.12877541252358796
+ROC train: 0.825864	val: 0.783703	test: 0.747525
+PRC train: 0.358763	val: 0.344279	test: 0.284415
+
+Epoch: 8
+Loss: 0.12584407632417777
+ROC train: 0.840791	val: 0.769728	test: 0.708834
+PRC train: 0.407349	val: 0.261043	test: 0.192001
+
+Epoch: 9
+Loss: 0.12591282205997048
+ROC train: 0.834088	val: 0.791722	test: 0.730579
+PRC train: 0.380055	val: 0.376731	test: 0.228560
+
+Epoch: 10
+Loss: 0.12246613890185556
+ROC train: 0.849154	val: 0.800265	test: 0.740696
+PRC train: 0.413732	val: 0.330533	test: 0.281032
+
+Epoch: 11
+Loss: 0.12142046552335373
+ROC train: 0.828914	val: 0.781526	test: 0.729906
+PRC train: 0.349183	val: 0.335302	test: 0.236287
+
+Epoch: 12
+Loss: 0.12120955468563192
+ROC train: 0.851477	val: 0.774664	test: 0.772336
+PRC train: 0.402395	val: 0.378183	test: 0.290780
+
+Epoch: 13
+Loss: 0.1199592682894941
+ROC train: 0.866260	val: 0.800629	test: 0.732691
+PRC train: 0.466487	val: 0.283481	test: 0.179867
+
+Epoch: 14
+Loss: 0.11690624157708508
+ROC train: 0.869903	val: 0.790965	test: 0.723034
+PRC train: 0.472970	val: 0.374644	test: 0.220907
+
+Epoch: 15
+Loss: 0.11732349165582284
+ROC train: 0.867514	val: 0.783690	test: 0.711178
+PRC train: 0.460949	val: 0.384338	test: 0.226913
+
+Epoch: 16
+Loss: 0.1148183278443296
+ROC train: 0.869690	val: 0.791174	test: 0.747718
+PRC train: 0.498876	val: 0.363254	test: 0.231824
+
+Epoch: 17
+Loss: 0.11332309212020955
+ROC train: 0.879436	val: 0.799410	test: 0.735746
+PRC train: 0.506123	val: 0.374724	test: 0.245248
+
+Epoch: 18
+Loss: 0.11317019521000658
+ROC train: 0.886683	val: 0.780831	test: 0.729898
+PRC train: 0.507899	val: 0.313674	test: 0.198417
+
+Epoch: 19
+Loss: 0.11199901514514828
+ROC train: 0.888250	val: 0.780674	test: 0.744559
+PRC train: 0.504862	val: 0.400973	test: 0.220590
+
+Epoch: 20
+Loss: 0.11144541542563702
+ROC train: 0.891759	val: 0.772802	test: 0.728598
+PRC train: 0.540539	val: 0.351642	test: 0.186927
+
+Epoch: 21
+Loss: 0.10898279791926047
+ROC train: 0.898860	val: 0.795993	test: 0.744891
+PRC train: 0.541317	val: 0.373952	test: 0.263186
+
+Epoch: 22
+Loss: 0.10867963868135773
+ROC train: 0.902344	val: 0.779641	test: 0.669428
+PRC train: 0.545496	val: 0.275261	test: 0.082033
+
+Epoch: 23
+Loss: 0.10761242430852541
+ROC train: 0.904104	val: 0.770989	test: 0.747643
+PRC train: 0.541706	val: 0.405744	test: 0.252681
+
+Epoch: 24
+Loss: 0.10497647558643618
+ROC train: 0.909238	val: 0.804808	test: 0.750640
+PRC train: 0.571288	val: 0.372022	test: 0.231865
+
+Epoch: 25
+Loss: 0.10516538418183602
+ROC train: 0.907730	val: 0.799086	test: 0.744008
+PRC train: 0.552883	val: 0.359463	test: 0.210517
+
+Epoch: 26
+Loss: 0.10411413538892386
+ROC train: 0.898280	val: 0.738971	test: 0.729699
+PRC train: 0.525612	val: 0.337394	test: 0.207630
+
+Epoch: 27
+Loss: 0.10312043523969022
+ROC train: 0.909623	val: 0.772816	test: 0.735265
+PRC train: 0.574678	val: 0.340622	test: 0.222242
+
+Epoch: 28
+Loss: 0.10258826592847904
+ROC train: 0.910511	val: 0.773020	test: 0.710110
+PRC train: 0.562351	val: 0.250799	test: 0.152537
+
+Epoch: 29
+Loss: 0.10351823821940269
+ROC train: 0.929916	val: 0.777135	test: 0.741723
+PRC train: 0.643112	val: 0.352581	test: 0.186647
+
+Epoch: 30
+Loss: 0.09980164050280366
+ROC train: 0.926010	val: 0.786149	test: 0.703246
+PRC train: 0.607228	val: 0.328202	test: 0.141534
+
+Epoch: 31
+Loss: 0.09732442319868055
+ROC train: 0.935430	val: 0.778488	test: 0.724172
+PRC train: 0.636386	val: 0.354486	test: 0.167498
+
+Epoch: 32
+Loss: 0.09855018228814617
+ROC train: 0.929626	val: 0.768794	test: 0.725497Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.05.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 3
+  multiple_seeds: [1, 2, 3]
+  device: cuda:1
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.05
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.05
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.05/hiv_scaff_3_20-05_14-43-32  ]
+[ Using Seed :  3  ]
+[ Using device :  cuda:1  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2611594716031982
+ROC train: 0.727262	val: 0.735976	test: 0.729748
+PRC train: 0.187848	val: 0.233869	test: 0.203478
+
+Epoch: 2
+Loss: 0.14339955309366006
+ROC train: 0.760876	val: 0.726613	test: 0.728235
+PRC train: 0.248666	val: 0.273970	test: 0.206787
+
+Epoch: 3
+Loss: 0.13964672276979126
+ROC train: 0.786686	val: 0.767704	test: 0.747307
+PRC train: 0.275218	val: 0.294588	test: 0.203011
+
+Epoch: 4
+Loss: 0.1353558767484982
+ROC train: 0.802278	val: 0.760613	test: 0.714769
+PRC train: 0.315988	val: 0.323178	test: 0.191894
+
+Epoch: 5
+Loss: 0.1321669670276972
+ROC train: 0.807192	val: 0.770971	test: 0.742353
+PRC train: 0.327442	val: 0.359740	test: 0.235031
+
+Epoch: 6
+Loss: 0.1298525961969443
+ROC train: 0.793285	val: 0.741592	test: 0.750519
+PRC train: 0.301948	val: 0.336415	test: 0.261307
+
+Epoch: 7
+Loss: 0.12943153860454285
+ROC train: 0.823401	val: 0.767095	test: 0.729825
+PRC train: 0.360379	val: 0.268734	test: 0.159276
+
+Epoch: 8
+Loss: 0.12526395029375723
+ROC train: 0.832613	val: 0.784762	test: 0.732316
+PRC train: 0.369036	val: 0.349851	test: 0.160916
+
+Epoch: 9
+Loss: 0.12401314719170108
+ROC train: 0.837408	val: 0.793002	test: 0.739489
+PRC train: 0.403291	val: 0.290204	test: 0.167501
+
+Epoch: 10
+Loss: 0.1242982431667525
+ROC train: 0.838500	val: 0.779554	test: 0.726974
+PRC train: 0.410128	val: 0.356881	test: 0.206840
+
+Epoch: 11
+Loss: 0.12272024354563414
+ROC train: 0.841959	val: 0.789254	test: 0.734093
+PRC train: 0.392377	val: 0.346979	test: 0.243114
+
+Epoch: 12
+Loss: 0.12285537133833231
+ROC train: 0.851785	val: 0.794869	test: 0.744253
+PRC train: 0.437385	val: 0.330239	test: 0.186674
+
+Epoch: 13
+Loss: 0.12037075771708168
+ROC train: 0.854524	val: 0.770460	test: 0.755936
+PRC train: 0.421804	val: 0.373229	test: 0.225734
+
+Epoch: 14
+Loss: 0.11871016130618177
+ROC train: 0.853167	val: 0.772459	test: 0.772058
+PRC train: 0.413169	val: 0.299415	test: 0.257225
+
+Epoch: 15
+Loss: 0.1198094934422868
+ROC train: 0.855487	val: 0.779113	test: 0.742842
+PRC train: 0.462120	val: 0.334102	test: 0.204528
+
+Epoch: 16
+Loss: 0.11643882591851597
+ROC train: 0.876573	val: 0.776225	test: 0.764271
+PRC train: 0.473108	val: 0.375096	test: 0.238243
+
+Epoch: 17
+Loss: 0.11590500768098148
+ROC train: 0.875299	val: 0.788452	test: 0.734769
+PRC train: 0.462062	val: 0.303514	test: 0.138342
+
+Epoch: 18
+Loss: 0.11481259360957949
+ROC train: 0.886277	val: 0.801201	test: 0.735603
+PRC train: 0.510441	val: 0.329047	test: 0.183430
+
+Epoch: 19
+Loss: 0.11321072602071791
+ROC train: 0.888154	val: 0.788381	test: 0.756782
+PRC train: 0.507706	val: 0.369385	test: 0.190084
+
+Epoch: 20
+Loss: 0.1129114195409179
+ROC train: 0.882205	val: 0.738640	test: 0.728680
+PRC train: 0.482441	val: 0.382271	test: 0.241683
+
+Epoch: 21
+Loss: 0.11064246954298579
+ROC train: 0.896731	val: 0.780166	test: 0.739939
+PRC train: 0.540696	val: 0.345774	test: 0.210640
+
+Epoch: 22
+Loss: 0.10944130979149287
+ROC train: 0.899665	val: 0.779422	test: 0.743328
+PRC train: 0.546234	val: 0.327525	test: 0.149236
+
+Epoch: 23
+Loss: 0.10743747304668606
+ROC train: 0.904234	val: 0.777123	test: 0.739518
+PRC train: 0.556050	val: 0.383294	test: 0.221117
+
+Epoch: 24
+Loss: 0.1066858106830501
+ROC train: 0.898920	val: 0.783406	test: 0.739672
+PRC train: 0.563108	val: 0.343679	test: 0.179082
+
+Epoch: 25
+Loss: 0.10700706819592164
+ROC train: 0.912714	val: 0.774128	test: 0.746268
+PRC train: 0.581135	val: 0.347190	test: 0.185048
+
+Epoch: 26
+Loss: 0.10477674476988774
+ROC train: 0.912273	val: 0.812117	test: 0.747334
+PRC train: 0.578628	val: 0.372686	test: 0.229313
+
+Epoch: 27
+Loss: 0.10505352267735162
+ROC train: 0.909789	val: 0.779287	test: 0.724433
+PRC train: 0.553175	val: 0.331186	test: 0.127357
+
+Epoch: 28
+Loss: 0.10243993265310808
+ROC train: 0.911574	val: 0.754899	test: 0.757236
+PRC train: 0.539501	val: 0.405479	test: 0.213516
+
+Epoch: 29
+Loss: 0.10314064078846288
+ROC train: 0.907273	val: 0.760867	test: 0.723875
+PRC train: 0.579245	val: 0.336564	test: 0.145985
+
+Epoch: 30
+Loss: 0.10070947020882126
+ROC train: 0.921309	val: 0.776675	test: 0.731457
+PRC train: 0.593022	val: 0.331123	test: 0.191844
+
+Epoch: 31
+Loss: 0.10077349654908631
+ROC train: 0.923388	val: 0.770763	test: 0.735254
+PRC train: 0.601195	val: 0.403766	test: 0.165667
+
+Epoch: 32
+Loss: 0.10020219256820433
+ROC train: 0.933812	val: 0.762860	test: 0.728724Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.2.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 3
+  multiple_seeds: [1, 2, 3]
+  device: cuda:3
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.2
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.2
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.2/hiv_scaff_3_20-05_14-43-32  ]
+[ Using Seed :  3  ]
+[ Using device :  cuda:3  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2646477541765675
+ROC train: 0.705998	val: 0.698642	test: 0.640248
+PRC train: 0.117962	val: 0.120729	test: 0.093562
+
+Epoch: 2
+Loss: 0.15188529845888735
+ROC train: 0.733122	val: 0.678924	test: 0.681141
+PRC train: 0.141007	val: 0.127153	test: 0.188225
+
+Epoch: 3
+Loss: 0.14930631552761134
+ROC train: 0.754669	val: 0.733557	test: 0.751117
+PRC train: 0.184556	val: 0.170061	test: 0.218152
+
+Epoch: 4
+Loss: 0.14600706430071855
+ROC train: 0.764614	val: 0.733447	test: 0.735906
+PRC train: 0.199065	val: 0.172024	test: 0.214319
+
+Epoch: 5
+Loss: 0.1420787402797239
+ROC train: 0.774447	val: 0.751972	test: 0.725433
+PRC train: 0.232433	val: 0.265983	test: 0.215837
+
+Epoch: 6
+Loss: 0.1396181228376011
+ROC train: 0.766690	val: 0.723919	test: 0.738854
+PRC train: 0.206007	val: 0.209913	test: 0.261288
+
+Epoch: 7
+Loss: 0.13948201039762176
+ROC train: 0.796068	val: 0.764388	test: 0.725862
+PRC train: 0.262641	val: 0.178563	test: 0.158634
+
+Epoch: 8
+Loss: 0.1363794966200211
+ROC train: 0.802455	val: 0.765561	test: 0.727948
+PRC train: 0.312032	val: 0.326632	test: 0.216735
+
+Epoch: 9
+Loss: 0.13492125134923133
+ROC train: 0.811036	val: 0.755132	test: 0.709266
+PRC train: 0.321473	val: 0.286117	test: 0.172801
+
+Epoch: 10
+Loss: 0.13232271744183055
+ROC train: 0.810198	val: 0.750845	test: 0.728384
+PRC train: 0.283260	val: 0.298708	test: 0.202435
+
+Epoch: 11
+Loss: 0.13209018658897875
+ROC train: 0.831694	val: 0.769051	test: 0.724877
+PRC train: 0.352515	val: 0.276395	test: 0.175393
+
+Epoch: 12
+Loss: 0.12967920313252715
+ROC train: 0.829776	val: 0.772597	test: 0.730259
+PRC train: 0.353978	val: 0.319358	test: 0.205884
+
+Epoch: 13
+Loss: 0.1295708334310501
+ROC train: 0.843415	val: 0.764964	test: 0.740634
+PRC train: 0.407594	val: 0.315913	test: 0.240186
+
+Epoch: 14
+Loss: 0.1279093036934028
+ROC train: 0.842893	val: 0.783323	test: 0.743382
+PRC train: 0.391632	val: 0.360610	test: 0.207514
+
+Epoch: 15
+Loss: 0.12669870478841905
+ROC train: 0.840060	val: 0.769036	test: 0.739607
+PRC train: 0.386430	val: 0.339298	test: 0.245721
+
+Epoch: 16
+Loss: 0.12347459643054846
+ROC train: 0.858534	val: 0.781498	test: 0.758783
+PRC train: 0.395006	val: 0.361517	test: 0.235309
+
+Epoch: 17
+Loss: 0.12285635084231007
+ROC train: 0.866332	val: 0.779551	test: 0.732637
+PRC train: 0.409750	val: 0.285459	test: 0.172538
+
+Epoch: 18
+Loss: 0.12282576590011907
+ROC train: 0.871243	val: 0.767425	test: 0.705713
+PRC train: 0.459750	val: 0.273324	test: 0.164454
+
+Epoch: 19
+Loss: 0.1210654140720597
+ROC train: 0.868861	val: 0.764743	test: 0.741629
+PRC train: 0.439176	val: 0.338662	test: 0.233783
+
+Epoch: 20
+Loss: 0.1193178930019975
+ROC train: 0.879630	val: 0.759195	test: 0.717768
+PRC train: 0.479757	val: 0.317852	test: 0.239844
+
+Epoch: 21
+Loss: 0.11917092965731013
+ROC train: 0.878836	val: 0.755830	test: 0.740190
+PRC train: 0.485548	val: 0.302006	test: 0.261266
+
+Epoch: 22
+Loss: 0.11584608733559551
+ROC train: 0.891865	val: 0.774587	test: 0.719243
+PRC train: 0.509181	val: 0.303440	test: 0.189881
+
+Epoch: 23
+Loss: 0.11595352124285958
+ROC train: 0.890541	val: 0.787404	test: 0.742127
+PRC train: 0.516161	val: 0.301443	test: 0.267946
+
+Epoch: 24
+Loss: 0.11206466032835831
+ROC train: 0.906019	val: 0.781023	test: 0.748512
+PRC train: 0.547811	val: 0.310092	test: 0.279540
+
+Epoch: 25
+Loss: 0.1131580527436831
+ROC train: 0.901238	val: 0.755123	test: 0.727084
+PRC train: 0.544456	val: 0.299812	test: 0.226141
+
+Epoch: 26
+Loss: 0.10969948644851968
+ROC train: 0.910500	val: 0.793409	test: 0.730825
+PRC train: 0.544305	val: 0.306862	test: 0.209621
+
+Epoch: 27
+Loss: 0.11004482611988191
+ROC train: 0.922756	val: 0.786513	test: 0.712746
+PRC train: 0.581607	val: 0.309096	test: 0.170447
+
+Epoch: 28
+Loss: 0.10663947011448029
+ROC train: 0.890145	val: 0.777009	test: 0.723560
+PRC train: 0.432072	val: 0.336910	test: 0.236660
+
+Epoch: 29
+Loss: 0.10592778458667194
+ROC train: 0.928495	val: 0.801691	test: 0.733214
+PRC train: 0.611430	val: 0.289959	test: 0.191504
+
+Epoch: 30
+Loss: 0.10546822269940642
+ROC train: 0.932735	val: 0.788155	test: 0.721084
+PRC train: 0.634974	val: 0.323545	test: 0.213285
+
+Epoch: 31
+Loss: 0.10251673713281736
+ROC train: 0.934869	val: 0.776617	test: 0.730530
+PRC train: 0.635391	val: 0.341013	test: 0.257290
+
+Epoch: 32
+Loss: 0.10234128384973003
+ROC train: 0.934764	val: 0.773816	test: 0.736387Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.1.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 1
+  multiple_seeds: [1, 2, 3]
+  device: cuda:2
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.1
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.1
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.1/hiv_scaff_1_20-05_14-43-32  ]
+[ Using Seed :  1  ]
+[ Using device :  cuda:2  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2589083974896477
+ROC train: 0.715823	val: 0.708829	test: 0.708195
+PRC train: 0.153285	val: 0.145646	test: 0.196192
+
+Epoch: 2
+Loss: 0.14857420639114272
+ROC train: 0.747006	val: 0.724044	test: 0.734723
+PRC train: 0.205174	val: 0.240731	test: 0.213752
+
+Epoch: 3
+Loss: 0.1432280904695549
+ROC train: 0.774311	val: 0.748062	test: 0.711373
+PRC train: 0.242581	val: 0.227467	test: 0.196886
+
+Epoch: 4
+Loss: 0.1387315173131922
+ROC train: 0.789598	val: 0.743377	test: 0.733989
+PRC train: 0.291380	val: 0.265925	test: 0.210465
+
+Epoch: 5
+Loss: 0.13579311493896892
+ROC train: 0.803822	val: 0.754082	test: 0.722461
+PRC train: 0.320437	val: 0.294227	test: 0.219704
+
+Epoch: 6
+Loss: 0.13446404571281817
+ROC train: 0.804008	val: 0.763711	test: 0.743052
+PRC train: 0.288018	val: 0.272086	test: 0.233835
+
+Epoch: 7
+Loss: 0.1316075590890171
+ROC train: 0.816424	val: 0.757134	test: 0.723050
+PRC train: 0.340583	val: 0.316051	test: 0.214489
+
+Epoch: 8
+Loss: 0.12910870435786598
+ROC train: 0.821085	val: 0.740594	test: 0.689434
+PRC train: 0.365109	val: 0.246556	test: 0.168769
+
+Epoch: 9
+Loss: 0.12684737085757597
+ROC train: 0.836854	val: 0.749991	test: 0.700272
+PRC train: 0.358311	val: 0.294146	test: 0.140641
+
+Epoch: 10
+Loss: 0.12648835777208506
+ROC train: 0.846933	val: 0.769207	test: 0.735178
+PRC train: 0.413649	val: 0.366536	test: 0.199696
+
+Epoch: 11
+Loss: 0.12458048540290058
+ROC train: 0.839594	val: 0.764360	test: 0.717918
+PRC train: 0.405177	val: 0.313474	test: 0.179945
+
+Epoch: 12
+Loss: 0.12310022514292078
+ROC train: 0.857069	val: 0.789196	test: 0.705205
+PRC train: 0.439787	val: 0.329533	test: 0.148335
+
+Epoch: 13
+Loss: 0.12079217139692577
+ROC train: 0.864410	val: 0.782291	test: 0.726300
+PRC train: 0.447410	val: 0.301094	test: 0.176031
+
+Epoch: 14
+Loss: 0.12066333934004343
+ROC train: 0.867339	val: 0.794012	test: 0.673429
+PRC train: 0.426716	val: 0.254347	test: 0.093119
+
+Epoch: 15
+Loss: 0.11955922410457412
+ROC train: 0.872478	val: 0.777609	test: 0.723246
+PRC train: 0.473987	val: 0.363832	test: 0.205736
+
+Epoch: 16
+Loss: 0.11687120408795655
+ROC train: 0.876438	val: 0.790218	test: 0.719767
+PRC train: 0.510652	val: 0.357544	test: 0.201340
+
+Epoch: 17
+Loss: 0.11620781799475871
+ROC train: 0.877753	val: 0.784597	test: 0.704919
+PRC train: 0.482301	val: 0.355980	test: 0.136457
+
+Epoch: 18
+Loss: 0.11466587903695419
+ROC train: 0.884681	val: 0.790044	test: 0.752434
+PRC train: 0.471076	val: 0.332013	test: 0.193012
+
+Epoch: 19
+Loss: 0.1134156524706946
+ROC train: 0.891746	val: 0.782717	test: 0.726785
+PRC train: 0.533235	val: 0.316899	test: 0.180008
+
+Epoch: 20
+Loss: 0.11115889731737136
+ROC train: 0.887065	val: 0.771470	test: 0.714714
+PRC train: 0.489580	val: 0.252056	test: 0.118484
+
+Epoch: 21
+Loss: 0.11075304363527161
+ROC train: 0.903934	val: 0.782524	test: 0.728108
+PRC train: 0.531397	val: 0.330539	test: 0.182275
+
+Epoch: 22
+Loss: 0.10942216956601927
+ROC train: 0.906593	val: 0.772946	test: 0.684832
+PRC train: 0.509214	val: 0.247958	test: 0.113295
+
+Epoch: 23
+Loss: 0.11044010043740596
+ROC train: 0.907330	val: 0.786351	test: 0.701779
+PRC train: 0.552072	val: 0.288217	test: 0.177144
+
+Epoch: 24
+Loss: 0.1066338708226038
+ROC train: 0.903859	val: 0.787980	test: 0.711812
+PRC train: 0.550111	val: 0.324729	test: 0.179014
+
+Epoch: 25
+Loss: 0.10609029736954746
+ROC train: 0.920843	val: 0.783935	test: 0.735677
+PRC train: 0.600215	val: 0.328593	test: 0.182531
+
+Epoch: 26
+Loss: 0.1043486587087424
+ROC train: 0.921098	val: 0.798737	test: 0.691404
+PRC train: 0.598933	val: 0.280479	test: 0.110892
+
+Epoch: 27
+Loss: 0.10341733293499684
+ROC train: 0.922685	val: 0.788785	test: 0.736897
+PRC train: 0.613813	val: 0.328436	test: 0.203880
+
+Epoch: 28
+Loss: 0.1025380295068957
+ROC train: 0.926040	val: 0.781271	test: 0.718233
+PRC train: 0.602608	val: 0.357139	test: 0.160398
+
+Epoch: 29
+Loss: 0.1025733312049983
+ROC train: 0.929968	val: 0.789934	test: 0.696477
+PRC train: 0.636837	val: 0.356107	test: 0.160490
+
+Epoch: 30
+Loss: 0.09949807742554632
+ROC train: 0.923743	val: 0.789836	test: 0.671979
+PRC train: 0.598819	val: 0.342195	test: 0.090325
+
+Epoch: 31
+Loss: 0.09799233435968292
+ROC train: 0.937232	val: 0.794631	test: 0.705450
+PRC train: 0.662594	val: 0.321441	test: 0.160727
+
+Epoch: 32
+Loss: 0.09552522532511205
+ROC train: 0.942617	val: 0.798853	test: 0.689196Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.2.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 2
+  multiple_seeds: [1, 2, 3]
+  device: cuda:3
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.2
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.2
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.2/hiv_scaff_2_20-05_14-43-32  ]
+[ Using Seed :  2  ]
+[ Using device :  cuda:3  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2630989255366602
+ROC train: 0.677841	val: 0.620579	test: 0.605746
+PRC train: 0.106537	val: 0.142248	test: 0.117015
+
+Epoch: 2
+Loss: 0.1532372289107332
+ROC train: 0.716470	val: 0.707984	test: 0.670832
+PRC train: 0.138683	val: 0.141021	test: 0.157544
+
+Epoch: 3
+Loss: 0.14933117895877393
+ROC train: 0.746097	val: 0.756752	test: 0.705674
+PRC train: 0.179261	val: 0.195033	test: 0.180592
+
+Epoch: 4
+Loss: 0.14720536737754597
+ROC train: 0.746838	val: 0.755343	test: 0.721414
+PRC train: 0.176713	val: 0.205054	test: 0.183772
+
+Epoch: 5
+Loss: 0.1439675949349772
+ROC train: 0.752062	val: 0.756748	test: 0.747160
+PRC train: 0.201060	val: 0.197838	test: 0.239613
+
+Epoch: 6
+Loss: 0.13999964275691432
+ROC train: 0.781571	val: 0.756967	test: 0.744396
+PRC train: 0.263712	val: 0.254718	test: 0.227436
+
+Epoch: 7
+Loss: 0.13911229532807123
+ROC train: 0.788687	val: 0.760058	test: 0.735323
+PRC train: 0.271022	val: 0.240457	test: 0.244853
+
+Epoch: 8
+Loss: 0.13772170197567726
+ROC train: 0.792745	val: 0.762095	test: 0.738801
+PRC train: 0.288287	val: 0.277836	test: 0.253168
+
+Epoch: 9
+Loss: 0.1351163587024506
+ROC train: 0.773518	val: 0.752293	test: 0.725000
+PRC train: 0.247338	val: 0.250685	test: 0.253674
+
+Epoch: 10
+Loss: 0.1334718309700846
+ROC train: 0.823501	val: 0.759951	test: 0.732071
+PRC train: 0.333597	val: 0.271231	test: 0.243968
+
+Epoch: 11
+Loss: 0.13180682073742325
+ROC train: 0.815251	val: 0.754011	test: 0.733066
+PRC train: 0.311306	val: 0.276990	test: 0.260972
+
+Epoch: 12
+Loss: 0.12995195702267415
+ROC train: 0.825189	val: 0.766345	test: 0.761590
+PRC train: 0.349607	val: 0.287542	test: 0.268904
+
+Epoch: 13
+Loss: 0.1284447564714112
+ROC train: 0.838700	val: 0.736950	test: 0.693283
+PRC train: 0.390488	val: 0.224745	test: 0.182823
+
+Epoch: 14
+Loss: 0.12742142889730734
+ROC train: 0.835843	val: 0.773950	test: 0.747276
+PRC train: 0.372666	val: 0.317294	test: 0.273905
+
+Epoch: 15
+Loss: 0.12593857898841274
+ROC train: 0.851738	val: 0.763448	test: 0.744514
+PRC train: 0.432493	val: 0.284898	test: 0.270476
+
+Epoch: 16
+Loss: 0.12331514733801102
+ROC train: 0.840747	val: 0.743738	test: 0.744093
+PRC train: 0.392023	val: 0.294043	test: 0.245531
+
+Epoch: 17
+Loss: 0.12317849688401333
+ROC train: 0.857895	val: 0.786177	test: 0.755410
+PRC train: 0.411901	val: 0.311707	test: 0.232178
+
+Epoch: 18
+Loss: 0.12012245858053247
+ROC train: 0.876038	val: 0.776271	test: 0.731306
+PRC train: 0.488953	val: 0.299214	test: 0.268448
+
+Epoch: 19
+Loss: 0.11979640742685425
+ROC train: 0.871976	val: 0.755193	test: 0.734773
+PRC train: 0.439245	val: 0.298214	test: 0.243605
+
+Epoch: 20
+Loss: 0.11813980163193218
+ROC train: 0.883341	val: 0.771681	test: 0.746065
+PRC train: 0.496955	val: 0.299955	test: 0.263854
+
+Epoch: 21
+Loss: 0.11746643586317894
+ROC train: 0.887730	val: 0.766427	test: 0.730578
+PRC train: 0.504912	val: 0.248718	test: 0.224360
+
+Epoch: 22
+Loss: 0.11552132117582972
+ROC train: 0.904019	val: 0.768427	test: 0.697275
+PRC train: 0.559958	val: 0.236499	test: 0.204826
+
+Epoch: 23
+Loss: 0.11537351162484011
+ROC train: 0.882713	val: 0.756917	test: 0.710502
+PRC train: 0.465096	val: 0.305621	test: 0.258799
+
+Epoch: 24
+Loss: 0.11196172930535783
+ROC train: 0.911280	val: 0.787181	test: 0.732782
+PRC train: 0.559993	val: 0.299102	test: 0.302795
+
+Epoch: 25
+Loss: 0.10911323821028962
+ROC train: 0.921461	val: 0.770598	test: 0.694419
+PRC train: 0.605849	val: 0.243489	test: 0.255881
+
+Epoch: 26
+Loss: 0.10854621177001125
+ROC train: 0.898342	val: 0.740205	test: 0.737173
+PRC train: 0.524365	val: 0.280838	test: 0.266248
+
+Epoch: 27
+Loss: 0.10828706062389018
+ROC train: 0.918874	val: 0.791483	test: 0.725744
+PRC train: 0.583999	val: 0.276552	test: 0.225100
+
+Epoch: 28
+Loss: 0.10657248961130616
+ROC train: 0.927454	val: 0.758763	test: 0.722855
+PRC train: 0.606785	val: 0.259540	test: 0.213790
+
+Epoch: 29
+Loss: 0.10540990354806778
+ROC train: 0.927451	val: 0.776097	test: 0.712866
+PRC train: 0.614485	val: 0.276831	test: 0.232020
+
+Epoch: 30
+Loss: 0.10333519588892763
+ROC train: 0.931221	val: 0.799833	test: 0.739224
+PRC train: 0.632366	val: 0.297193	test: 0.255853
+
+Epoch: 31
+Loss: 0.10125468902601138
+ROC train: 0.929728	val: 0.774103	test: 0.708372
+PRC train: 0.617064	val: 0.306580	test: 0.240182
+
+Epoch: 32
+Loss: 0.10051535755916757
+ROC train: 0.941148	val: 0.785108	test: 0.728073Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.1.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 3
+  multiple_seeds: [1, 2, 3]
+  device: cuda:2
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.1
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.1
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.1/hiv_scaff_3_20-05_14-43-32  ]
+[ Using Seed :  3  ]
+[ Using device :  cuda:2  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2628922250826222
+ROC train: 0.714427	val: 0.741616	test: 0.751217
+PRC train: 0.142478	val: 0.182625	test: 0.198194
+
+Epoch: 2
+Loss: 0.1479410768532654
+ROC train: 0.759870	val: 0.742192	test: 0.720166
+PRC train: 0.192732	val: 0.211008	test: 0.184518
+
+Epoch: 3
+Loss: 0.14461242284661305
+ROC train: 0.769148	val: 0.756249	test: 0.733914
+PRC train: 0.223138	val: 0.238469	test: 0.191199
+
+Epoch: 4
+Loss: 0.14128259286510586
+ROC train: 0.794957	val: 0.763414	test: 0.724410
+PRC train: 0.270880	val: 0.256664	test: 0.179392
+
+Epoch: 5
+Loss: 0.13721278799557668
+ROC train: 0.796526	val: 0.764529	test: 0.729224
+PRC train: 0.281938	val: 0.293938	test: 0.220049
+
+Epoch: 6
+Loss: 0.13364740037352235
+ROC train: 0.800590	val: 0.757134	test: 0.762846
+PRC train: 0.270672	val: 0.280609	test: 0.253221
+
+Epoch: 7
+Loss: 0.133558150625417
+ROC train: 0.820424	val: 0.759749	test: 0.743151
+PRC train: 0.328292	val: 0.263656	test: 0.178202
+
+Epoch: 8
+Loss: 0.12945099399152635
+ROC train: 0.825186	val: 0.782965	test: 0.735528
+PRC train: 0.334879	val: 0.328966	test: 0.138856
+
+Epoch: 9
+Loss: 0.12858299105842513
+ROC train: 0.821497	val: 0.791165	test: 0.745582
+PRC train: 0.351600	val: 0.362002	test: 0.212124
+
+Epoch: 10
+Loss: 0.12779940018593874
+ROC train: 0.828936	val: 0.772315	test: 0.739833
+PRC train: 0.364822	val: 0.350939	test: 0.280584
+
+Epoch: 11
+Loss: 0.12585342143512662
+ROC train: 0.840105	val: 0.800344	test: 0.736592
+PRC train: 0.391927	val: 0.351684	test: 0.233494
+
+Epoch: 12
+Loss: 0.12449855825054525
+ROC train: 0.859165	val: 0.810926	test: 0.757093
+PRC train: 0.428292	val: 0.347109	test: 0.227431
+
+Epoch: 13
+Loss: 0.12343503518261076
+ROC train: 0.860160	val: 0.805357	test: 0.751612
+PRC train: 0.429964	val: 0.367226	test: 0.221009
+
+Epoch: 14
+Loss: 0.12131747830417079
+ROC train: 0.856152	val: 0.767358	test: 0.751459
+PRC train: 0.420932	val: 0.309964	test: 0.238865
+
+Epoch: 15
+Loss: 0.1205361700472837
+ROC train: 0.855730	val: 0.769924	test: 0.740727
+PRC train: 0.428706	val: 0.361122	test: 0.243800
+
+Epoch: 16
+Loss: 0.11727957885072415
+ROC train: 0.876159	val: 0.799499	test: 0.744887
+PRC train: 0.464780	val: 0.368517	test: 0.206259
+
+Epoch: 17
+Loss: 0.1186358697172602
+ROC train: 0.873141	val: 0.782132	test: 0.744591
+PRC train: 0.437404	val: 0.301988	test: 0.145036
+
+Epoch: 18
+Loss: 0.11681973844399766
+ROC train: 0.889573	val: 0.788182	test: 0.748674
+PRC train: 0.495819	val: 0.313439	test: 0.192284
+
+Epoch: 19
+Loss: 0.11551650432657182
+ROC train: 0.892234	val: 0.797337	test: 0.765575
+PRC train: 0.504730	val: 0.367888	test: 0.212466
+
+Epoch: 20
+Loss: 0.11273007411212788
+ROC train: 0.888458	val: 0.766087	test: 0.756345
+PRC train: 0.474336	val: 0.401691	test: 0.251745
+
+Epoch: 21
+Loss: 0.11162838379169862
+ROC train: 0.893745	val: 0.798201	test: 0.751490
+PRC train: 0.531473	val: 0.373094	test: 0.221653
+
+Epoch: 22
+Loss: 0.11056657122165044
+ROC train: 0.899922	val: 0.756390	test: 0.752208
+PRC train: 0.545203	val: 0.358565	test: 0.215783
+
+Epoch: 23
+Loss: 0.10835749089063797
+ROC train: 0.910919	val: 0.782900	test: 0.737210
+PRC train: 0.565272	val: 0.362260	test: 0.183130
+
+Epoch: 24
+Loss: 0.10690696147867662
+ROC train: 0.910390	val: 0.771746	test: 0.766303
+PRC train: 0.559199	val: 0.354472	test: 0.203304
+
+Epoch: 25
+Loss: 0.10488393561039364
+ROC train: 0.917152	val: 0.775533	test: 0.757948
+PRC train: 0.592014	val: 0.373564	test: 0.237491
+
+Epoch: 26
+Loss: 0.10468850783311583
+ROC train: 0.917827	val: 0.814383	test: 0.758068
+PRC train: 0.602044	val: 0.385051	test: 0.214349
+
+Epoch: 27
+Loss: 0.10615128331194591
+ROC train: 0.910123	val: 0.780984	test: 0.713270
+PRC train: 0.569306	val: 0.317289	test: 0.119117
+
+Epoch: 28
+Loss: 0.1029313947827354
+ROC train: 0.914464	val: 0.797674	test: 0.763362
+PRC train: 0.555865	val: 0.359559	test: 0.231175
+
+Epoch: 29
+Loss: 0.10275644551407903
+ROC train: 0.933026	val: 0.774520	test: 0.739433
+PRC train: 0.637381	val: 0.322837	test: 0.155586
+
+Epoch: 30
+Loss: 0.10017624305387798
+ROC train: 0.926813	val: 0.788733	test: 0.737623
+PRC train: 0.624157	val: 0.372700	test: 0.180812
+
+Epoch: 31
+Loss: 0.09887335983594837
+ROC train: 0.930811	val: 0.803510	test: 0.761166
+PRC train: 0.630892	val: 0.365606	test: 0.238966
+
+Epoch: 32
+Loss: 0.09841927973711682
+ROC train: 0.939032	val: 0.791798	test: 0.759860Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.1.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 2
+  multiple_seeds: [1, 2, 3]
+  device: cuda:2
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.1
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.1
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.1/hiv_scaff_2_20-05_14-43-32  ]
+[ Using Seed :  2  ]
+[ Using device :  cuda:2  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2601347253488498
+ROC train: 0.740819	val: 0.736494	test: 0.634147
+PRC train: 0.179225	val: 0.186577	test: 0.141504
+
+Epoch: 2
+Loss: 0.1469571545531489
+ROC train: 0.761334	val: 0.748288	test: 0.707468
+PRC train: 0.211744	val: 0.208795	test: 0.186111
+
+Epoch: 3
+Loss: 0.14246370635340413
+ROC train: 0.780353	val: 0.760864	test: 0.721997
+PRC train: 0.262740	val: 0.232064	test: 0.178285
+
+Epoch: 4
+Loss: 0.14002071518057926
+ROC train: 0.785228	val: 0.771133	test: 0.726293
+PRC train: 0.240162	val: 0.247041	test: 0.180860
+
+Epoch: 5
+Loss: 0.13719275060750377
+ROC train: 0.801149	val: 0.776761	test: 0.728782
+PRC train: 0.309459	val: 0.281862	test: 0.182144
+
+Epoch: 6
+Loss: 0.1326297315261159
+ROC train: 0.804207	val: 0.765316	test: 0.721949
+PRC train: 0.309914	val: 0.278827	test: 0.218229
+
+Epoch: 7
+Loss: 0.13313361534599444
+ROC train: 0.818129	val: 0.789125	test: 0.746753
+PRC train: 0.337237	val: 0.326991	test: 0.253611
+
+Epoch: 8
+Loss: 0.13046038922861805
+ROC train: 0.829360	val: 0.778519	test: 0.735086
+PRC train: 0.370137	val: 0.276878	test: 0.195702
+
+Epoch: 9
+Loss: 0.1292920976201172
+ROC train: 0.819401	val: 0.778813	test: 0.710906
+PRC train: 0.331963	val: 0.311696	test: 0.230052
+
+Epoch: 10
+Loss: 0.12561850859606294
+ROC train: 0.845069	val: 0.778078	test: 0.729618
+PRC train: 0.390890	val: 0.319678	test: 0.246239
+
+Epoch: 11
+Loss: 0.124182540620588
+ROC train: 0.823900	val: 0.772992	test: 0.721097
+PRC train: 0.306649	val: 0.295594	test: 0.238114
+
+Epoch: 12
+Loss: 0.12337635385179548
+ROC train: 0.849146	val: 0.792101	test: 0.739439
+PRC train: 0.382049	val: 0.359070	test: 0.247761
+
+Epoch: 13
+Loss: 0.12477999545467267
+ROC train: 0.862896	val: 0.786486	test: 0.719442
+PRC train: 0.420514	val: 0.341649	test: 0.199093
+
+Epoch: 14
+Loss: 0.12050738008954501
+ROC train: 0.864561	val: 0.779878	test: 0.728861
+PRC train: 0.449486	val: 0.334942	test: 0.212069
+
+Epoch: 15
+Loss: 0.1193201420468001
+ROC train: 0.871701	val: 0.781143	test: 0.678092
+PRC train: 0.478469	val: 0.324448	test: 0.215065
+
+Epoch: 16
+Loss: 0.11745802773108754
+ROC train: 0.873441	val: 0.782432	test: 0.705722
+PRC train: 0.470098	val: 0.305576	test: 0.128280
+
+Epoch: 17
+Loss: 0.1164665626215064
+ROC train: 0.865445	val: 0.766060	test: 0.708127
+PRC train: 0.422093	val: 0.306639	test: 0.138989
+
+Epoch: 18
+Loss: 0.11801273292973297
+ROC train: 0.882314	val: 0.782496	test: 0.730167
+PRC train: 0.497247	val: 0.374103	test: 0.195231
+
+Epoch: 19
+Loss: 0.11467281795874791
+ROC train: 0.895614	val: 0.788317	test: 0.716091
+PRC train: 0.504963	val: 0.364256	test: 0.198842
+
+Epoch: 20
+Loss: 0.1139753663015208
+ROC train: 0.887891	val: 0.771737	test: 0.716665
+PRC train: 0.503373	val: 0.360649	test: 0.209326
+
+Epoch: 21
+Loss: 0.1130177136127341
+ROC train: 0.873337	val: 0.791382	test: 0.743060
+PRC train: 0.439441	val: 0.346817	test: 0.250545
+
+Epoch: 22
+Loss: 0.11193368643598434
+ROC train: 0.899711	val: 0.773258	test: 0.730035
+PRC train: 0.540326	val: 0.318153	test: 0.156563
+
+Epoch: 23
+Loss: 0.11130227729295356
+ROC train: 0.902676	val: 0.776238	test: 0.732061
+PRC train: 0.528323	val: 0.346239	test: 0.148045
+
+Epoch: 24
+Loss: 0.1086298735935899
+ROC train: 0.914487	val: 0.783874	test: 0.693675
+PRC train: 0.577310	val: 0.379087	test: 0.180424
+
+Epoch: 25
+Loss: 0.10787140174448297
+ROC train: 0.915510	val: 0.789058	test: 0.734174
+PRC train: 0.582001	val: 0.386314	test: 0.227567
+
+Epoch: 26
+Loss: 0.10691457561022577
+ROC train: 0.914100	val: 0.779202	test: 0.718457
+PRC train: 0.551835	val: 0.370704	test: 0.210405
+
+Epoch: 27
+Loss: 0.10516415420572095
+ROC train: 0.915426	val: 0.772046	test: 0.723372
+PRC train: 0.574609	val: 0.343558	test: 0.207094
+
+Epoch: 28
+Loss: 0.10147999319113248
+ROC train: 0.924265	val: 0.788055	test: 0.704396
+PRC train: 0.593057	val: 0.280806	test: 0.135387
+
+Epoch: 29
+Loss: 0.10303776197966637
+ROC train: 0.928320	val: 0.797099	test: 0.734668
+PRC train: 0.634821	val: 0.320041	test: 0.209620
+
+Epoch: 30
+Loss: 0.10115042689599843
+ROC train: 0.924315	val: 0.798795	test: 0.724773
+PRC train: 0.595270	val: 0.291029	test: 0.134898
+
+Epoch: 31
+Loss: 0.09987919695479251
+ROC train: 0.932960	val: 0.782273	test: 0.695913
+PRC train: 0.642124	val: 0.369435	test: 0.221205
+
+Epoch: 32
+Loss: 0.09804856089218612
+ROC train: 0.939863	val: 0.800182	test: 0.722190Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_static_noise_experiments/GraphCL/hiv/noise=0.2.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 1
+  multiple_seeds: [1, 2, 3]
+  device: cuda:3
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.2
+  dynamic_noise: False
+  train_prop: 0.8
+  split: scaffold
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/static-noise/GraphCL/hiv/noise=0.2
+  verbose: False
+[ Logs to :  ../runs/static-noise/GraphCL/hiv/noise=0.2/hiv_scaff_1_20-05_14-43-32  ]
+[ Using Seed :  1  ]
+[ Using device :  cuda:3  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+split via scaffold
+Data(edge_attr=[32, 2], edge_index=[2, 32], id=[1], x=[16, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.25998760994469483
+ROC train: 0.658828	val: 0.595419	test: 0.667502
+PRC train: 0.091230	val: 0.118990	test: 0.141223
+
+Epoch: 2
+Loss: 0.15308037892987547
+ROC train: 0.727128	val: 0.650475	test: 0.695040
+PRC train: 0.153763	val: 0.151703	test: 0.171355
+
+Epoch: 3
+Loss: 0.14829732133347406
+ROC train: 0.756593	val: 0.687742	test: 0.712427
+PRC train: 0.167404	val: 0.167124	test: 0.167636
+
+Epoch: 4
+Loss: 0.14621383662350643
+ROC train: 0.765305	val: 0.700721	test: 0.742305
+PRC train: 0.167049	val: 0.163816	test: 0.191240
+
+Epoch: 5
+Loss: 0.14235568928138528
+ROC train: 0.778561	val: 0.722877	test: 0.728299
+PRC train: 0.236754	val: 0.220507	test: 0.227280
+
+Epoch: 6
+Loss: 0.14062506379603987
+ROC train: 0.786830	val: 0.743855	test: 0.755814
+PRC train: 0.234460	val: 0.242096	test: 0.233309
+
+Epoch: 7
+Loss: 0.1377658023312884
+ROC train: 0.803980	val: 0.717127	test: 0.765664
+PRC train: 0.261729	val: 0.243366	test: 0.256411
+
+Epoch: 8
+Loss: 0.13717231625658266
+ROC train: 0.824031	val: 0.742572	test: 0.745124
+PRC train: 0.312372	val: 0.252265	test: 0.226760
+
+Epoch: 9
+Loss: 0.13442759532889287
+ROC train: 0.812210	val: 0.754850	test: 0.729444
+PRC train: 0.272814	val: 0.243294	test: 0.196011
+
+Epoch: 10
+Loss: 0.13224100525313404
+ROC train: 0.805112	val: 0.720140	test: 0.768086
+PRC train: 0.247865	val: 0.250967	test: 0.254425
+
+Epoch: 11
+Loss: 0.13113941772110013
+ROC train: 0.832457	val: 0.743276	test: 0.758369
+PRC train: 0.307732	val: 0.284104	test: 0.249426
+
+Epoch: 12
+Loss: 0.12899022791206405
+ROC train: 0.850634	val: 0.714892	test: 0.740366
+PRC train: 0.372607	val: 0.257233	test: 0.246717
+
+Epoch: 13
+Loss: 0.12836928433311035
+ROC train: 0.843475	val: 0.772811	test: 0.768875
+PRC train: 0.329211	val: 0.303476	test: 0.272634
+
+Epoch: 14
+Loss: 0.1265383286846806
+ROC train: 0.854421	val: 0.758227	test: 0.743987
+PRC train: 0.392190	val: 0.284913	test: 0.210990
+
+Epoch: 15
+Loss: 0.12367182584957707
+ROC train: 0.868994	val: 0.771400	test: 0.739186
+PRC train: 0.394816	val: 0.295562	test: 0.256813
+
+Epoch: 16
+Loss: 0.12312362931299764
+ROC train: 0.865477	val: 0.769780	test: 0.747025
+PRC train: 0.406691	val: 0.289602	test: 0.243806
+
+Epoch: 17
+Loss: 0.12256096864845907
+ROC train: 0.879622	val: 0.769887	test: 0.731084
+PRC train: 0.439325	val: 0.251254	test: 0.157810
+
+Epoch: 18
+Loss: 0.11845769731604164
+ROC train: 0.876793	val: 0.767184	test: 0.753858
+PRC train: 0.424397	val: 0.290835	test: 0.215515
+
+Epoch: 19
+Loss: 0.11906875026142248
+ROC train: 0.891215	val: 0.769137	test: 0.756388
+PRC train: 0.478896	val: 0.255584	test: 0.223019
+
+Epoch: 20
+Loss: 0.11742238342669378
+ROC train: 0.895520	val: 0.769434	test: 0.757295
+PRC train: 0.494792	val: 0.267953	test: 0.206808
+
+Epoch: 21
+Loss: 0.11589467737354554
+ROC train: 0.886853	val: 0.757698	test: 0.764582
+PRC train: 0.452428	val: 0.294084	test: 0.264101
+
+Epoch: 22
+Loss: 0.11327903439006792
+ROC train: 0.906379	val: 0.779254	test: 0.717422
+PRC train: 0.519320	val: 0.264386	test: 0.148765
+
+Epoch: 23
+Loss: 0.11244122873705927
+ROC train: 0.919571	val: 0.776994	test: 0.750291
+PRC train: 0.537965	val: 0.293578	test: 0.191698
+
+Epoch: 24
+Loss: 0.1099538509603357
+ROC train: 0.916942	val: 0.768812	test: 0.729089
+PRC train: 0.566464	val: 0.297083	test: 0.195705
+
+Epoch: 25
+Loss: 0.11089137655041015
+ROC train: 0.919141	val: 0.777934	test: 0.735920
+PRC train: 0.564284	val: 0.289486	test: 0.195131
+
+Epoch: 26
+Loss: 0.10834380706516078
+ROC train: 0.926326	val: 0.788859	test: 0.715707
+PRC train: 0.605074	val: 0.315057	test: 0.178042
+
+Epoch: 27
+Loss: 0.10558398104466989
+ROC train: 0.929447	val: 0.784823	test: 0.727567
+PRC train: 0.597388	val: 0.296692	test: 0.205335
+
+Epoch: 28
+Loss: 0.10616845062551356
+ROC train: 0.932338	val: 0.767450	test: 0.727610
+PRC train: 0.622049	val: 0.325075	test: 0.196597
+
+Epoch: 29
+Loss: 0.10314169734008481
+ROC train: 0.935900	val: 0.789180	test: 0.687765
+PRC train: 0.635891	val: 0.290084	test: 0.140421
+
+Epoch: 30
+Loss: 0.10265976483657215
+ROC train: 0.934601	val: 0.770769	test: 0.734584
+PRC train: 0.633645	val: 0.300562	test: 0.190289
+
+Epoch: 31
+Loss: 0.1014862866152489
+ROC train: 0.944510	val: 0.774012	test: 0.732616
+PRC train: 0.677064	val: 0.327724	test: 0.208887
+
+Epoch: 32
+Loss: 0.09855195865268387
+ROC train: 0.942095	val: 0.759642	test: 0.706105

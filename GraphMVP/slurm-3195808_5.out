@@ -1,0 +1,6698 @@
+>>> Starting run for dataset: hiv
+FATAL:   Image file already exists: "graphmvp.sif" - will not overwrite
+Running RANDOM configs_split_experiments/GraphCL/hiv/random/train_prop=0.6.yml on cuda:0
+Running RANDOM configs_split_experiments/GraphCL/hiv/random/train_prop=0.7.yml on cuda:1
+Running RANDOM configs_split_experiments/GraphCL/hiv/random/train_prop=0.8.yml on cuda:2
+Starting process for seed 1: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.6.yml --runseed 1 --device cuda:0
+Starting process for seed 2: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.6.yml --runseed 2 --device cuda:0
+Starting process for seed 3: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.6.yml --runseed 3 --device cuda:0
+Starting process for seed 1: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.8.yml --runseed 1 --device cuda:2
+Starting process for seed 1: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.7.yml --runseed 1 --device cuda:1
+Starting process for seed 2: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.8.yml --runseed 2 --device cuda:2
+Starting process for seed 2: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.7.yml --runseed 2 --device cuda:1
+Starting process for seed 3: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.8.yml --runseed 3 --device cuda:2
+Starting process for seed 3: python molecule_finetune.py --config /workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.7.yml --runseed 3 --device cuda:1
+Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.6.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 2
+  multiple_seeds: [1, 2, 3]
+  device: cuda:0
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.6
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.6
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.6/hiv_random_2_20-05_14-43-16  ]
+[ Using Seed :  2  ]
+[ Using device :  cuda:0  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.27875593812204047
+ROC train: 0.736144	val: 0.686917	test: 0.732572
+PRC train: 0.174886	val: 0.170668	test: 0.202846
+
+Epoch: 2
+Loss: 0.13842977760852815
+ROC train: 0.780201	val: 0.732360	test: 0.767634
+PRC train: 0.222714	val: 0.204736	test: 0.252909
+
+Epoch: 3
+Loss: 0.13141692879935768
+ROC train: 0.774696	val: 0.734999	test: 0.762704
+PRC train: 0.183141	val: 0.155800	test: 0.186921
+
+Epoch: 4
+Loss: 0.12932573923376695
+ROC train: 0.781432	val: 0.741162	test: 0.782501
+PRC train: 0.257513	val: 0.222851	test: 0.301803
+
+Epoch: 5
+Loss: 0.12647220943391232
+ROC train: 0.808985	val: 0.778057	test: 0.783733
+PRC train: 0.333779	val: 0.279947	test: 0.353279
+
+Epoch: 6
+Loss: 0.12184946690950205
+ROC train: 0.813903	val: 0.766719	test: 0.773908
+PRC train: 0.346953	val: 0.287797	test: 0.354293
+
+Epoch: 7
+Loss: 0.12294966384704657
+ROC train: 0.829957	val: 0.777157	test: 0.801910
+PRC train: 0.356122	val: 0.285849	test: 0.340360
+
+Epoch: 8
+Loss: 0.12034096068282259
+ROC train: 0.832206	val: 0.774237	test: 0.797650
+PRC train: 0.366235	val: 0.311473	test: 0.363717
+
+Epoch: 9
+Loss: 0.1192880456892584
+ROC train: 0.830369	val: 0.777894	test: 0.801261
+PRC train: 0.375395	val: 0.300941	test: 0.358158
+
+Epoch: 10
+Loss: 0.11863314909256525
+ROC train: 0.844430	val: 0.771905	test: 0.805151
+PRC train: 0.393239	val: 0.315168	test: 0.361975
+
+Epoch: 11
+Loss: 0.1175276481714507
+ROC train: 0.847654	val: 0.787049	test: 0.810787
+PRC train: 0.388036	val: 0.326709	test: 0.349921
+
+Epoch: 12
+Loss: 0.11515580033856603
+ROC train: 0.857857	val: 0.771791	test: 0.805893
+PRC train: 0.405782	val: 0.330198	test: 0.383809
+
+Epoch: 13
+Loss: 0.11445499470719689
+ROC train: 0.854523	val: 0.772186	test: 0.803548
+PRC train: 0.424268	val: 0.306546	test: 0.405406
+
+Epoch: 14
+Loss: 0.11691040409798427
+ROC train: 0.852185	val: 0.771047	test: 0.805950
+PRC train: 0.337413	val: 0.266725	test: 0.311842
+
+Epoch: 15
+Loss: 0.11284586970305233
+ROC train: 0.851691	val: 0.785792	test: 0.791025
+PRC train: 0.401957	val: 0.279040	test: 0.316676
+
+Epoch: 16
+Loss: 0.11229582328210216
+ROC train: 0.845391	val: 0.766957	test: 0.794579
+PRC train: 0.413271	val: 0.303034	test: 0.362026
+
+Epoch: 17
+Loss: 0.10946901855380699
+ROC train: 0.864012	val: 0.774707	test: 0.811697
+PRC train: 0.433431	val: 0.330061	test: 0.381938
+
+Epoch: 18
+Loss: 0.10910505930676057
+ROC train: 0.876855	val: 0.766532	test: 0.812468
+PRC train: 0.466845	val: 0.347359	test: 0.409215
+
+Epoch: 19
+Loss: 0.11020340039428313
+ROC train: 0.879929	val: 0.781414	test: 0.810245
+PRC train: 0.455777	val: 0.345141	test: 0.392764
+
+Epoch: 20
+Loss: 0.10694545585928891
+ROC train: 0.888800	val: 0.783626	test: 0.818491
+PRC train: 0.465926	val: 0.352113	test: 0.406391
+
+Epoch: 21
+Loss: 0.10763622315543668
+ROC train: 0.873344	val: 0.767076	test: 0.801664
+PRC train: 0.435972	val: 0.292270	test: 0.386904
+
+Epoch: 22
+Loss: 0.10709703810821647
+ROC train: 0.888037	val: 0.773659	test: 0.805474
+PRC train: 0.480967	val: 0.313826	test: 0.401883
+
+Epoch: 23
+Loss: 0.10488146434856378
+ROC train: 0.896609	val: 0.787628	test: 0.819592
+PRC train: 0.489010	val: 0.333201	test: 0.416279
+
+Epoch: 24
+Loss: 0.10590767265014629
+ROC train: 0.894398	val: 0.771164	test: 0.811853
+PRC train: 0.496010	val: 0.311797	test: 0.405500
+
+Epoch: 25
+Loss: 0.10404566717256214
+ROC train: 0.901158	val: 0.778388	test: 0.814487
+PRC train: 0.517117	val: 0.354095	test: 0.413385
+
+Epoch: 26
+Loss: 0.10314267670039035
+ROC train: 0.893983	val: 0.777608	test: 0.821026
+PRC train: 0.493249	val: 0.310521	test: 0.391267
+
+Epoch: 27
+Loss: 0.10379391314065564
+ROC train: 0.901108	val: 0.779739	test: 0.811413
+PRC train: 0.498927	val: 0.331301	test: 0.411187
+
+Epoch: 28
+Loss: 0.10486989082273253
+ROC train: 0.908236	val: 0.776675	test: 0.812468
+PRC train: 0.516477	val: 0.331630	test: 0.424765
+
+Epoch: 29
+Loss: 0.10284661259527758
+ROC train: 0.902899	val: 0.776025	test: 0.807238
+PRC train: 0.522128	val: 0.340710	test: 0.422696
+
+Epoch: 30
+Loss: 0.10185327434620532
+ROC train: 0.913164	val: 0.790229	test: 0.818228
+PRC train: 0.515751	val: 0.339309	test: 0.421803
+
+Epoch: 31
+Loss: 0.10161225612154572
+ROC train: 0.914522	val: 0.787187	test: 0.810582
+PRC train: 0.531543	val: 0.347622	test: 0.419598
+
+Epoch: 32
+Loss: 0.09996067213448998
+ROC train: 0.915626	val: 0.798226	test: 0.812085
+PRC train: 0.533647	val: 0.363681	test: 0.399529
+
+Epoch: 33
+Loss: 0.09996838284664608Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.6.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 3
+  multiple_seeds: [1, 2, 3]
+  device: cuda:0
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.6
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.6
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.6/hiv_random_3_20-05_14-43-16  ]
+[ Using Seed :  3  ]
+[ Using device :  cuda:0  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2886738257061965
+ROC train: 0.734241	val: 0.719156	test: 0.716979
+PRC train: 0.189007	val: 0.203056	test: 0.187635
+
+Epoch: 2
+Loss: 0.1362752461276235
+ROC train: 0.766692	val: 0.729813	test: 0.754614
+PRC train: 0.267322	val: 0.254711	test: 0.284200
+
+Epoch: 3
+Loss: 0.13225859145458402
+ROC train: 0.787127	val: 0.757612	test: 0.779977
+PRC train: 0.300003	val: 0.301770	test: 0.305379
+
+Epoch: 4
+Loss: 0.12816115604188522
+ROC train: 0.798721	val: 0.765215	test: 0.782956
+PRC train: 0.306148	val: 0.276334	test: 0.314422
+
+Epoch: 5
+Loss: 0.12568006132800752
+ROC train: 0.809237	val: 0.764585	test: 0.797177
+PRC train: 0.331824	val: 0.278978	test: 0.348796
+
+Epoch: 6
+Loss: 0.12363452309879867
+ROC train: 0.820199	val: 0.764290	test: 0.794481
+PRC train: 0.356928	val: 0.310603	test: 0.347810
+
+Epoch: 7
+Loss: 0.12289198201734597
+ROC train: 0.822146	val: 0.767390	test: 0.787117
+PRC train: 0.374040	val: 0.324539	test: 0.369875
+
+Epoch: 8
+Loss: 0.1216956185987142
+ROC train: 0.830178	val: 0.765770	test: 0.782165
+PRC train: 0.385483	val: 0.325159	test: 0.365949
+
+Epoch: 9
+Loss: 0.11765827554254811
+ROC train: 0.844072	val: 0.777139	test: 0.804898
+PRC train: 0.390958	val: 0.315660	test: 0.370555
+
+Epoch: 10
+Loss: 0.11540006755235857
+ROC train: 0.851571	val: 0.765092	test: 0.793247
+PRC train: 0.427287	val: 0.331269	test: 0.393899
+
+Epoch: 11
+Loss: 0.11511376265225212
+ROC train: 0.854561	val: 0.774442	test: 0.803374
+PRC train: 0.413197	val: 0.320681	test: 0.394871
+
+Epoch: 12
+Loss: 0.11477282698487974
+ROC train: 0.864199	val: 0.785416	test: 0.813116
+PRC train: 0.429322	val: 0.339215	test: 0.375453
+
+Epoch: 13
+Loss: 0.11297856410729441
+ROC train: 0.863441	val: 0.784674	test: 0.806422
+PRC train: 0.438703	val: 0.341632	test: 0.389680
+
+Epoch: 14
+Loss: 0.11316279647106438
+ROC train: 0.864509	val: 0.782325	test: 0.807549
+PRC train: 0.438475	val: 0.331445	test: 0.406309
+
+Epoch: 15
+Loss: 0.11164578851306028
+ROC train: 0.871628	val: 0.780579	test: 0.805215
+PRC train: 0.444003	val: 0.348215	test: 0.399040
+
+Epoch: 16
+Loss: 0.11068504435872392
+ROC train: 0.875089	val: 0.789021	test: 0.814981
+PRC train: 0.443185	val: 0.339472	test: 0.404764
+
+Epoch: 17
+Loss: 0.1089721097867493
+ROC train: 0.865003	val: 0.769493	test: 0.791951
+PRC train: 0.448707	val: 0.333326	test: 0.391605
+
+Epoch: 18
+Loss: 0.10800669790375292
+ROC train: 0.883767	val: 0.790972	test: 0.802263
+PRC train: 0.487182	val: 0.352485	test: 0.419293
+
+Epoch: 19
+Loss: 0.10771570072132162
+ROC train: 0.880565	val: 0.784843	test: 0.798110
+PRC train: 0.473978	val: 0.335283	test: 0.411784
+
+Epoch: 20
+Loss: 0.10748472341811456
+ROC train: 0.882058	val: 0.808800	test: 0.809626
+PRC train: 0.467699	val: 0.336162	test: 0.409631
+
+Epoch: 21
+Loss: 0.10707495081229258
+ROC train: 0.887935	val: 0.796008	test: 0.804904
+PRC train: 0.483373	val: 0.359244	test: 0.417077
+
+Epoch: 22
+Loss: 0.10808428171886479
+ROC train: 0.886308	val: 0.769932	test: 0.803452
+PRC train: 0.485340	val: 0.355929	test: 0.419960
+
+Epoch: 23
+Loss: 0.10592215204617021
+ROC train: 0.896656	val: 0.791993	test: 0.804663
+PRC train: 0.509768	val: 0.363211	test: 0.407506
+
+Epoch: 24
+Loss: 0.10440845870192149
+ROC train: 0.893228	val: 0.787058	test: 0.784503
+PRC train: 0.460578	val: 0.314852	test: 0.376819
+
+Epoch: 25
+Loss: 0.10280192918950279
+ROC train: 0.895974	val: 0.793339	test: 0.794482
+PRC train: 0.514294	val: 0.367102	test: 0.425886
+
+Epoch: 26
+Loss: 0.10067934404036895
+ROC train: 0.905770	val: 0.789600	test: 0.808400
+PRC train: 0.517609	val: 0.349299	test: 0.408723
+
+Epoch: 27
+Loss: 0.10175989016001868
+ROC train: 0.911732	val: 0.793365	test: 0.805400
+PRC train: 0.532529	val: 0.387625	test: 0.433269
+
+Epoch: 28
+Loss: 0.10200968497883116
+ROC train: 0.913764	val: 0.800649	test: 0.808103
+PRC train: 0.539972	val: 0.403572	test: 0.424139
+
+Epoch: 29
+Loss: 0.10198859143099134
+ROC train: 0.915354	val: 0.796027	test: 0.808213
+PRC train: 0.544389	val: 0.384223	test: 0.429835
+
+Epoch: 30
+Loss: 0.10057003833721283
+ROC train: 0.915089	val: 0.786584	test: 0.797585
+PRC train: 0.538613	val: 0.360981	test: 0.406380
+
+Epoch: 31
+Loss: 0.09770050345550917
+ROC train: 0.922417	val: 0.793367	test: 0.811920
+PRC train: 0.554097	val: 0.357276	test: 0.441340
+
+Epoch: 32
+Loss: 0.10074363317276368
+ROC train: 0.921637	val: 0.786680	test: 0.798319
+PRC train: 0.549614	val: 0.376034	test: 0.430277
+
+Epoch: 33
+Loss: 0.09807027118713411Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.6.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 1
+  multiple_seeds: [1, 2, 3]
+  device: cuda:0
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.6
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.6
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.6/hiv_random_1_20-05_14-43-16  ]
+[ Using Seed :  1  ]
+[ Using device :  cuda:0  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2823401270887239
+ROC train: 0.743422	val: 0.702987	test: 0.755070
+PRC train: 0.193614	val: 0.200455	test: 0.227220
+
+Epoch: 2
+Loss: 0.13938167004361243
+ROC train: 0.752902	val: 0.744370	test: 0.741367
+PRC train: 0.269784	val: 0.272677	test: 0.304576
+
+Epoch: 3
+Loss: 0.1320036081958645
+ROC train: 0.789556	val: 0.759520	test: 0.785870
+PRC train: 0.280932	val: 0.284078	test: 0.301654
+
+Epoch: 4
+Loss: 0.12622004302912115
+ROC train: 0.803763	val: 0.745573	test: 0.784997
+PRC train: 0.323290	val: 0.299099	test: 0.353656
+
+Epoch: 5
+Loss: 0.12688963818451782
+ROC train: 0.806971	val: 0.759089	test: 0.796500
+PRC train: 0.304980	val: 0.294722	test: 0.327638
+
+Epoch: 6
+Loss: 0.12527329069869259
+ROC train: 0.819668	val: 0.764244	test: 0.804419
+PRC train: 0.358115	val: 0.302629	test: 0.370222
+
+Epoch: 7
+Loss: 0.12159600062587184
+ROC train: 0.826076	val: 0.771177	test: 0.807150
+PRC train: 0.363478	val: 0.313293	test: 0.377544
+
+Epoch: 8
+Loss: 0.11935321287653494
+ROC train: 0.839060	val: 0.768331	test: 0.807306
+PRC train: 0.382242	val: 0.318400	test: 0.387386
+
+Epoch: 9
+Loss: 0.11767024586712306
+ROC train: 0.831110	val: 0.759620	test: 0.788291
+PRC train: 0.329641	val: 0.269466	test: 0.333067
+
+Epoch: 10
+Loss: 0.11890955566517894
+ROC train: 0.848424	val: 0.777609	test: 0.809093
+PRC train: 0.405558	val: 0.324945	test: 0.390029
+
+Epoch: 11
+Loss: 0.116726757290959
+ROC train: 0.853837	val: 0.782719	test: 0.815189
+PRC train: 0.425043	val: 0.343581	test: 0.394616
+
+Epoch: 12
+Loss: 0.11447534014567162
+ROC train: 0.856672	val: 0.774669	test: 0.804523
+PRC train: 0.416064	val: 0.344632	test: 0.372452
+
+Epoch: 13
+Loss: 0.11182023940313897
+ROC train: 0.862588	val: 0.776253	test: 0.816180
+PRC train: 0.451329	val: 0.337649	test: 0.415247
+
+Epoch: 14
+Loss: 0.1126146381140829
+ROC train: 0.872120	val: 0.788994	test: 0.818963
+PRC train: 0.439250	val: 0.331751	test: 0.388012
+
+Epoch: 15
+Loss: 0.11192536025697247
+ROC train: 0.871005	val: 0.766467	test: 0.826930
+PRC train: 0.455459	val: 0.319992	test: 0.423134
+
+Epoch: 16
+Loss: 0.11083080656231606
+ROC train: 0.877366	val: 0.787532	test: 0.822542
+PRC train: 0.459561	val: 0.316916	test: 0.393523
+
+Epoch: 17
+Loss: 0.11130518321838868
+ROC train: 0.877939	val: 0.781808	test: 0.822887
+PRC train: 0.459995	val: 0.324779	test: 0.421636
+
+Epoch: 18
+Loss: 0.10769024198184143
+ROC train: 0.883497	val: 0.775137	test: 0.818057
+PRC train: 0.472491	val: 0.353846	test: 0.415247
+
+Epoch: 19
+Loss: 0.10904221063266463
+ROC train: 0.886614	val: 0.796152	test: 0.822286
+PRC train: 0.468798	val: 0.348086	test: 0.422564
+
+Epoch: 20
+Loss: 0.1077250260511966
+ROC train: 0.882255	val: 0.773088	test: 0.811254
+PRC train: 0.469419	val: 0.335484	test: 0.411009
+
+Epoch: 21
+Loss: 0.1075341869818971
+ROC train: 0.895762	val: 0.773821	test: 0.815752
+PRC train: 0.494386	val: 0.341613	test: 0.427528
+
+Epoch: 22
+Loss: 0.10635189794610954
+ROC train: 0.894371	val: 0.782392	test: 0.817072
+PRC train: 0.489859	val: 0.322736	test: 0.428939
+
+Epoch: 23
+Loss: 0.10495934473229614
+ROC train: 0.890448	val: 0.772052	test: 0.812527
+PRC train: 0.487290	val: 0.328864	test: 0.427296
+
+Epoch: 24
+Loss: 0.10396980073513663
+ROC train: 0.896672	val: 0.782521	test: 0.818509
+PRC train: 0.506423	val: 0.344047	test: 0.439700
+
+Epoch: 25
+Loss: 0.1043730256865793
+ROC train: 0.900780	val: 0.784571	test: 0.814092
+PRC train: 0.507886	val: 0.340067	test: 0.430558
+
+Epoch: 26
+Loss: 0.10324157290320239
+ROC train: 0.907662	val: 0.784277	test: 0.821579
+PRC train: 0.508854	val: 0.356372	test: 0.435940
+
+Epoch: 27
+Loss: 0.10390724407382139
+ROC train: 0.893622	val: 0.775481	test: 0.801440
+PRC train: 0.492335	val: 0.316022	test: 0.399513
+
+Epoch: 28
+Loss: 0.10237413449854889
+ROC train: 0.910636	val: 0.789952	test: 0.817919
+PRC train: 0.529259	val: 0.379778	test: 0.439139
+
+Epoch: 29
+Loss: 0.09958077539596578
+ROC train: 0.907860	val: 0.774940	test: 0.812966
+PRC train: 0.503083	val: 0.347278	test: 0.424184
+
+Epoch: 30
+Loss: 0.10073756816088962
+ROC train: 0.912558	val: 0.785469	test: 0.822951
+PRC train: 0.528360	val: 0.364824	test: 0.445326
+
+Epoch: 31
+Loss: 0.10131348030797381
+ROC train: 0.909450	val: 0.783801	test: 0.813955
+PRC train: 0.528314	val: 0.346805	test: 0.431921
+
+Epoch: 32
+Loss: 0.0999234903989518
+ROC train: 0.922268	val: 0.773797	test: 0.819722
+PRC train: 0.568426	val: 0.387119	test: 0.443148
+
+Epoch: 33
+Loss: 0.0984529380713759Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.7.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 2
+  multiple_seeds: [1, 2, 3]
+  device: cuda:1
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.7
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.7
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.7/hiv_random_2_20-05_14-43-16  ]
+[ Using Seed :  2  ]
+[ Using device :  cuda:1  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.25808563171585863
+ROC train: 0.738594	val: 0.730322	test: 0.739964
+PRC train: 0.171311	val: 0.202568	test: 0.213287
+
+Epoch: 2
+Loss: 0.13563611817022936
+ROC train: 0.778837	val: 0.753155	test: 0.789269
+PRC train: 0.270154	val: 0.330515	test: 0.319191
+
+Epoch: 3
+Loss: 0.12995911682306088
+ROC train: 0.777908	val: 0.744589	test: 0.781653
+PRC train: 0.242499	val: 0.250510	test: 0.288013
+
+Epoch: 4
+Loss: 0.1296057029656585
+ROC train: 0.792472	val: 0.751600	test: 0.783441
+PRC train: 0.262045	val: 0.279150	test: 0.347592
+
+Epoch: 5
+Loss: 0.12639014706882612
+ROC train: 0.808402	val: 0.768821	test: 0.799856
+PRC train: 0.326336	val: 0.348655	test: 0.354741
+
+Epoch: 6
+Loss: 0.1243195587769598
+ROC train: 0.802022	val: 0.765093	test: 0.789976
+PRC train: 0.310643	val: 0.325477	test: 0.328333
+
+Epoch: 7
+Loss: 0.1214772721754241
+ROC train: 0.813068	val: 0.779065	test: 0.797871
+PRC train: 0.328384	val: 0.330457	test: 0.322952
+
+Epoch: 8
+Loss: 0.121248769018501
+ROC train: 0.824535	val: 0.788402	test: 0.810465
+PRC train: 0.320442	val: 0.331005	test: 0.350272
+
+Epoch: 9
+Loss: 0.11819948200833676
+ROC train: 0.820581	val: 0.781937	test: 0.801137
+PRC train: 0.350456	val: 0.355200	test: 0.351321
+
+Epoch: 10
+Loss: 0.11945185817125632
+ROC train: 0.833973	val: 0.793121	test: 0.803777
+PRC train: 0.364477	val: 0.361234	test: 0.347320
+
+Epoch: 11
+Loss: 0.11722206783484776
+ROC train: 0.844982	val: 0.789038	test: 0.824965
+PRC train: 0.384391	val: 0.372523	test: 0.381952
+
+Epoch: 12
+Loss: 0.11450934128965957
+ROC train: 0.848874	val: 0.793146	test: 0.819823
+PRC train: 0.392606	val: 0.379230	test: 0.396645
+
+Epoch: 13
+Loss: 0.1149603968227728
+ROC train: 0.849650	val: 0.799170	test: 0.807724
+PRC train: 0.401374	val: 0.401448	test: 0.367473
+
+Epoch: 14
+Loss: 0.11404216788603294
+ROC train: 0.849960	val: 0.801695	test: 0.810040
+PRC train: 0.398264	val: 0.396898	test: 0.360242
+
+Epoch: 15
+Loss: 0.11283413995812461
+ROC train: 0.855945	val: 0.801475	test: 0.808673
+PRC train: 0.407807	val: 0.388057	test: 0.366086
+
+Epoch: 16
+Loss: 0.11022570365738353
+ROC train: 0.863380	val: 0.788456	test: 0.813425
+PRC train: 0.440561	val: 0.399433	test: 0.419441
+
+Epoch: 17
+Loss: 0.110228456920127
+ROC train: 0.862140	val: 0.801132	test: 0.830244
+PRC train: 0.416339	val: 0.388534	test: 0.377500
+
+Epoch: 18
+Loss: 0.11054469118312109
+ROC train: 0.866879	val: 0.806127	test: 0.824293
+PRC train: 0.455799	val: 0.394642	test: 0.397772
+
+Epoch: 19
+Loss: 0.108665334931415
+ROC train: 0.865000	val: 0.798146	test: 0.833489
+PRC train: 0.434691	val: 0.362337	test: 0.413030
+
+Epoch: 20
+Loss: 0.10735418928841878
+ROC train: 0.863333	val: 0.794599	test: 0.801126
+PRC train: 0.415742	val: 0.380308	test: 0.403081
+
+Epoch: 21
+Loss: 0.10688537327146141
+ROC train: 0.871883	val: 0.788771	test: 0.827440
+PRC train: 0.461118	val: 0.360230	test: 0.420808
+
+Epoch: 22
+Loss: 0.10656755815458858
+ROC train: 0.870520	val: 0.789373	test: 0.814576
+PRC train: 0.458597	val: 0.373261	test: 0.401669
+
+Epoch: 23
+Loss: 0.10583889006601442
+ROC train: 0.884709	val: 0.795388	test: 0.832320
+PRC train: 0.483452	val: 0.401860	test: 0.434063
+
+Epoch: 24
+Loss: 0.10532741003449009
+ROC train: 0.878693	val: 0.799573	test: 0.814601
+PRC train: 0.467424	val: 0.384176	test: 0.407683
+
+Epoch: 25
+Loss: 0.10709601700687323
+ROC train: 0.886133	val: 0.799355	test: 0.830063
+PRC train: 0.492372	val: 0.401700	test: 0.436750
+
+Epoch: 26
+Loss: 0.10376255000631097
+ROC train: 0.899988	val: 0.796509	test: 0.836043
+PRC train: 0.520788	val: 0.426398	test: 0.449493
+
+Epoch: 27
+Loss: 0.10267040506693396
+ROC train: 0.894862	val: 0.804291	test: 0.824601
+PRC train: 0.523244	val: 0.424130	test: 0.436684
+
+Epoch: 28
+Loss: 0.10163997677097461
+ROC train: 0.896290	val: 0.795939	test: 0.825169
+PRC train: 0.504959	val: 0.427453	test: 0.418958
+
+Epoch: 29
+Loss: 0.1017146224877866
+ROC train: 0.897441	val: 0.798829	test: 0.817166
+PRC train: 0.517948	val: 0.409204	test: 0.439800
+
+Epoch: 30
+Loss: 0.10257693977751235
+ROC train: 0.903716	val: 0.800736	test: 0.830440
+PRC train: 0.515677	val: 0.405784	test: 0.450502
+
+Epoch: 31
+Loss: 0.10046800544240404
+ROC train: 0.901900	val: 0.806484	test: 0.829362
+PRC train: 0.498047	val: 0.374924	test: 0.404883
+
+Epoch: 32
+Loss: 0.10209374303110748
+ROC train: 0.905635	val: 0.790666	test: 0.833128
+PRC train: 0.520265	val: 0.411055	test: 0.439282
+
+Epoch: 33
+Loss: 0.10022470249692045Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.7.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 3
+  multiple_seeds: [1, 2, 3]
+  device: cuda:1
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.7
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.7
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.7/hiv_random_3_20-05_14-43-16  ]
+[ Using Seed :  3  ]
+[ Using device :  cuda:1  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.26816064201617196
+ROC train: 0.733954	val: 0.709165	test: 0.758257
+PRC train: 0.192321	val: 0.202715	test: 0.221655
+
+Epoch: 2
+Loss: 0.13640485886444925
+ROC train: 0.768471	val: 0.734506	test: 0.767164
+PRC train: 0.243866	val: 0.294551	test: 0.293899
+
+Epoch: 3
+Loss: 0.1300557912621056
+ROC train: 0.783438	val: 0.760614	test: 0.792850
+PRC train: 0.281651	val: 0.320378	test: 0.314310
+
+Epoch: 4
+Loss: 0.12654428040962581
+ROC train: 0.796955	val: 0.761416	test: 0.801774
+PRC train: 0.267939	val: 0.316594	test: 0.318296
+
+Epoch: 5
+Loss: 0.12443830158095136
+ROC train: 0.807269	val: 0.771930	test: 0.806294
+PRC train: 0.298240	val: 0.289357	test: 0.358204
+
+Epoch: 6
+Loss: 0.12199088765568045
+ROC train: 0.812248	val: 0.775826	test: 0.813023
+PRC train: 0.318066	val: 0.340006	test: 0.362858
+
+Epoch: 7
+Loss: 0.12033311872966229
+ROC train: 0.819928	val: 0.787267	test: 0.795669
+PRC train: 0.342872	val: 0.363092	test: 0.351134
+
+Epoch: 8
+Loss: 0.11872391339184937
+ROC train: 0.836341	val: 0.790467	test: 0.829624
+PRC train: 0.380061	val: 0.388554	test: 0.385701
+
+Epoch: 9
+Loss: 0.11792308764385112
+ROC train: 0.828432	val: 0.777867	test: 0.820010
+PRC train: 0.354202	val: 0.303756	test: 0.375025
+
+Epoch: 10
+Loss: 0.11655193132594413
+ROC train: 0.838298	val: 0.796414	test: 0.809652
+PRC train: 0.374567	val: 0.382072	test: 0.381948
+
+Epoch: 11
+Loss: 0.11554031542461975
+ROC train: 0.848446	val: 0.802329	test: 0.830273
+PRC train: 0.417620	val: 0.404136	test: 0.414184
+
+Epoch: 12
+Loss: 0.11480657866371875
+ROC train: 0.849719	val: 0.792894	test: 0.830024
+PRC train: 0.404480	val: 0.377051	test: 0.402352
+
+Epoch: 13
+Loss: 0.11312402286895108
+ROC train: 0.857089	val: 0.801303	test: 0.829494
+PRC train: 0.412621	val: 0.372975	test: 0.395145
+
+Epoch: 14
+Loss: 0.11239170290614314
+ROC train: 0.857080	val: 0.799953	test: 0.819917
+PRC train: 0.434885	val: 0.396611	test: 0.409626
+
+Epoch: 15
+Loss: 0.11212144314608154
+ROC train: 0.867147	val: 0.805318	test: 0.828708
+PRC train: 0.453334	val: 0.408098	test: 0.413014
+
+Epoch: 16
+Loss: 0.11113899395776745
+ROC train: 0.856077	val: 0.793732	test: 0.822198
+PRC train: 0.427130	val: 0.388503	test: 0.415870
+
+Epoch: 17
+Loss: 0.10947452228676705
+ROC train: 0.873174	val: 0.811436	test: 0.829136
+PRC train: 0.453324	val: 0.412883	test: 0.439966
+
+Epoch: 18
+Loss: 0.10797079197998471
+ROC train: 0.874090	val: 0.802892	test: 0.822433
+PRC train: 0.461729	val: 0.413284	test: 0.428521
+
+Epoch: 19
+Loss: 0.10920986221130685
+ROC train: 0.877407	val: 0.803098	test: 0.823405
+PRC train: 0.477658	val: 0.414289	test: 0.438006
+
+Epoch: 20
+Loss: 0.1068288695658967
+ROC train: 0.881610	val: 0.807774	test: 0.827091
+PRC train: 0.470898	val: 0.411678	test: 0.439897
+
+Epoch: 21
+Loss: 0.10611493780295503
+ROC train: 0.884055	val: 0.805116	test: 0.837456
+PRC train: 0.474146	val: 0.421837	test: 0.434279
+
+Epoch: 22
+Loss: 0.10608779023076216
+ROC train: 0.886385	val: 0.802658	test: 0.818945
+PRC train: 0.480916	val: 0.402818	test: 0.413131
+
+Epoch: 23
+Loss: 0.10529060878397595
+ROC train: 0.891423	val: 0.794472	test: 0.835755
+PRC train: 0.499746	val: 0.429445	test: 0.438070
+
+Epoch: 24
+Loss: 0.10385579197203992
+ROC train: 0.891931	val: 0.807394	test: 0.829229
+PRC train: 0.504191	val: 0.428615	test: 0.458476
+
+Epoch: 25
+Loss: 0.10350123204237259
+ROC train: 0.878705	val: 0.813681	test: 0.823577
+PRC train: 0.483271	val: 0.397213	test: 0.432335
+
+Epoch: 26
+Loss: 0.10356740738671187
+ROC train: 0.886521	val: 0.796583	test: 0.809072
+PRC train: 0.498406	val: 0.402487	test: 0.411684
+
+Epoch: 27
+Loss: 0.10304419739830115
+ROC train: 0.901088	val: 0.808582	test: 0.812867
+PRC train: 0.522494	val: 0.441382	test: 0.436995
+
+Epoch: 28
+Loss: 0.10167655215834569
+ROC train: 0.898175	val: 0.808617	test: 0.822200
+PRC train: 0.516432	val: 0.427002	test: 0.456955
+
+Epoch: 29
+Loss: 0.10060657829767988
+ROC train: 0.909766	val: 0.820109	test: 0.836267
+PRC train: 0.531524	val: 0.397994	test: 0.421806
+
+Epoch: 30
+Loss: 0.09916412235378866
+ROC train: 0.907046	val: 0.814577	test: 0.824510
+PRC train: 0.530028	val: 0.433111	test: 0.455423
+
+Epoch: 31
+Loss: 0.10032225729861853
+ROC train: 0.906720	val: 0.816665	test: 0.839379
+PRC train: 0.518493	val: 0.434552	test: 0.435924
+
+Epoch: 32
+Loss: 0.09865756022066692
+ROC train: 0.905856	val: 0.799863	test: 0.835820
+PRC train: 0.538681	val: 0.406751	test: 0.444134
+
+Epoch: 33
+Loss: 0.09982909795512432Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.7.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 1
+  multiple_seeds: [1, 2, 3]
+  device: cuda:1
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.7
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.7
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.7/hiv_random_1_20-05_14-43-16  ]
+[ Using Seed :  1  ]
+[ Using device :  cuda:1  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.26242338166240725
+ROC train: 0.732852	val: 0.718755	test: 0.743691
+PRC train: 0.170918	val: 0.189812	test: 0.202727
+
+Epoch: 2
+Loss: 0.13668787999169765
+ROC train: 0.771908	val: 0.748943	test: 0.777175
+PRC train: 0.224264	val: 0.245956	test: 0.269919
+
+Epoch: 3
+Loss: 0.13152655432179056
+ROC train: 0.779622	val: 0.766203	test: 0.786871
+PRC train: 0.257632	val: 0.288358	test: 0.302942
+
+Epoch: 4
+Loss: 0.1284023490941239
+ROC train: 0.800205	val: 0.765556	test: 0.798619
+PRC train: 0.318434	val: 0.359510	test: 0.347609
+
+Epoch: 5
+Loss: 0.12463985062575349
+ROC train: 0.806451	val: 0.780293	test: 0.814038
+PRC train: 0.293718	val: 0.327994	test: 0.352030
+
+Epoch: 6
+Loss: 0.12251568641600497
+ROC train: 0.813380	val: 0.775549	test: 0.806674
+PRC train: 0.315515	val: 0.335970	test: 0.338059
+
+Epoch: 7
+Loss: 0.12250313940387388
+ROC train: 0.820545	val: 0.787972	test: 0.812004
+PRC train: 0.335176	val: 0.357832	test: 0.365279
+
+Epoch: 8
+Loss: 0.11884217075628496
+ROC train: 0.819971	val: 0.789252	test: 0.803971
+PRC train: 0.351890	val: 0.375107	test: 0.364410
+
+Epoch: 9
+Loss: 0.11762277141576505
+ROC train: 0.821849	val: 0.766229	test: 0.804217
+PRC train: 0.342834	val: 0.345292	test: 0.367849
+
+Epoch: 10
+Loss: 0.117762695471346
+ROC train: 0.836764	val: 0.796954	test: 0.826116
+PRC train: 0.392358	val: 0.371286	test: 0.393044
+
+Epoch: 11
+Loss: 0.1146349070771991
+ROC train: 0.851831	val: 0.806789	test: 0.834575
+PRC train: 0.404396	val: 0.389824	test: 0.401534
+
+Epoch: 12
+Loss: 0.11324539821054969
+ROC train: 0.849054	val: 0.794991	test: 0.824074
+PRC train: 0.378175	val: 0.366635	test: 0.388688
+
+Epoch: 13
+Loss: 0.1126829789853464
+ROC train: 0.849753	val: 0.792743	test: 0.825528
+PRC train: 0.413230	val: 0.372165	test: 0.415518
+
+Epoch: 14
+Loss: 0.11307215976907538
+ROC train: 0.858178	val: 0.792818	test: 0.834423
+PRC train: 0.406666	val: 0.384659	test: 0.421517
+
+Epoch: 15
+Loss: 0.11089944058488747
+ROC train: 0.859576	val: 0.801604	test: 0.841577
+PRC train: 0.442745	val: 0.379091	test: 0.425764
+
+Epoch: 16
+Loss: 0.10904777560650081
+ROC train: 0.860978	val: 0.801312	test: 0.833489
+PRC train: 0.428814	val: 0.355907	test: 0.404109
+
+Epoch: 17
+Loss: 0.10984335110089943
+ROC train: 0.864687	val: 0.796961	test: 0.826083
+PRC train: 0.420037	val: 0.375267	test: 0.397385
+
+Epoch: 18
+Loss: 0.11078030738717169
+ROC train: 0.874827	val: 0.798627	test: 0.841062
+PRC train: 0.477716	val: 0.411233	test: 0.425130
+
+Epoch: 19
+Loss: 0.10698387049372415
+ROC train: 0.872824	val: 0.793952	test: 0.832718
+PRC train: 0.459500	val: 0.398197	test: 0.411868
+
+Epoch: 20
+Loss: 0.10707811459363076
+ROC train: 0.881606	val: 0.800995	test: 0.854591
+PRC train: 0.483217	val: 0.408452	test: 0.424050
+
+Epoch: 21
+Loss: 0.1068544876297059
+ROC train: 0.866100	val: 0.785440	test: 0.832832
+PRC train: 0.428502	val: 0.359125	test: 0.419210
+
+Epoch: 22
+Loss: 0.10627705559926937
+ROC train: 0.871476	val: 0.801952	test: 0.825581
+PRC train: 0.481897	val: 0.418288	test: 0.434113
+
+Epoch: 23
+Loss: 0.10580728606578053
+ROC train: 0.880738	val: 0.802175	test: 0.845749
+PRC train: 0.479361	val: 0.401156	test: 0.435421
+
+Epoch: 24
+Loss: 0.10293119971779925
+ROC train: 0.884272	val: 0.794129	test: 0.835279
+PRC train: 0.498020	val: 0.390721	test: 0.419252
+
+Epoch: 25
+Loss: 0.10540677542308736
+ROC train: 0.884921	val: 0.794306	test: 0.825184
+PRC train: 0.494650	val: 0.390067	test: 0.432518
+
+Epoch: 26
+Loss: 0.10154237912048486
+ROC train: 0.895829	val: 0.802489	test: 0.834614
+PRC train: 0.513678	val: 0.417474	test: 0.447117
+
+Epoch: 27
+Loss: 0.10083417885774681
+ROC train: 0.886916	val: 0.792102	test: 0.825545
+PRC train: 0.495374	val: 0.380193	test: 0.381613
+
+Epoch: 28
+Loss: 0.1026678895681915
+ROC train: 0.894303	val: 0.811153	test: 0.840616
+PRC train: 0.501979	val: 0.412156	test: 0.406790
+
+Epoch: 29
+Loss: 0.10085216798847062
+ROC train: 0.896038	val: 0.794986	test: 0.831448
+PRC train: 0.507645	val: 0.403371	test: 0.424059
+
+Epoch: 30
+Loss: 0.10061119507881125
+ROC train: 0.899908	val: 0.793771	test: 0.837998
+PRC train: 0.523591	val: 0.420447	test: 0.454490
+
+Epoch: 31
+Loss: 0.10085792765742108
+ROC train: 0.903825	val: 0.802838	test: 0.834927
+PRC train: 0.534068	val: 0.397864	test: 0.432121
+
+Epoch: 32
+Loss: 0.09947324198867677
+ROC train: 0.908208	val: 0.805209	test: 0.848789
+PRC train: 0.534628	val: 0.408203	test: 0.445062
+
+Epoch: 33
+Loss: 0.09817653953957799Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.8.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 1
+  multiple_seeds: [1, 2, 3]
+  device: cuda:2
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.8
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.8
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.8/hiv_random_1_20-05_14-43-16  ]
+[ Using Seed :  1  ]
+[ Using device :  cuda:2  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.2499999942836495
+ROC train: 0.744134	val: 0.724017	test: 0.779473
+PRC train: 0.208343	val: 0.219367	test: 0.256929
+
+Epoch: 2
+Loss: 0.1353466378723509
+ROC train: 0.778999	val: 0.741944	test: 0.811053
+PRC train: 0.248463	val: 0.235062	test: 0.313005
+
+Epoch: 3
+Loss: 0.1301266025203494
+ROC train: 0.795622	val: 0.773015	test: 0.807485
+PRC train: 0.290233	val: 0.275910	test: 0.367437
+
+Epoch: 4
+Loss: 0.12694160541720512
+ROC train: 0.808660	val: 0.782167	test: 0.812802
+PRC train: 0.313026	val: 0.293878	test: 0.371060
+
+Epoch: 5
+Loss: 0.1251325648848392
+ROC train: 0.808555	val: 0.799266	test: 0.806168
+PRC train: 0.308004	val: 0.296164	test: 0.354108
+
+Epoch: 6
+Loss: 0.12231146852265307
+ROC train: 0.818943	val: 0.783250	test: 0.834381
+PRC train: 0.328037	val: 0.287868	test: 0.419920
+
+Epoch: 7
+Loss: 0.12168138100572942
+ROC train: 0.826407	val: 0.789753	test: 0.828882
+PRC train: 0.377794	val: 0.330254	test: 0.428293
+
+Epoch: 8
+Loss: 0.1201263057042348
+ROC train: 0.834849	val: 0.790809	test: 0.835487
+PRC train: 0.375599	val: 0.324519	test: 0.425661
+
+Epoch: 9
+Loss: 0.11999270148488295
+ROC train: 0.834271	val: 0.809150	test: 0.827299
+PRC train: 0.381788	val: 0.318303	test: 0.454963
+
+Epoch: 10
+Loss: 0.1170975828750388
+ROC train: 0.843686	val: 0.797938	test: 0.848645
+PRC train: 0.391950	val: 0.340413	test: 0.456797
+
+Epoch: 11
+Loss: 0.11540307356579661
+ROC train: 0.854664	val: 0.805547	test: 0.843381
+PRC train: 0.423191	val: 0.357423	test: 0.460483
+
+Epoch: 12
+Loss: 0.11629825485770677
+ROC train: 0.850810	val: 0.789993	test: 0.847347
+PRC train: 0.416177	val: 0.347066	test: 0.465037
+
+Epoch: 13
+Loss: 0.11427806323224027
+ROC train: 0.852733	val: 0.784577	test: 0.849130
+PRC train: 0.416198	val: 0.342602	test: 0.471843
+
+Epoch: 14
+Loss: 0.11429606103603723
+ROC train: 0.861529	val: 0.782769	test: 0.846243
+PRC train: 0.448618	val: 0.366215	test: 0.492173
+
+Epoch: 15
+Loss: 0.11198351420960251
+ROC train: 0.860606	val: 0.786885	test: 0.829958
+PRC train: 0.441083	val: 0.366242	test: 0.451399
+
+Epoch: 16
+Loss: 0.11186430298271474
+ROC train: 0.870457	val: 0.809115	test: 0.840742
+PRC train: 0.468240	val: 0.405019	test: 0.487854
+
+Epoch: 17
+Loss: 0.10980161616236103
+ROC train: 0.876951	val: 0.807364	test: 0.839226
+PRC train: 0.472448	val: 0.396725	test: 0.489990
+
+Epoch: 18
+Loss: 0.10980072091958522
+ROC train: 0.868652	val: 0.824135	test: 0.843178
+PRC train: 0.442389	val: 0.364089	test: 0.475535
+
+Epoch: 19
+Loss: 0.10927264232722246
+ROC train: 0.877563	val: 0.823314	test: 0.846873
+PRC train: 0.469382	val: 0.379224	test: 0.491099
+
+Epoch: 20
+Loss: 0.10732842863587735
+ROC train: 0.884463	val: 0.810070	test: 0.846484
+PRC train: 0.485613	val: 0.405021	test: 0.494580
+
+Epoch: 21
+Loss: 0.10617751015214844
+ROC train: 0.876680	val: 0.792983	test: 0.851515
+PRC train: 0.482337	val: 0.373010	test: 0.501198
+
+Epoch: 22
+Loss: 0.10663613938324286
+ROC train: 0.888596	val: 0.811497	test: 0.852660
+PRC train: 0.502852	val: 0.394049	test: 0.503474
+
+Epoch: 23
+Loss: 0.10587912811750085
+ROC train: 0.888529	val: 0.813137	test: 0.841557
+PRC train: 0.480019	val: 0.393009	test: 0.472725
+
+Epoch: 24
+Loss: 0.1049408562459298
+ROC train: 0.891038	val: 0.810923	test: 0.848024
+PRC train: 0.493654	val: 0.401725	test: 0.484032
+
+Epoch: 25
+Loss: 0.10366876777439386
+ROC train: 0.896950	val: 0.791692	test: 0.850414
+PRC train: 0.511233	val: 0.396194	test: 0.494513
+
+Epoch: 26
+Loss: 0.10414304305829944
+ROC train: 0.897900	val: 0.801514	test: 0.842670
+PRC train: 0.505346	val: 0.373123	test: 0.483795
+
+Epoch: 27
+Loss: 0.10363921990541514
+ROC train: 0.900476	val: 0.792870	test: 0.853266
+PRC train: 0.503512	val: 0.358453	test: 0.473142
+
+Epoch: 28
+Loss: 0.10129971730815425
+ROC train: 0.902127	val: 0.787137	test: 0.843628
+PRC train: 0.524264	val: 0.393451	test: 0.498897
+
+Epoch: 29
+Loss: 0.10254343588009854
+ROC train: 0.903649	val: 0.784487	test: 0.844360
+PRC train: 0.537638	val: 0.400409	test: 0.503972
+
+Epoch: 30
+Loss: 0.10146679648549645
+ROC train: 0.897902	val: 0.801299	test: 0.830644
+PRC train: 0.525689	val: 0.393351	test: 0.498831
+
+Epoch: 31
+Loss: 0.09965679917375352
+ROC train: 0.910822	val: 0.787114	test: 0.841426
+PRC train: 0.521600	val: 0.398280	test: 0.469764
+
+Epoch: 32
+Loss: 0.10080673963430468
+ROC train: 0.911109	val: 0.806041	test: 0.849915
+PRC train: 0.555865	val: 0.406516	test: 0.511347
+
+Epoch: 33
+Loss: 0.09845216390786352Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.8.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 3
+  multiple_seeds: [1, 2, 3]
+  device: cuda:2
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.8
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.8
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.8/hiv_random_3_20-05_14-43-16  ]
+[ Using Seed :  3  ]
+[ Using device :  cuda:2  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.25424572046697214
+ROC train: 0.741900	val: 0.727866	test: 0.773809
+PRC train: 0.207966	val: 0.215914	test: 0.247672
+
+Epoch: 2
+Loss: 0.13515547391297733
+ROC train: 0.772559	val: 0.766845	test: 0.801903
+PRC train: 0.286046	val: 0.284916	test: 0.338732
+
+Epoch: 3
+Loss: 0.1303329568547333
+ROC train: 0.793316	val: 0.768715	test: 0.814181
+PRC train: 0.303101	val: 0.275490	test: 0.377069
+
+Epoch: 4
+Loss: 0.12687991516532168
+ROC train: 0.810238	val: 0.782704	test: 0.822578
+PRC train: 0.325593	val: 0.306310	test: 0.373942
+
+Epoch: 5
+Loss: 0.12350790925216643
+ROC train: 0.809916	val: 0.777669	test: 0.814499
+PRC train: 0.347452	val: 0.319892	test: 0.384979
+
+Epoch: 6
+Loss: 0.12266305911161687
+ROC train: 0.824079	val: 0.797094	test: 0.838043
+PRC train: 0.354699	val: 0.331517	test: 0.402540
+
+Epoch: 7
+Loss: 0.1202641050502334
+ROC train: 0.827319	val: 0.791163	test: 0.825073
+PRC train: 0.369716	val: 0.319470	test: 0.400851
+
+Epoch: 8
+Loss: 0.11908031959278197
+ROC train: 0.831731	val: 0.796156	test: 0.828699
+PRC train: 0.377181	val: 0.334760	test: 0.414449
+
+Epoch: 9
+Loss: 0.11952915698314273
+ROC train: 0.842828	val: 0.809841	test: 0.838308
+PRC train: 0.394150	val: 0.343472	test: 0.420130
+
+Epoch: 10
+Loss: 0.11698888337165851
+ROC train: 0.847078	val: 0.810719	test: 0.833403
+PRC train: 0.407828	val: 0.355811	test: 0.442252
+
+Epoch: 11
+Loss: 0.11555591468392162
+ROC train: 0.846094	val: 0.804673	test: 0.847220
+PRC train: 0.413763	val: 0.353440	test: 0.459678
+
+Epoch: 12
+Loss: 0.11396003759877392
+ROC train: 0.855681	val: 0.807027	test: 0.838070
+PRC train: 0.431201	val: 0.353360	test: 0.428300
+
+Epoch: 13
+Loss: 0.11416051446097067
+ROC train: 0.852895	val: 0.815595	test: 0.834331
+PRC train: 0.433949	val: 0.359402	test: 0.447595
+
+Epoch: 14
+Loss: 0.11262570424571308
+ROC train: 0.865370	val: 0.819345	test: 0.843925
+PRC train: 0.453341	val: 0.381866	test: 0.475572
+
+Epoch: 15
+Loss: 0.11102084660147922
+ROC train: 0.867283	val: 0.817963	test: 0.841249
+PRC train: 0.459837	val: 0.390219	test: 0.473258
+
+Epoch: 16
+Loss: 0.10920236813583847
+ROC train: 0.871482	val: 0.797411	test: 0.840873
+PRC train: 0.471302	val: 0.387752	test: 0.479321
+
+Epoch: 17
+Loss: 0.10961011472361955
+ROC train: 0.864459	val: 0.815800	test: 0.845484
+PRC train: 0.467866	val: 0.391797	test: 0.471581
+
+Epoch: 18
+Loss: 0.1085643316584418
+ROC train: 0.877134	val: 0.806092	test: 0.848876
+PRC train: 0.470451	val: 0.374679	test: 0.480645
+
+Epoch: 19
+Loss: 0.108235282005336
+ROC train: 0.878090	val: 0.810195	test: 0.851316
+PRC train: 0.471311	val: 0.387033	test: 0.483209
+
+Epoch: 20
+Loss: 0.10776858986257197
+ROC train: 0.878839	val: 0.799208	test: 0.832421
+PRC train: 0.487407	val: 0.390430	test: 0.479586
+
+Epoch: 21
+Loss: 0.10618436822468079
+ROC train: 0.883979	val: 0.814663	test: 0.839461
+PRC train: 0.495055	val: 0.401320	test: 0.487991
+
+Epoch: 22
+Loss: 0.10680131032293066
+ROC train: 0.875099	val: 0.811902	test: 0.843899
+PRC train: 0.465401	val: 0.375229	test: 0.472019
+
+Epoch: 23
+Loss: 0.10554045226266444
+ROC train: 0.895753	val: 0.827358	test: 0.859475
+PRC train: 0.506749	val: 0.398473	test: 0.502550
+
+Epoch: 24
+Loss: 0.10421775178113842
+ROC train: 0.891850	val: 0.793283	test: 0.857034
+PRC train: 0.504311	val: 0.371198	test: 0.481869
+
+Epoch: 25
+Loss: 0.1028526770833916
+ROC train: 0.884372	val: 0.814515	test: 0.842034
+PRC train: 0.512407	val: 0.421409	test: 0.496791
+
+Epoch: 26
+Loss: 0.10402016728186651
+ROC train: 0.891593	val: 0.806185	test: 0.842102
+PRC train: 0.480403	val: 0.375392	test: 0.431247
+
+Epoch: 27
+Loss: 0.10570696769032993
+ROC train: 0.887626	val: 0.809806	test: 0.825642
+PRC train: 0.512715	val: 0.416519	test: 0.473247
+
+Epoch: 28
+Loss: 0.10326298318823657
+ROC train: 0.897590	val: 0.813506	test: 0.862451
+PRC train: 0.525665	val: 0.413814	test: 0.508237
+
+Epoch: 29
+Loss: 0.10123077873062733
+ROC train: 0.904296	val: 0.807767	test: 0.855475
+PRC train: 0.533073	val: 0.396414	test: 0.497666
+
+Epoch: 30
+Loss: 0.10120325143995823
+ROC train: 0.902011	val: 0.818946	test: 0.836397
+PRC train: 0.525393	val: 0.394038	test: 0.482244
+
+Epoch: 31
+Loss: 0.1000030285122901
+ROC train: 0.909053	val: 0.809504	test: 0.850692
+PRC train: 0.545653	val: 0.419181	test: 0.503063
+
+Epoch: 32
+Loss: 0.09899954541028293
+ROC train: 0.900641	val: 0.806677	test: 0.849805
+PRC train: 0.543365	val: 0.410641	test: 0.495364
+
+Epoch: 33
+Loss: 0.0973449726483561Arguments:
+  config: <_io.TextIOWrapper name='/workspace/configs_split_experiments/GraphCL/hiv/random/train_prop=0.8.yml' mode='r' encoding='UTF-8'>
+  seed: 42
+  runseed: 2
+  multiple_seeds: [1, 2, 3]
+  device: cuda:2
+  input_data_dir: 
+  dataset: hiv
+  num_workers: 0
+  noise_level: 0.0
+  dynamic_noise: True
+  train_prop: 0.8
+  split: random
+  batch_size: 256
+  epochs: 1000
+  lr: 0.001
+  lr_scale: 1
+  decay: 0
+  patience: 35
+  minimum_epochs: 120
+  gnn_type: gin
+  num_layer: 5
+  emb_dim: 300
+  dropout_ratio: 0.5
+  graph_pooling: mean
+  JK: last
+  gnn_lr_scale: 1
+  model_3d: schnet
+  mask_rate: 0.15
+  mask_edge: 0
+  csize: 3
+  contextpred_neg_samples: 1
+  num_filters: 128
+  num_interactions: 6
+  num_gaussians: 51
+  cutoff: 10
+  readout: mean
+  schnet_lr_scale: 1
+  CL_neg_samples: 1
+  CL_similarity_metric: InfoNCE_dot_prod
+  T: 0.1
+  normalize: False
+  SSL_masking_ratio: 0
+  AE_model: AE
+  AE_loss: l2
+  detach_target: True
+  beta: 1
+  alpha_1: 1
+  alpha_2: 1
+  SSL_2D_mode: AM
+  alpha_3: 0.1
+  gamma_joao: 0.1
+  gamma_joaov2: 0.1
+  eval_train: True
+  input_model_file: ../weights/pretrained/GraphCL_classification.pth
+  output_model_dir: ../runs/split/GraphCL/hiv/random/train_prop=0.8
+  verbose: False
+[ Logs to :  ../runs/split/GraphCL/hiv/random/train_prop=0.8/hiv_random_2_20-05_14-43-16  ]
+[ Using Seed :  2  ]
+[ Using device :  cuda:2  ]
+Dataset: hiv
+Data: Data(edge_attr=[2259376, 2], edge_index=[2, 2259376], id=[41127], x=[1049163, 2], y=[41127])
+MoleculeDataset(41127)
+randomly split
+Data(edge_attr=[84, 2], edge_index=[2, 84], id=[1], x=[39, 2], y=[1])
+GNN_graphpred(
+  (molecule_model): GNN(
+    (x_embedding1): Embedding(120, 300)
+    (x_embedding2): Embedding(3, 300)
+    (gnns): ModuleList(
+      (0): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (1): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (2): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (3): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+      (4): GINConv(
+        (mlp): Sequential(
+          (0): Linear(in_features=300, out_features=600, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=600, out_features=300, bias=True)
+        )
+        (edge_embedding1): Embedding(6, 300)
+        (edge_embedding2): Embedding(3, 300)
+      )
+    )
+    (batch_norms): ModuleList(
+      (0): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (4): BatchNorm1d(300, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (graph_pred_linear): Linear(in_features=300, out_features=1, bias=True)
+)
+Epoch: 1
+Loss: 0.24638005306715902
+ROC train: 0.729856	val: 0.716772	test: 0.756485
+PRC train: 0.187980	val: 0.202250	test: 0.251336
+
+Epoch: 2
+Loss: 0.13576799577838186
+ROC train: 0.782974	val: 0.763304	test: 0.789531
+PRC train: 0.266237	val: 0.266567	test: 0.298072
+
+Epoch: 3
+Loss: 0.1303055066837319
+ROC train: 0.790310	val: 0.757237	test: 0.803502
+PRC train: 0.313230	val: 0.270970	test: 0.378947
+
+Epoch: 4
+Loss: 0.12751909297650166
+ROC train: 0.795644	val: 0.776183	test: 0.806689
+PRC train: 0.305675	val: 0.298845	test: 0.354606
+
+Epoch: 5
+Loss: 0.12376007061224628
+ROC train: 0.809776	val: 0.769950	test: 0.815474
+PRC train: 0.292436	val: 0.268359	test: 0.370511
+
+Epoch: 6
+Loss: 0.12262762167957048
+ROC train: 0.815421	val: 0.779263	test: 0.801550
+PRC train: 0.356410	val: 0.313156	test: 0.398556
+
+Epoch: 7
+Loss: 0.1214859740345082
+ROC train: 0.816794	val: 0.766718	test: 0.824650
+PRC train: 0.356877	val: 0.320784	test: 0.401906
+
+Epoch: 8
+Loss: 0.12035732373712031
+ROC train: 0.823331	val: 0.787729	test: 0.824968
+PRC train: 0.369281	val: 0.327174	test: 0.417818
+
+Epoch: 9
+Loss: 0.1188708632363193
+ROC train: 0.839969	val: 0.793277	test: 0.837770
+PRC train: 0.390235	val: 0.314826	test: 0.422505
+
+Epoch: 10
+Loss: 0.11637016811544021
+ROC train: 0.838377	val: 0.780049	test: 0.826241
+PRC train: 0.367672	val: 0.310837	test: 0.451317
+
+Epoch: 11
+Loss: 0.11684999742024656
+ROC train: 0.835308	val: 0.792633	test: 0.833582
+PRC train: 0.345154	val: 0.324371	test: 0.374702
+
+Epoch: 12
+Loss: 0.11575384623117829
+ROC train: 0.839301	val: 0.798940	test: 0.816355
+PRC train: 0.407100	val: 0.341824	test: 0.451356
+
+Epoch: 13
+Loss: 0.11400744982688343
+ROC train: 0.853652	val: 0.793774	test: 0.840937
+PRC train: 0.433562	val: 0.354780	test: 0.451737
+
+Epoch: 14
+Loss: 0.1131257216912092
+ROC train: 0.861986	val: 0.805834	test: 0.841638
+PRC train: 0.448506	val: 0.380690	test: 0.449524
+
+Epoch: 15
+Loss: 0.11204122273573419
+ROC train: 0.864610	val: 0.800661	test: 0.846570
+PRC train: 0.437895	val: 0.382212	test: 0.471139
+
+Epoch: 16
+Loss: 0.11154085526434
+ROC train: 0.862726	val: 0.792726	test: 0.839116
+PRC train: 0.419622	val: 0.345341	test: 0.435801
+
+Epoch: 17
+Loss: 0.10934010154753934
+ROC train: 0.870988	val: 0.787126	test: 0.832526
+PRC train: 0.463066	val: 0.355535	test: 0.458875
+
+Epoch: 18
+Loss: 0.1082606624277118
+ROC train: 0.865128	val: 0.803332	test: 0.845027
+PRC train: 0.406272	val: 0.367917	test: 0.464697
+
+Epoch: 19
+Loss: 0.10892618284510673
+ROC train: 0.875930	val: 0.799462	test: 0.827709
+PRC train: 0.484057	val: 0.390299	test: 0.471642
+
+Epoch: 20
+Loss: 0.1075660242804659
+ROC train: 0.876225	val: 0.803151	test: 0.828198
+PRC train: 0.468934	val: 0.398590	test: 0.484085
+
+Epoch: 21
+Loss: 0.10784937545905827
+ROC train: 0.869300	val: 0.803664	test: 0.834332
+PRC train: 0.464535	val: 0.410276	test: 0.483225
+
+Epoch: 22
+Loss: 0.10469154245951295
+ROC train: 0.885781	val: 0.809436	test: 0.841406
+PRC train: 0.483458	val: 0.404706	test: 0.494592
+
+Epoch: 23
+Loss: 0.1064336544007694
+ROC train: 0.884594	val: 0.815340	test: 0.846024
+PRC train: 0.477714	val: 0.400043	test: 0.473670
+
+Epoch: 24
+Loss: 0.10421352296527069
+ROC train: 0.878367	val: 0.806100	test: 0.831333
+PRC train: 0.484428	val: 0.372285	test: 0.482983
+
+Epoch: 25
+Loss: 0.10441613288313044
+ROC train: 0.891585	val: 0.814563	test: 0.855612
+PRC train: 0.499239	val: 0.394978	test: 0.491178
+
+Epoch: 26
+Loss: 0.10304785425780565
+ROC train: 0.896269	val: 0.801450	test: 0.827802
+PRC train: 0.515028	val: 0.403894	test: 0.478199
+
+Epoch: 27
+Loss: 0.10265599360530799
+ROC train: 0.900554	val: 0.812228	test: 0.845812
+PRC train: 0.530071	val: 0.426499	test: 0.488132
+
+Epoch: 28
+Loss: 0.10347500250579263
+ROC train: 0.898409	val: 0.803644	test: 0.843671
+PRC train: 0.530177	val: 0.399775	test: 0.508338
+
+Epoch: 29
+Loss: 0.1013333683698751
+ROC train: 0.893516	val: 0.808897	test: 0.863004
+PRC train: 0.511338	val: 0.405577	test: 0.494061
+
+Epoch: 30
+Loss: 0.10132994602995724
+ROC train: 0.904543	val: 0.803734	test: 0.856301
+PRC train: 0.534335	val: 0.433092	test: 0.498715
+
+Epoch: 31
+Loss: 0.10073308031783805
+ROC train: 0.909880	val: 0.825314	test: 0.847168
+PRC train: 0.545406	val: 0.439491	test: 0.496133
+
+Epoch: 32
+Loss: 0.09943513126034792
+ROC train: 0.904400	val: 0.809374	test: 0.844761
+PRC train: 0.531661	val: 0.413570	test: 0.505403
+
+Epoch: 33
+Loss: 0.0987899407818373
+ROC train: 0.915698	val: 0.776382	test: 0.803120
+PRC train: 0.537019	val: 0.308810	test: 0.406169
+
+Epoch: 34
+Loss: 0.10208009344168621
+ROC train: 0.907283	val: 0.785048	test: 0.796117
+PRC train: 0.506473	val: 0.321121	test: 0.377926
+
+Epoch: 35
+Loss: 0.09853702652563859
+ROC train: 0.923582	val: 0.788255	test: 0.812787
+PRC train: 0.542731	val: 0.361288	test: 0.398794
+
+Epoch: 36
+Loss: 0.09729216939030837
+ROC train: 0.920653	val: 0.790322	test: 0.814658
+PRC train: 0.544359	val: 0.380461	test: 0.407339
+
+Epoch: 37
+Loss: 0.09847681730126687
+ROC train: 0.927274	val: 0.784233	test: 0.809139
+PRC train: 0.564867	val: 0.351986	test: 0.425801
+
+Epoch: 38
+Loss: 0.09915690289393721
+ROC train: 0.910637	val: 0.776927	test: 0.804689
+PRC train: 0.521123	val: 0.323008	test: 0.382550
+
+Epoch: 39
+Loss: 0.09810490479544857
+ROC train: 0.923939	val: 0.781161	test: 0.800828
+PRC train: 0.564229	val: 0.362369	test: 0.425938
+
+Epoch: 40
+Loss: 0.09572275713456666
+ROC train: 0.923954	val: 0.800403	test: 0.812331
+PRC train: 0.557657	val: 0.359789	test: 0.421736
+
+Epoch: 41
+Loss: 0.094978465665531
+ROC train: 0.936847	val: 0.795093	test: 0.814268
+PRC train: 0.578253	val: 0.382977	test: 0.429787
+
+Epoch: 42
+Loss: 0.094660880321522
+ROC train: 0.931923	val: 0.808678	test: 0.812527
+PRC train: 0.573335	val: 0.376435	test: 0.417312
+
+Epoch: 43
+Loss: 0.09645885675725868
+ROC train: 0.939498	val: 0.799641	test: 0.817301
+PRC train: 0.590374	val: 0.381961	test: 0.432355
+
+Epoch: 44
+Loss: 0.0939283115495092
+ROC train: 0.934019	val: 0.786193	test: 0.811346
+PRC train: 0.554854	val: 0.332764	test: 0.388330
+
+Epoch: 45
+Loss: 0.09569116556645753
+ROC train: 0.938293	val: 0.783726	test: 0.804979
+PRC train: 0.602706	val: 0.373129	test: 0.431444
+
+Epoch: 46
+Loss: 0.0935081742562879
+ROC train: 0.939091	val: 0.786476	test: 0.803655
+PRC train: 0.588683	val: 0.366434	test: 0.410325
+
+Epoch: 47
+Loss: 0.09273041796878899
+ROC train: 0.940947	val: 0.786130	test: 0.806912
+PRC train: 0.591973	val: 0.361418	test: 0.410464
+
+Epoch: 48
+Loss: 0.09219647561880646
+ROC train: 0.947764	val: 0.781372	test: 0.817498
+PRC train: 0.616977	val: 0.372135	test: 0.424521
+
+Epoch: 49
+Loss: 0.0911860051338114
+ROC train: 0.944951	val: 0.788921	test: 0.808018
+PRC train: 0.588887	val: 0.364125	test: 0.402683
+
+Epoch: 50
+Loss: 0.09191810636544058
+ROC train: 0.949171	val: 0.800091	test: 0.813994
+PRC train: 0.613899	val: 0.386498	test: 0.426747
+
+Epoch: 51
+Loss: 0.09154997033722134
+ROC train: 0.950471	val: 0.794864	test: 0.809451
+PRC train: 0.625932	val: 0.375989	test: 0.438937
+
+Epoch: 52
+Loss: 0.09050633394605774
+ROC train: 0.948493	val: 0.792564	test: 0.811473
+PRC train: 0.622495	val: 0.390464	test: 0.426813
+
+Epoch: 53
+Loss: 0.0916167725371484
+ROC train: 0.946786	val: 0.786065	test: 0.804010
+PRC train: 0.616150	val: 0.353799	test: 0.408595
+
+Epoch: 54
+Loss: 0.08826980669440222
+ROC train: 0.951605	val: 0.781653	test: 0.815437
+PRC train: 0.621793	val: 0.365576	test: 0.413719
+
+Epoch: 55
+Loss: 0.09090678631341374
+ROC train: 0.949697	val: 0.794533	test: 0.814858
+PRC train: 0.618238	val: 0.377174	test: 0.419622
+
+Epoch: 56
+Loss: 0.08907567244400258
+ROC train: 0.953930	val: 0.781912	test: 0.807050
+PRC train: 0.648264	val: 0.380283	test: 0.431527
+
+Epoch: 57
+Loss: 0.08778377967192874
+ROC train: 0.955464	val: 0.782065	test: 0.809988
+PRC train: 0.640451	val: 0.384695	test: 0.423886
+
+Epoch: 58
+Loss: 0.08779968870514938
+ROC train: 0.957016	val: 0.793931	test: 0.811911
+PRC train: 0.653366	val: 0.384348	test: 0.420702
+
+Epoch: 59
+Loss: 0.08483442841798765
+ROC train: 0.954716	val: 0.789594	test: 0.803878
+PRC train: 0.635814	val: 0.355502	test: 0.401085
+
+Epoch: 60
+Loss: 0.08406962623370134
+ROC train: 0.953986	val: 0.789971	test: 0.800745
+PRC train: 0.634482	val: 0.351720	test: 0.392935
+
+Epoch: 61
+Loss: 0.08715707843063265
+ROC train: 0.960066	val: 0.781934	test: 0.802026
+PRC train: 0.662028	val: 0.347961	test: 0.415926
+
+Epoch: 62
+Loss: 0.08706427810301837
+ROC train: 0.958717	val: 0.797451	test: 0.806351
+PRC train: 0.647705	val: 0.374527	test: 0.422274
+
+Epoch: 63
+Loss: 0.08541672842109176
+ROC train: 0.962081	val: 0.784363	test: 0.799612
+PRC train: 0.670023	val: 0.388125	test: 0.424841
+
+Epoch: 64
+Loss: 0.08368882544625905
+ROC train: 0.960315	val: 0.786880	test: 0.807426
+PRC train: 0.669891	val: 0.390776	test: 0.420407
+
+Epoch: 65
+Loss: 0.08350783256293831
+ROC train: 0.963468	val: 0.789475	test: 0.804515
+PRC train: 0.676145	val: 0.391605	test: 0.428019
+
+Epoch: 66
+Loss: 0.08402243083935314
+ROC train: 0.965598	val: 0.780507	test: 0.806891
+PRC train: 0.678076	val: 0.386695	test: 0.443062
+
+Epoch: 67
+Loss: 0.08356152792001859
+ROC train: 0.966255	val: 0.794203	test: 0.808062
+PRC train: 0.682275	val: 0.394804	test: 0.430855
+
+Epoch: 68
+Loss: 0.08437762237557242
+ROC train: 0.966459	val: 0.789031	test: 0.813638
+PRC train: 0.680165	val: 0.377271	test: 0.414591
+
+Epoch: 69
+Loss: 0.08182220553468614
+ROC train: 0.965742	val: 0.792763	test: 0.803824
+PRC train: 0.692731	val: 0.384542	test: 0.420792
+
+Epoch: 70
+Loss: 0.08230094457402438
+ROC train: 0.967893	val: 0.804203	test: 0.806170
+PRC train: 0.697581	val: 0.400152	test: 0.416976
+
+Epoch: 71
+Loss: 0.08291879617392543
+ROC train: 0.964949	val: 0.781454	test: 0.795447
+PRC train: 0.681365	val: 0.372969	test: 0.421809
+
+Epoch: 72
+Loss: 0.08089689741619188
+ROC train: 0.968083	val: 0.796990	test: 0.817815
+PRC train: 0.694791	val: 0.376716	test: 0.418473
+
+Epoch: 73
+Loss: 0.08203663136583547
+ROC train: 0.971037	val: 0.793173	test: 0.812750
+PRC train: 0.710845	val: 0.393478	test: 0.432672
+
+Epoch: 74
+Loss: 0.0803745404875901
+ROC train: 0.973208	val: 0.791110	test: 0.817658
+PRC train: 0.720622	val: 0.399216	test: 0.412621
+
+Epoch: 75
+Loss: 0.08082766355215072
+ROC train: 0.969801	val: 0.787973	test: 0.803769
+PRC train: 0.704028	val: 0.382266	test: 0.406708
+
+Epoch: 76
+Loss: 0.08000263165768316
+ROC train: 0.969871	val: 0.794317	test: 0.817304
+PRC train: 0.702519	val: 0.382359	test: 0.410592
+
+Epoch: 77
+Loss: 0.07764868082238255
+ROC train: 0.973713	val: 0.792738	test: 0.804696
+PRC train: 0.728635	val: 0.393260	test: 0.401109
+
+Epoch: 78
+Loss: 0.07942637321698522
+ROC train: 0.972030	val: 0.791630	test: 0.812370
+PRC train: 0.717250	val: 0.397194	test: 0.424174
+
+Epoch: 79
+Loss: 0.077925028371112
+ROC train: 0.975662	val: 0.799331	test: 0.818449
+PRC train: 0.732473	val: 0.384143	test: 0.409588
+
+Epoch: 80
+Loss: 0.07751609483950467
+ROC train: 0.974218	val: 0.789032	test: 0.810922
+PRC train: 0.733769	val: 0.394798	test: 0.417648
+
+Epoch: 81
+Loss: 0.0767100232399487
+ROC train: 0.972795	val: 0.791148	test: 0.811289
+PRC train: 0.728577	val: 0.367960	test: 0.423809
+
+Epoch: 82
+Loss: 0.07842785654002536
+ROC train: 0.974399	val: 0.793943	test: 0.801899
+PRC train: 0.729267	val: 0.391981	test: 0.388313
+
+Epoch: 83
+Loss: 0.07584999141211062
+ROC train: 0.974114	val: 0.784206	test: 0.801515
+PRC train: 0.731179	val: 0.381217	test: 0.396727
+
+Epoch: 84
+Loss: 0.07560878625834658
+ROC train: 0.976081	val: 0.791084	test: 0.809105
+PRC train: 0.734380	val: 0.402180	test: 0.408201
+
+Epoch: 85
+Loss: 0.0759453730562096
+ROC train: 0.976216	val: 0.791298	test: 0.809972
+PRC train: 0.742821	val: 0.385937	test: 0.417500
+
+Epoch: 86
+Loss: 0.07652996516344802
+ROC train: 0.972451	val: 0.792402	test: 0.810853
+PRC train: 0.733436	val: 0.396354	test: 0.412857
+
+Epoch: 87
+Loss: 0.07485649366729275
+ROC train: 0.979030	val: 0.779964	test: 0.804370
+PRC train: 0.754951	val: 0.393539	test: 0.413614
+
+Epoch: 88
+Loss: 0.07458085657401525
+ROC train: 0.975148	val: 0.777290	test: 0.795329
+PRC train: 0.736955	val: 0.388596	test: 0.398480
+
+Epoch: 89
+Loss: 0.07537160382204376
+ROC train: 0.976875	val: 0.788163	test: 0.810110
+PRC train: 0.739494	val: 0.377353	test: 0.401499
+
+Epoch: 90
+Loss: 0.0743614272303033
+ROC train: 0.979035	val: 0.796839	test: 0.808345
+PRC train: 0.756153	val: 0.395482	test: 0.409312
+
+Epoch: 91
+Loss: 0.07352138966867028
+ROC train: 0.977806	val: 0.797346	test: 0.810511
+PRC train: 0.750903	val: 0.405679	test: 0.411150
+
+Epoch: 92
+Loss: 0.07240336357665986
+ROC train: 0.980822	val: 0.789788	test: 0.803297
+PRC train: 0.763816	val: 0.379745	test: 0.400146
+
+Epoch: 93
+Loss: 0.07360175470111048
+ROC train: 0.978584	val: 0.776025	test: 0.794186
+PRC train: 0.760969	val: 0.381045	test: 0.381278
+
+Epoch: 94
+Loss: 0.07125530058902901
+ROC train: 0.925067	val: 0.796418	test: 0.807609
+PRC train: 0.547551	val: 0.357264	test: 0.416012
+
+Epoch: 34
+Loss: 0.09704869103096703
+ROC train: 0.918638	val: 0.782885	test: 0.796915
+PRC train: 0.544113	val: 0.355060	test: 0.421432
+
+Epoch: 35
+Loss: 0.09685466675453923
+ROC train: 0.935256	val: 0.798093	test: 0.818095
+PRC train: 0.588254	val: 0.401504	test: 0.452138
+
+Epoch: 36
+Loss: 0.0972247146875772
+ROC train: 0.934726	val: 0.790602	test: 0.808467
+PRC train: 0.580849	val: 0.379304	test: 0.439494
+
+Epoch: 37
+Loss: 0.09587096811459125
+ROC train: 0.924597	val: 0.778603	test: 0.802609
+PRC train: 0.566257	val: 0.370251	test: 0.434742
+
+Epoch: 38
+Loss: 0.09566748482228603
+ROC train: 0.932783	val: 0.791147	test: 0.798867
+PRC train: 0.585305	val: 0.380977	test: 0.429431
+
+Epoch: 39
+Loss: 0.09496795331727201
+ROC train: 0.919042	val: 0.792272	test: 0.797995
+PRC train: 0.551731	val: 0.372510	test: 0.410058
+
+Epoch: 40
+Loss: 0.09394195666874008
+ROC train: 0.934318	val: 0.785958	test: 0.808531
+PRC train: 0.596923	val: 0.387901	test: 0.433249
+
+Epoch: 41
+Loss: 0.09335057513180922
+ROC train: 0.937913	val: 0.786871	test: 0.805255
+PRC train: 0.600030	val: 0.382045	test: 0.424379
+
+Epoch: 42
+Loss: 0.09385457499880709
+ROC train: 0.943069	val: 0.799725	test: 0.805521
+PRC train: 0.611740	val: 0.395263	test: 0.438755
+
+Epoch: 43
+Loss: 0.09162558876751813
+ROC train: 0.943309	val: 0.787587	test: 0.809214
+PRC train: 0.620252	val: 0.384671	test: 0.429756
+
+Epoch: 44
+Loss: 0.09309800983863484
+ROC train: 0.944525	val: 0.797665	test: 0.817814
+PRC train: 0.617574	val: 0.417487	test: 0.445458
+
+Epoch: 45
+Loss: 0.0913118669838984
+ROC train: 0.947030	val: 0.794256	test: 0.806721
+PRC train: 0.599676	val: 0.362805	test: 0.391471
+
+Epoch: 46
+Loss: 0.08993296943735073
+ROC train: 0.949372	val: 0.798330	test: 0.805883
+PRC train: 0.624441	val: 0.391641	test: 0.425245
+
+Epoch: 47
+Loss: 0.08980941380204079
+ROC train: 0.940277	val: 0.798733	test: 0.806117
+PRC train: 0.594192	val: 0.387730	test: 0.405694
+
+Epoch: 48
+Loss: 0.0908689356115737
+ROC train: 0.946452	val: 0.798856	test: 0.813440
+PRC train: 0.613641	val: 0.379282	test: 0.437026
+
+Epoch: 49
+Loss: 0.08916769537550473
+ROC train: 0.951348	val: 0.796543	test: 0.803385
+PRC train: 0.625779	val: 0.390719	test: 0.431148
+
+Epoch: 50
+Loss: 0.08798943069302965
+ROC train: 0.950824	val: 0.789499	test: 0.798189
+PRC train: 0.624888	val: 0.394869	test: 0.413321
+
+Epoch: 51
+Loss: 0.08809463213731952
+ROC train: 0.953974	val: 0.797010	test: 0.806599
+PRC train: 0.652770	val: 0.401487	test: 0.424330
+
+Epoch: 52
+Loss: 0.08919778460615624
+ROC train: 0.951724	val: 0.793357	test: 0.803551
+PRC train: 0.624744	val: 0.378426	test: 0.409606
+
+Epoch: 53
+Loss: 0.08689602720737694
+ROC train: 0.955363	val: 0.803694	test: 0.804654
+PRC train: 0.643468	val: 0.385699	test: 0.417266
+
+Epoch: 54
+Loss: 0.08656938033435868
+ROC train: 0.957230	val: 0.803374	test: 0.810076
+PRC train: 0.647844	val: 0.419606	test: 0.432037
+
+Epoch: 55
+Loss: 0.08654834153273937
+ROC train: 0.956592	val: 0.801263	test: 0.801217
+PRC train: 0.654500	val: 0.393201	test: 0.416640
+
+Epoch: 56
+Loss: 0.08622681309632299
+ROC train: 0.955748	val: 0.795379	test: 0.810794
+PRC train: 0.646213	val: 0.406765	test: 0.436985
+
+Epoch: 57
+Loss: 0.08586488895262359
+ROC train: 0.958628	val: 0.810619	test: 0.801557
+PRC train: 0.662621	val: 0.405360	test: 0.429939
+
+Epoch: 58
+Loss: 0.08378183232380272
+ROC train: 0.960370	val: 0.809739	test: 0.809830
+PRC train: 0.640191	val: 0.404954	test: 0.404045
+
+Epoch: 59
+Loss: 0.08365500427603133
+ROC train: 0.963703	val: 0.800126	test: 0.805431
+PRC train: 0.681273	val: 0.415875	test: 0.432511
+
+Epoch: 60
+Loss: 0.08522109354088117
+ROC train: 0.956782	val: 0.807142	test: 0.808595
+PRC train: 0.663314	val: 0.380489	test: 0.412326
+
+Epoch: 61
+Loss: 0.0821241831914745
+ROC train: 0.965310	val: 0.808703	test: 0.805383
+PRC train: 0.680207	val: 0.409711	test: 0.416440
+
+Epoch: 62
+Loss: 0.0836721664427083
+ROC train: 0.964541	val: 0.802064	test: 0.809267
+PRC train: 0.676223	val: 0.417964	test: 0.419782
+
+Epoch: 63
+Loss: 0.08360846684154868
+ROC train: 0.964862	val: 0.800955	test: 0.809995
+PRC train: 0.684308	val: 0.419946	test: 0.419698
+
+Epoch: 64
+Loss: 0.08121618288657519
+ROC train: 0.964290	val: 0.803552	test: 0.807071
+PRC train: 0.688875	val: 0.432875	test: 0.424139
+
+Epoch: 65
+Loss: 0.08072872181448783
+ROC train: 0.965831	val: 0.807527	test: 0.794221
+PRC train: 0.682414	val: 0.400410	test: 0.400470
+
+Epoch: 66
+Loss: 0.0805851276722942
+ROC train: 0.971419	val: 0.805334	test: 0.805616
+PRC train: 0.711640	val: 0.416577	test: 0.435027
+
+Epoch: 67
+Loss: 0.08175045683058503
+ROC train: 0.967752	val: 0.797268	test: 0.803415
+PRC train: 0.696248	val: 0.415507	test: 0.426119
+
+Epoch: 68
+Loss: 0.07986382924756814
+ROC train: 0.971786	val: 0.793691	test: 0.813053
+PRC train: 0.705928	val: 0.408038	test: 0.420157
+
+Epoch: 69
+Loss: 0.07918891058094331
+ROC train: 0.969615	val: 0.790693	test: 0.804899
+PRC train: 0.694803	val: 0.388616	test: 0.421872
+
+Epoch: 70
+Loss: 0.08000970849183801
+ROC train: 0.967365	val: 0.808223	test: 0.817018
+PRC train: 0.699782	val: 0.409005	test: 0.419174
+
+Epoch: 71
+Loss: 0.07974546796780756
+ROC train: 0.969287	val: 0.798856	test: 0.802932
+PRC train: 0.700680	val: 0.422630	test: 0.399321
+
+Epoch: 72
+Loss: 0.07949214433771669
+ROC train: 0.974797	val: 0.796580	test: 0.811113
+PRC train: 0.729684	val: 0.413827	test: 0.423956
+
+Epoch: 73
+Loss: 0.07818210768571691
+ROC train: 0.976035	val: 0.807205	test: 0.805897
+PRC train: 0.737217	val: 0.424520	test: 0.430314
+
+Epoch: 74
+Loss: 0.07947905287564033
+ROC train: 0.969650	val: 0.805862	test: 0.801819
+PRC train: 0.716932	val: 0.419233	test: 0.410001
+
+Epoch: 75
+Loss: 0.07600241832023726
+ROC train: 0.974456	val: 0.804190	test: 0.800414
+PRC train: 0.740012	val: 0.417383	test: 0.412295
+
+Epoch: 76
+Loss: 0.0762049405741077
+ROC train: 0.975441	val: 0.801924	test: 0.800612
+PRC train: 0.730433	val: 0.405951	test: 0.389533
+
+Epoch: 77
+Loss: 0.07685487982330126
+ROC train: 0.974286	val: 0.801654	test: 0.806010
+PRC train: 0.727597	val: 0.416428	test: 0.408823
+
+Epoch: 78
+Loss: 0.0763015569725853
+ROC train: 0.967955	val: 0.802035	test: 0.808468
+PRC train: 0.706613	val: 0.395512	test: 0.413726
+
+Epoch: 79
+Loss: 0.07594971078443291
+ROC train: 0.977874	val: 0.800820	test: 0.808555
+PRC train: 0.745282	val: 0.427854	test: 0.421462
+
+Epoch: 80
+Loss: 0.07330803476463976
+ROC train: 0.975584	val: 0.807380	test: 0.805772
+PRC train: 0.732184	val: 0.410313	test: 0.409584
+
+Epoch: 81
+Loss: 0.07551330034176112
+ROC train: 0.976792	val: 0.794282	test: 0.804514
+PRC train: 0.752630	val: 0.431853	test: 0.416199
+
+Epoch: 82
+Loss: 0.07392457893585237
+ROC train: 0.977726	val: 0.796968	test: 0.806487
+PRC train: 0.755278	val: 0.427005	test: 0.416394
+
+Epoch: 83
+Loss: 0.07370276005896588
+ROC train: 0.977119	val: 0.793317	test: 0.807396
+PRC train: 0.738581	val: 0.393059	test: 0.394574
+
+Epoch: 84
+Loss: 0.0732594622659067
+ROC train: 0.979886	val: 0.799562	test: 0.798561
+PRC train: 0.768801	val: 0.428199	test: 0.400081
+
+Epoch: 85
+Loss: 0.07214347575466622
+ROC train: 0.977532	val: 0.803969	test: 0.808593
+PRC train: 0.752326	val: 0.410612	test: 0.386951
+
+Epoch: 86
+Loss: 0.07200938288659177
+ROC train: 0.979967	val: 0.801202	test: 0.798655
+PRC train: 0.769302	val: 0.410080	test: 0.402053
+
+Epoch: 87
+Loss: 0.07222448172966575
+ROC train: 0.975330	val: 0.795962	test: 0.793093
+PRC train: 0.746066	val: 0.394311	test: 0.408008
+
+Epoch: 88
+Loss: 0.07203227992208054
+ROC train: 0.979294	val: 0.804081	test: 0.798252
+PRC train: 0.750188	val: 0.401240	test: 0.392277
+
+Epoch: 89
+Loss: 0.07108753759601424
+ROC train: 0.977514	val: 0.794293	test: 0.804748
+PRC train: 0.756003	val: 0.405197	test: 0.398240
+
+Epoch: 90
+Loss: 0.07171929848509044
+ROC train: 0.980055	val: 0.791065	test: 0.802618
+PRC train: 0.765998	val: 0.405524	test: 0.403827
+
+Epoch: 91
+Loss: 0.07060095827834309
+ROC train: 0.978338	val: 0.791991	test: 0.797497
+PRC train: 0.752064	val: 0.382598	test: 0.389475
+
+Epoch: 92
+Loss: 0.07010341131498261
+ROC train: 0.981338	val: 0.793279	test: 0.811969
+PRC train: 0.773719	val: 0.404242	test: 0.406390
+
+Epoch: 93
+Loss: 0.07008333617150123
+ROC train: 0.973823	val: 0.796800	test: 0.799782
+PRC train: 0.733896	val: 0.385474	test: 0.369747
+
+Epoch: 94
+Loss: 0.07059464273834004
+ROC train: 0.915415	val: 0.778677	test: 0.811563
+PRC train: 0.542647	val: 0.344527	test: 0.451527
+
+Epoch: 34
+Loss: 0.09877507397363867
+ROC train: 0.920617	val: 0.782408	test: 0.811831
+PRC train: 0.560477	val: 0.355258	test: 0.433936
+
+Epoch: 35
+Loss: 0.09670979868373765
+ROC train: 0.921626	val: 0.781679	test: 0.820542
+PRC train: 0.559049	val: 0.360241	test: 0.446393
+
+Epoch: 36
+Loss: 0.09633042519792444
+ROC train: 0.926075	val: 0.785091	test: 0.815110
+PRC train: 0.569649	val: 0.368445	test: 0.433477
+
+Epoch: 37
+Loss: 0.0967333534426024
+ROC train: 0.919160	val: 0.776878	test: 0.807067
+PRC train: 0.569350	val: 0.381515	test: 0.447730
+
+Epoch: 38
+Loss: 0.09593732816293754
+ROC train: 0.929729	val: 0.790109	test: 0.816713
+PRC train: 0.574828	val: 0.389292	test: 0.438099
+
+Epoch: 39
+Loss: 0.0975869594286814
+ROC train: 0.926306	val: 0.782450	test: 0.809302
+PRC train: 0.541697	val: 0.331874	test: 0.419092
+
+Epoch: 40
+Loss: 0.0955231096232446
+ROC train: 0.935029	val: 0.785858	test: 0.807147
+PRC train: 0.595822	val: 0.383012	test: 0.430514
+
+Epoch: 41
+Loss: 0.09280911406275173
+ROC train: 0.940609	val: 0.794012	test: 0.819522
+PRC train: 0.595956	val: 0.395011	test: 0.443326
+
+Epoch: 42
+Loss: 0.09326680004123361
+ROC train: 0.927673	val: 0.792611	test: 0.817007
+PRC train: 0.584259	val: 0.374285	test: 0.445844
+
+Epoch: 43
+Loss: 0.09269705821415733
+ROC train: 0.926590	val: 0.782614	test: 0.811375
+PRC train: 0.583229	val: 0.376660	test: 0.454869
+
+Epoch: 44
+Loss: 0.09547747569833331
+ROC train: 0.936838	val: 0.797469	test: 0.813908
+PRC train: 0.589222	val: 0.387240	test: 0.444049
+
+Epoch: 45
+Loss: 0.092717714822295
+ROC train: 0.943229	val: 0.789741	test: 0.807254
+PRC train: 0.595763	val: 0.378945	test: 0.448137
+
+Epoch: 46
+Loss: 0.09139629328423673
+ROC train: 0.941256	val: 0.783661	test: 0.821375
+PRC train: 0.598536	val: 0.384371	test: 0.458320
+
+Epoch: 47
+Loss: 0.09162195354070579
+ROC train: 0.943825	val: 0.796260	test: 0.823019
+PRC train: 0.605095	val: 0.390184	test: 0.447177
+
+Epoch: 48
+Loss: 0.08966608493228057
+ROC train: 0.948202	val: 0.792194	test: 0.802917
+PRC train: 0.625237	val: 0.392024	test: 0.432563
+
+Epoch: 49
+Loss: 0.09049044586791466
+ROC train: 0.946842	val: 0.797931	test: 0.817229
+PRC train: 0.614820	val: 0.391381	test: 0.446145
+
+Epoch: 50
+Loss: 0.0894119884120663
+ROC train: 0.948269	val: 0.788809	test: 0.812423
+PRC train: 0.606757	val: 0.360008	test: 0.435453
+
+Epoch: 51
+Loss: 0.08962615272283597
+ROC train: 0.945095	val: 0.790536	test: 0.803017
+PRC train: 0.623355	val: 0.400059	test: 0.429884
+
+Epoch: 52
+Loss: 0.08708847383322058
+ROC train: 0.944471	val: 0.783807	test: 0.797337
+PRC train: 0.616650	val: 0.379630	test: 0.421700
+
+Epoch: 53
+Loss: 0.0877517081276767
+ROC train: 0.953540	val: 0.784685	test: 0.805257
+PRC train: 0.632656	val: 0.389098	test: 0.439178
+
+Epoch: 54
+Loss: 0.08722073255323853
+ROC train: 0.954057	val: 0.786446	test: 0.807099
+PRC train: 0.648091	val: 0.400950	test: 0.415215
+
+Epoch: 55
+Loss: 0.08776764764362391
+ROC train: 0.948572	val: 0.788481	test: 0.809434
+PRC train: 0.637090	val: 0.373883	test: 0.432379
+
+Epoch: 56
+Loss: 0.0879013033111397
+ROC train: 0.950979	val: 0.799390	test: 0.813936
+PRC train: 0.638151	val: 0.385833	test: 0.433335
+
+Epoch: 57
+Loss: 0.08730198397964095
+ROC train: 0.951951	val: 0.781262	test: 0.805701
+PRC train: 0.640187	val: 0.393944	test: 0.431920
+
+Epoch: 58
+Loss: 0.08863791371823392
+ROC train: 0.952779	val: 0.785102	test: 0.793750
+PRC train: 0.624290	val: 0.378422	test: 0.399539
+
+Epoch: 59
+Loss: 0.08479547296292671
+ROC train: 0.959454	val: 0.783354	test: 0.805259
+PRC train: 0.652017	val: 0.382977	test: 0.422517
+
+Epoch: 60
+Loss: 0.08491728574396748
+ROC train: 0.958218	val: 0.781746	test: 0.786562
+PRC train: 0.665474	val: 0.394211	test: 0.414818
+
+Epoch: 61
+Loss: 0.08441647590069357
+ROC train: 0.954786	val: 0.784374	test: 0.782485
+PRC train: 0.643856	val: 0.393530	test: 0.413763
+
+Epoch: 62
+Loss: 0.0851419452738606
+ROC train: 0.959226	val: 0.790259	test: 0.802078
+PRC train: 0.669220	val: 0.411001	test: 0.447070
+
+Epoch: 63
+Loss: 0.08542523609054588
+ROC train: 0.958675	val: 0.788642	test: 0.811909
+PRC train: 0.652885	val: 0.393544	test: 0.428404
+
+Epoch: 64
+Loss: 0.08431999068275951
+ROC train: 0.964699	val: 0.791487	test: 0.807794
+PRC train: 0.688151	val: 0.394306	test: 0.436351
+
+Epoch: 65
+Loss: 0.08324873348417215
+ROC train: 0.963458	val: 0.782149	test: 0.793653
+PRC train: 0.680232	val: 0.395754	test: 0.429462
+
+Epoch: 66
+Loss: 0.08493025357719373
+ROC train: 0.959749	val: 0.782033	test: 0.807540
+PRC train: 0.663661	val: 0.392852	test: 0.414941
+
+Epoch: 67
+Loss: 0.08406672408270277
+ROC train: 0.966698	val: 0.793777	test: 0.797236
+PRC train: 0.697817	val: 0.399272	test: 0.431853
+
+Epoch: 68
+Loss: 0.07955152030869941
+ROC train: 0.966364	val: 0.790203	test: 0.803077
+PRC train: 0.690645	val: 0.391123	test: 0.430472
+
+Epoch: 69
+Loss: 0.08274237844600567
+ROC train: 0.970091	val: 0.795396	test: 0.795655
+PRC train: 0.695963	val: 0.402265	test: 0.426505
+
+Epoch: 70
+Loss: 0.0812401730810138
+ROC train: 0.966763	val: 0.785132	test: 0.798396
+PRC train: 0.693087	val: 0.381524	test: 0.431409
+
+Epoch: 71
+Loss: 0.0793570957219726
+ROC train: 0.970894	val: 0.797293	test: 0.807635
+PRC train: 0.707567	val: 0.417184	test: 0.434676
+
+Epoch: 72
+Loss: 0.0790894497283314
+ROC train: 0.966673	val: 0.784110	test: 0.798073
+PRC train: 0.695338	val: 0.377978	test: 0.412099
+
+Epoch: 73
+Loss: 0.08061902087402968
+ROC train: 0.970654	val: 0.791633	test: 0.804889
+PRC train: 0.707355	val: 0.391316	test: 0.428416
+
+Epoch: 74
+Loss: 0.07934097653687247
+ROC train: 0.967565	val: 0.788613	test: 0.798143
+PRC train: 0.692931	val: 0.395902	test: 0.402434
+
+Epoch: 75
+Loss: 0.07771884198161569
+ROC train: 0.963707	val: 0.796842	test: 0.804870
+PRC train: 0.660452	val: 0.384444	test: 0.396948
+
+Epoch: 76
+Loss: 0.07972118789726866
+ROC train: 0.964861	val: 0.799815	test: 0.802693
+PRC train: 0.690007	val: 0.395325	test: 0.401379
+
+Epoch: 77
+Loss: 0.08032539593613164
+ROC train: 0.969954	val: 0.797424	test: 0.793661
+PRC train: 0.710275	val: 0.386667	test: 0.422890
+
+Epoch: 78
+Loss: 0.07658907870689777
+ROC train: 0.975780	val: 0.789678	test: 0.803816
+PRC train: 0.726407	val: 0.387665	test: 0.424397
+
+Epoch: 79
+Loss: 0.07813323336745466
+ROC train: 0.976075	val: 0.801077	test: 0.813749
+PRC train: 0.731406	val: 0.386155	test: 0.430860
+
+Epoch: 80
+Loss: 0.07933883012843419
+ROC train: 0.974901	val: 0.792801	test: 0.810816
+PRC train: 0.729814	val: 0.362485	test: 0.423485
+
+Epoch: 81
+Loss: 0.07536337316068716
+ROC train: 0.974102	val: 0.797559	test: 0.809477
+PRC train: 0.726546	val: 0.398788	test: 0.403996
+
+Epoch: 82
+Loss: 0.07857290844614767
+ROC train: 0.969386	val: 0.784614	test: 0.798764
+PRC train: 0.700759	val: 0.409358	test: 0.419191
+
+Epoch: 83
+Loss: 0.07433578753616035
+ROC train: 0.977393	val: 0.793849	test: 0.807999
+PRC train: 0.745755	val: 0.395182	test: 0.425044
+
+Epoch: 84
+Loss: 0.07609102515943462
+ROC train: 0.975719	val: 0.792387	test: 0.812967
+PRC train: 0.728704	val: 0.411156	test: 0.411822
+
+Epoch: 85
+Loss: 0.0754173877497772
+ROC train: 0.978335	val: 0.791324	test: 0.795463
+PRC train: 0.752999	val: 0.408999	test: 0.420071
+
+Epoch: 86
+Loss: 0.07592214065276624
+ROC train: 0.975913	val: 0.788009	test: 0.810735
+PRC train: 0.738381	val: 0.381028	test: 0.414179
+
+Epoch: 87
+Loss: 0.074177258502342
+ROC train: 0.980385	val: 0.790525	test: 0.800476
+PRC train: 0.772790	val: 0.405358	test: 0.407090
+
+Epoch: 88
+Loss: 0.0735269139100669
+ROC train: 0.981069	val: 0.780957	test: 0.797427
+PRC train: 0.767529	val: 0.388267	test: 0.402456
+
+Epoch: 89
+Loss: 0.07238067632828697
+ROC train: 0.980227	val: 0.784706	test: 0.807393
+PRC train: 0.775510	val: 0.396265	test: 0.411238
+
+Epoch: 90
+Loss: 0.072911424079354
+ROC train: 0.979811	val: 0.778047	test: 0.788335
+PRC train: 0.752344	val: 0.388261	test: 0.376353
+
+Epoch: 91
+Loss: 0.07125045620261908
+ROC train: 0.978219	val: 0.782264	test: 0.803822
+PRC train: 0.758796	val: 0.380053	test: 0.393615
+
+Epoch: 92
+Loss: 0.0702877932633843
+ROC train: 0.980828	val: 0.792279	test: 0.811830
+PRC train: 0.775854	val: 0.402625	test: 0.410120
+
+Epoch: 93
+Loss: 0.07098464091579046
+ROC train: 0.981958	val: 0.787088	test: 0.807007
+PRC train: 0.783006	val: 0.371651	test: 0.399102
+
+Epoch: 94
+Loss: 0.07268031256464867
+ROC train: 0.899142	val: 0.811315	test: 0.827969
+PRC train: 0.523881	val: 0.435072	test: 0.435963
+
+Epoch: 34
+Loss: 0.09866031236003973
+ROC train: 0.913541	val: 0.802951	test: 0.833603
+PRC train: 0.551279	val: 0.418551	test: 0.453821
+
+Epoch: 35
+Loss: 0.09869308097951843
+ROC train: 0.905404	val: 0.793694	test: 0.826917
+PRC train: 0.537641	val: 0.399083	test: 0.420948
+
+Epoch: 36
+Loss: 0.09855988708966755
+ROC train: 0.909154	val: 0.803835	test: 0.829328
+PRC train: 0.514364	val: 0.386905	test: 0.415063
+
+Epoch: 37
+Loss: 0.09862726857897489
+ROC train: 0.920330	val: 0.801297	test: 0.827365
+PRC train: 0.560457	val: 0.428216	test: 0.435013
+
+Epoch: 38
+Loss: 0.09706907029993925
+ROC train: 0.911949	val: 0.790193	test: 0.828567
+PRC train: 0.572024	val: 0.421967	test: 0.434866
+
+Epoch: 39
+Loss: 0.09727493972191625
+ROC train: 0.913851	val: 0.798713	test: 0.819859
+PRC train: 0.554042	val: 0.416831	test: 0.425991
+
+Epoch: 40
+Loss: 0.09640342447559265
+ROC train: 0.918425	val: 0.797779	test: 0.815772
+PRC train: 0.565012	val: 0.409555	test: 0.428780
+
+Epoch: 41
+Loss: 0.09344721062080887
+ROC train: 0.923218	val: 0.795839	test: 0.810465
+PRC train: 0.569581	val: 0.408496	test: 0.430602
+
+Epoch: 42
+Loss: 0.0951560759546124
+ROC train: 0.922663	val: 0.789011	test: 0.823695
+PRC train: 0.582062	val: 0.408388	test: 0.444949
+
+Epoch: 43
+Loss: 0.09569880556619814
+ROC train: 0.923015	val: 0.798656	test: 0.827230
+PRC train: 0.567236	val: 0.415665	test: 0.440835
+
+Epoch: 44
+Loss: 0.0934939505757991
+ROC train: 0.927445	val: 0.809923	test: 0.822399
+PRC train: 0.592974	val: 0.434903	test: 0.438482
+
+Epoch: 45
+Loss: 0.09271562967915983
+ROC train: 0.927801	val: 0.784047	test: 0.831085
+PRC train: 0.591785	val: 0.436935	test: 0.437261
+
+Epoch: 46
+Loss: 0.09340831594064625
+ROC train: 0.935868	val: 0.799235	test: 0.818396
+PRC train: 0.593633	val: 0.418077	test: 0.441464
+
+Epoch: 47
+Loss: 0.0928394018254959
+ROC train: 0.930622	val: 0.793405	test: 0.818313
+PRC train: 0.588893	val: 0.406908	test: 0.427638
+
+Epoch: 48
+Loss: 0.09241484684293116
+ROC train: 0.933203	val: 0.803725	test: 0.822833
+PRC train: 0.593846	val: 0.415805	test: 0.428544
+
+Epoch: 49
+Loss: 0.09159579672211145
+ROC train: 0.931930	val: 0.798221	test: 0.822388
+PRC train: 0.590150	val: 0.428213	test: 0.437420
+
+Epoch: 50
+Loss: 0.09078374833097433
+ROC train: 0.937779	val: 0.787729	test: 0.819610
+PRC train: 0.602511	val: 0.382794	test: 0.426715
+
+Epoch: 51
+Loss: 0.09126546765532256
+ROC train: 0.942088	val: 0.799416	test: 0.825882
+PRC train: 0.616973	val: 0.421630	test: 0.421921
+
+Epoch: 52
+Loss: 0.09066848079894874
+ROC train: 0.938906	val: 0.800695	test: 0.818178
+PRC train: 0.606297	val: 0.430814	test: 0.445380
+
+Epoch: 53
+Loss: 0.08964021745073177
+ROC train: 0.938344	val: 0.797165	test: 0.823830
+PRC train: 0.611247	val: 0.421935	test: 0.426362
+
+Epoch: 54
+Loss: 0.08828481532960301
+ROC train: 0.945237	val: 0.796474	test: 0.816996
+PRC train: 0.623541	val: 0.426338	test: 0.420804
+
+Epoch: 55
+Loss: 0.08923291381042794
+ROC train: 0.949488	val: 0.789977	test: 0.832171
+PRC train: 0.634183	val: 0.409034	test: 0.430621
+
+Epoch: 56
+Loss: 0.08735697476640736
+ROC train: 0.941961	val: 0.794140	test: 0.814233
+PRC train: 0.634937	val: 0.417833	test: 0.423821
+
+Epoch: 57
+Loss: 0.08723873381619927
+ROC train: 0.948562	val: 0.794615	test: 0.818850
+PRC train: 0.638995	val: 0.426745	test: 0.433588
+
+Epoch: 58
+Loss: 0.08773900678889034
+ROC train: 0.947483	val: 0.795829	test: 0.827710
+PRC train: 0.640027	val: 0.418082	test: 0.445997
+
+Epoch: 59
+Loss: 0.08726581866353354
+ROC train: 0.953529	val: 0.799225	test: 0.812881
+PRC train: 0.655826	val: 0.424026	test: 0.431084
+
+Epoch: 60
+Loss: 0.08526730582573748
+ROC train: 0.951885	val: 0.793716	test: 0.819140
+PRC train: 0.652093	val: 0.395489	test: 0.397761
+
+Epoch: 61
+Loss: 0.08650382475871604
+ROC train: 0.956011	val: 0.803114	test: 0.820060
+PRC train: 0.662271	val: 0.431976	test: 0.414027
+
+Epoch: 62
+Loss: 0.08660826689773711
+ROC train: 0.952037	val: 0.793997	test: 0.827630
+PRC train: 0.643530	val: 0.426960	test: 0.431499
+
+Epoch: 63
+Loss: 0.08600751933588897
+ROC train: 0.951710	val: 0.797457	test: 0.815698
+PRC train: 0.654640	val: 0.426405	test: 0.403094
+
+Epoch: 64
+Loss: 0.08444912042023558
+ROC train: 0.956872	val: 0.794875	test: 0.824598
+PRC train: 0.666416	val: 0.418625	test: 0.427412
+
+Epoch: 65
+Loss: 0.08421399639034774
+ROC train: 0.958655	val: 0.809487	test: 0.823102
+PRC train: 0.682620	val: 0.426401	test: 0.424609
+
+Epoch: 66
+Loss: 0.08454519888414995
+ROC train: 0.953418	val: 0.794093	test: 0.828305
+PRC train: 0.663646	val: 0.404904	test: 0.417853
+
+Epoch: 67
+Loss: 0.08347977414831054
+ROC train: 0.951863	val: 0.797053	test: 0.825934
+PRC train: 0.646743	val: 0.396060	test: 0.407568
+
+Epoch: 68
+Loss: 0.08094938723664512
+ROC train: 0.954947	val: 0.797993	test: 0.813089
+PRC train: 0.652828	val: 0.402679	test: 0.406989
+
+Epoch: 69
+Loss: 0.08317825407077518
+ROC train: 0.961529	val: 0.798900	test: 0.823628
+PRC train: 0.675275	val: 0.420351	test: 0.425201
+
+Epoch: 70
+Loss: 0.08181978540167573
+ROC train: 0.957814	val: 0.794657	test: 0.808542
+PRC train: 0.676176	val: 0.410771	test: 0.414375
+
+Epoch: 71
+Loss: 0.08423477664716651
+ROC train: 0.961129	val: 0.796845	test: 0.821872
+PRC train: 0.679785	val: 0.448874	test: 0.436002
+
+Epoch: 72
+Loss: 0.08208443092701037
+ROC train: 0.964847	val: 0.801716	test: 0.819361
+PRC train: 0.702368	val: 0.405028	test: 0.414739
+
+Epoch: 73
+Loss: 0.07978410760320445
+ROC train: 0.964592	val: 0.801706	test: 0.819173
+PRC train: 0.702973	val: 0.403662	test: 0.417166
+
+Epoch: 74
+Loss: 0.08206604543547288
+ROC train: 0.964759	val: 0.800347	test: 0.814628
+PRC train: 0.696723	val: 0.418086	test: 0.414527
+
+Epoch: 75
+Loss: 0.08041356133492585
+ROC train: 0.957675	val: 0.791850	test: 0.824753
+PRC train: 0.680821	val: 0.410699	test: 0.397224
+
+Epoch: 76
+Loss: 0.07928956655548137
+ROC train: 0.965314	val: 0.792801	test: 0.826705
+PRC train: 0.691735	val: 0.428785	test: 0.426743
+
+Epoch: 77
+Loss: 0.07846460861195627
+ROC train: 0.962771	val: 0.786207	test: 0.834053
+PRC train: 0.704050	val: 0.408294	test: 0.424564
+
+Epoch: 78
+Loss: 0.08022774101977999
+ROC train: 0.965681	val: 0.790701	test: 0.823018
+PRC train: 0.706590	val: 0.402015	test: 0.412365
+
+Epoch: 79
+Loss: 0.07940587775328294
+ROC train: 0.967102	val: 0.794796	test: 0.820205
+PRC train: 0.705329	val: 0.429284	test: 0.430550
+
+Epoch: 80
+Loss: 0.07814104453103833
+ROC train: 0.965715	val: 0.806215	test: 0.826299
+PRC train: 0.715026	val: 0.426147	test: 0.413978
+
+Epoch: 81
+Loss: 0.07797177532267384
+ROC train: 0.970611	val: 0.795644	test: 0.825288
+PRC train: 0.715730	val: 0.408235	test: 0.400681
+
+Epoch: 82
+Loss: 0.07936616171618081
+ROC train: 0.971744	val: 0.789167	test: 0.821564
+PRC train: 0.729843	val: 0.421455	test: 0.422855
+
+Epoch: 83
+Loss: 0.07715412796661371
+ROC train: 0.972087	val: 0.800400	test: 0.821934
+PRC train: 0.727841	val: 0.414099	test: 0.410293
+
+Epoch: 84
+Loss: 0.07707589427254578
+ROC train: 0.972582	val: 0.793896	test: 0.818543
+PRC train: 0.738538	val: 0.409360	test: 0.417501
+
+Epoch: 85
+Loss: 0.07755852978472824
+ROC train: 0.972562	val: 0.797943	test: 0.824950
+PRC train: 0.733678	val: 0.433150	test: 0.417101
+
+Epoch: 86
+Loss: 0.0777087357512396
+ROC train: 0.971074	val: 0.796476	test: 0.820411
+PRC train: 0.733145	val: 0.410048	test: 0.398640
+
+Epoch: 87
+Loss: 0.07398613567473278
+ROC train: 0.975306	val: 0.800965	test: 0.820697
+PRC train: 0.747475	val: 0.433576	test: 0.408823
+
+Epoch: 88
+Loss: 0.0732622489367839
+ROC train: 0.974727	val: 0.800674	test: 0.817953
+PRC train: 0.749973	val: 0.433690	test: 0.398762
+
+Epoch: 89
+Loss: 0.0747311906157944
+ROC train: 0.976006	val: 0.799917	test: 0.825280
+PRC train: 0.750581	val: 0.407741	test: 0.393186
+
+Epoch: 90
+Loss: 0.07290615997789193
+ROC train: 0.976299	val: 0.799712	test: 0.812493
+PRC train: 0.757814	val: 0.408591	test: 0.386400
+
+Epoch: 91
+Loss: 0.07418145102129617
+ROC train: 0.971378	val: 0.790885	test: 0.810118
+PRC train: 0.722422	val: 0.416528	test: 0.384439
+
+Epoch: 92
+Loss: 0.07420372278656356
+ROC train: 0.976991	val: 0.795693	test: 0.825608
+PRC train: 0.756967	val: 0.418082	test: 0.395760
+
+Epoch: 93
+Loss: 0.07371151145821024
+ROC train: 0.978653	val: 0.789749	test: 0.828012
+PRC train: 0.756032	val: 0.412197	test: 0.405701
+
+ROC train: 0.916963	val: 0.797128	test: 0.824743
+PRC train: 0.556086	val: 0.425032	test: 0.439113
+
+Epoch: 34
+Loss: 0.09831978450268677
+ROC train: 0.918655	val: 0.811352	test: 0.833803
+PRC train: 0.543158	val: 0.430650	test: 0.452702
+
+Epoch: 35
+Loss: 0.09738324843093299
+ROC train: 0.905039	val: 0.808079	test: 0.824985
+PRC train: 0.519274	val: 0.429855	test: 0.436977
+
+Epoch: 36
+Loss: 0.09680771688630616
+ROC train: 0.916745	val: 0.802131	test: 0.822084
+PRC train: 0.561792	val: 0.414998	test: 0.430778
+
+Epoch: 37
+Loss: 0.09689402541359261
+ROC train: 0.918042	val: 0.800666	test: 0.817096
+PRC train: 0.565171	val: 0.450884	test: 0.431710
+
+Epoch: 38
+Loss: 0.0951340865758586
+ROC train: 0.927028	val: 0.819987	test: 0.823502
+PRC train: 0.574223	val: 0.433067	test: 0.439891
+
+Epoch: 39
+Loss: 0.09523081161177835
+ROC train: 0.930425	val: 0.814425	test: 0.844324
+PRC train: 0.575484	val: 0.422138	test: 0.435146
+
+Epoch: 40
+Loss: 0.09583068674817691
+ROC train: 0.926447	val: 0.815178	test: 0.825359
+PRC train: 0.571834	val: 0.447139	test: 0.459978
+
+Epoch: 41
+Loss: 0.09434504420958373
+ROC train: 0.926881	val: 0.802846	test: 0.827344
+PRC train: 0.577303	val: 0.443796	test: 0.454248
+
+Epoch: 42
+Loss: 0.09291879963604448
+ROC train: 0.930578	val: 0.814300	test: 0.824300
+PRC train: 0.579815	val: 0.401751	test: 0.430988
+
+Epoch: 43
+Loss: 0.09223234186570983
+ROC train: 0.926641	val: 0.813450	test: 0.824198
+PRC train: 0.565474	val: 0.443245	test: 0.417678
+
+Epoch: 44
+Loss: 0.09169612759090866
+ROC train: 0.934588	val: 0.820782	test: 0.834433
+PRC train: 0.593863	val: 0.441846	test: 0.455234
+
+Epoch: 45
+Loss: 0.09224222715505614
+ROC train: 0.939124	val: 0.797762	test: 0.811516
+PRC train: 0.596919	val: 0.403477	test: 0.417698
+
+Epoch: 46
+Loss: 0.09108740571051471
+ROC train: 0.936650	val: 0.808118	test: 0.823569
+PRC train: 0.600757	val: 0.437465	test: 0.436180
+
+Epoch: 47
+Loss: 0.09214551148040494
+ROC train: 0.942131	val: 0.804380	test: 0.830972
+PRC train: 0.612408	val: 0.434701	test: 0.440885
+
+Epoch: 48
+Loss: 0.0907500270248029
+ROC train: 0.941290	val: 0.801613	test: 0.827629
+PRC train: 0.607237	val: 0.414893	test: 0.418349
+
+Epoch: 49
+Loss: 0.09015217846607043
+ROC train: 0.943202	val: 0.809865	test: 0.835054
+PRC train: 0.604685	val: 0.422628	test: 0.449347
+
+Epoch: 50
+Loss: 0.08924200053336787
+ROC train: 0.945430	val: 0.823400	test: 0.834485
+PRC train: 0.623621	val: 0.443347	test: 0.438583
+
+Epoch: 51
+Loss: 0.08872398740416404
+ROC train: 0.946705	val: 0.811628	test: 0.830328
+PRC train: 0.619469	val: 0.425552	test: 0.423421
+
+Epoch: 52
+Loss: 0.08926244108210986
+ROC train: 0.950198	val: 0.819523	test: 0.833748
+PRC train: 0.640798	val: 0.443518	test: 0.443651
+
+Epoch: 53
+Loss: 0.0887825106087966
+ROC train: 0.940479	val: 0.799924	test: 0.824701
+PRC train: 0.610188	val: 0.427512	test: 0.407165
+
+Epoch: 54
+Loss: 0.0885781467304131
+ROC train: 0.948773	val: 0.809183	test: 0.825603
+PRC train: 0.633606	val: 0.443149	test: 0.420692
+
+Epoch: 55
+Loss: 0.08785998608236233
+ROC train: 0.949250	val: 0.811854	test: 0.819828
+PRC train: 0.624360	val: 0.426018	test: 0.427913
+
+Epoch: 56
+Loss: 0.08615025260996785
+ROC train: 0.956330	val: 0.800316	test: 0.827165
+PRC train: 0.658250	val: 0.438239	test: 0.430768
+
+Epoch: 57
+Loss: 0.08641529035603844
+ROC train: 0.941591	val: 0.808192	test: 0.815865
+PRC train: 0.596442	val: 0.375032	test: 0.398801
+
+Epoch: 58
+Loss: 0.08632978862508683
+ROC train: 0.945753	val: 0.807566	test: 0.820842
+PRC train: 0.625641	val: 0.418944	test: 0.426472
+
+Epoch: 59
+Loss: 0.08730136093859094
+ROC train: 0.953654	val: 0.795443	test: 0.819752
+PRC train: 0.646428	val: 0.425195	test: 0.422397
+
+Epoch: 60
+Loss: 0.08488665610614776
+ROC train: 0.950446	val: 0.800116	test: 0.811418
+PRC train: 0.650422	val: 0.444231	test: 0.413560
+
+Epoch: 61
+Loss: 0.08574164792628146
+ROC train: 0.953241	val: 0.819556	test: 0.829304
+PRC train: 0.630121	val: 0.416523	test: 0.412871
+
+Epoch: 62
+Loss: 0.08444593056183736
+ROC train: 0.954447	val: 0.807325	test: 0.814370
+PRC train: 0.663133	val: 0.440971	test: 0.417039
+
+Epoch: 63
+Loss: 0.08245648582657665
+ROC train: 0.953214	val: 0.798554	test: 0.807268
+PRC train: 0.643390	val: 0.419041	test: 0.392578
+
+Epoch: 64
+Loss: 0.08259378317623958
+ROC train: 0.960907	val: 0.802321	test: 0.811995
+PRC train: 0.673009	val: 0.425691	test: 0.420328
+
+Epoch: 65
+Loss: 0.08191149770700877
+ROC train: 0.958633	val: 0.808573	test: 0.813641
+PRC train: 0.660314	val: 0.413685	test: 0.420247
+
+Epoch: 66
+Loss: 0.08235693911172837
+ROC train: 0.962879	val: 0.808447	test: 0.810470
+PRC train: 0.682466	val: 0.425404	test: 0.411708
+
+Epoch: 67
+Loss: 0.08317485043545454
+ROC train: 0.965476	val: 0.809027	test: 0.816706
+PRC train: 0.692231	val: 0.427907	test: 0.428060
+
+Epoch: 68
+Loss: 0.08172487358491307
+ROC train: 0.963156	val: 0.807318	test: 0.821290
+PRC train: 0.685647	val: 0.416710	test: 0.420412
+
+Epoch: 69
+Loss: 0.08169657268260833
+ROC train: 0.966330	val: 0.809254	test: 0.816934
+PRC train: 0.691193	val: 0.424466	test: 0.411598
+
+Epoch: 70
+Loss: 0.08007334791691624
+ROC train: 0.965809	val: 0.816279	test: 0.824637
+PRC train: 0.698210	val: 0.442726	test: 0.431995
+
+Epoch: 71
+Loss: 0.07995111670156842
+ROC train: 0.963818	val: 0.803511	test: 0.804964
+PRC train: 0.678300	val: 0.409779	test: 0.385496
+
+Epoch: 72
+Loss: 0.08023683458573803
+ROC train: 0.964458	val: 0.809820	test: 0.803245
+PRC train: 0.692186	val: 0.431118	test: 0.415394
+
+Epoch: 73
+Loss: 0.07752744616784975
+ROC train: 0.962320	val: 0.791386	test: 0.817599
+PRC train: 0.693325	val: 0.434822	test: 0.399604
+
+Epoch: 74
+Loss: 0.07875271641611857
+ROC train: 0.968813	val: 0.806884	test: 0.814095
+PRC train: 0.701094	val: 0.423421	test: 0.408707
+
+Epoch: 75
+Loss: 0.07767975564011224
+ROC train: 0.962316	val: 0.805733	test: 0.823339
+PRC train: 0.676361	val: 0.412402	test: 0.416963
+
+Epoch: 76
+Loss: 0.07859924822805152
+ROC train: 0.969686	val: 0.806320	test: 0.812298
+PRC train: 0.708434	val: 0.410530	test: 0.416353
+
+Epoch: 77
+Loss: 0.07843148800683328
+ROC train: 0.970256	val: 0.799175	test: 0.826227
+PRC train: 0.715606	val: 0.413076	test: 0.417098
+
+Epoch: 78
+Loss: 0.07740492130652238
+ROC train: 0.960248	val: 0.799666	test: 0.800120
+PRC train: 0.673584	val: 0.405933	test: 0.381395
+
+Epoch: 79
+Loss: 0.07696859878829909
+ROC train: 0.966184	val: 0.792399	test: 0.817211
+PRC train: 0.683947	val: 0.426917	test: 0.414364
+
+Epoch: 80
+Loss: 0.07717923124573822
+ROC train: 0.970750	val: 0.794030	test: 0.809131
+PRC train: 0.735255	val: 0.407596	test: 0.403988
+
+Epoch: 81
+Loss: 0.07476786556888382
+ROC train: 0.974832	val: 0.804896	test: 0.827021
+PRC train: 0.733807	val: 0.428474	test: 0.432262
+
+Epoch: 82
+Loss: 0.07471666337791691
+ROC train: 0.971514	val: 0.803978	test: 0.801806
+PRC train: 0.723138	val: 0.422564	test: 0.399317
+
+Epoch: 83
+Loss: 0.07289825680492797
+ROC train: 0.973848	val: 0.795738	test: 0.803760
+PRC train: 0.728273	val: 0.426950	test: 0.413748
+
+Epoch: 84
+Loss: 0.07416189265397913
+ROC train: 0.973791	val: 0.808641	test: 0.820443
+PRC train: 0.743093	val: 0.429236	test: 0.419531
+
+Epoch: 85
+Loss: 0.07480556628277012
+ROC train: 0.977059	val: 0.810442	test: 0.810833
+PRC train: 0.741292	val: 0.424895	test: 0.408221
+
+Epoch: 86
+Loss: 0.07438520106777202
+ROC train: 0.971603	val: 0.796027	test: 0.798224
+PRC train: 0.724434	val: 0.444643	test: 0.388248
+
+Epoch: 87
+Loss: 0.07395931451560485
+ROC train: 0.977096	val: 0.796218	test: 0.822760
+PRC train: 0.747549	val: 0.438613	test: 0.411322
+
+Epoch: 88
+Loss: 0.07375725523662188
+ROC train: 0.978369	val: 0.801681	test: 0.805717
+PRC train: 0.753136	val: 0.408247	test: 0.397539
+
+Epoch: 89
+Loss: 0.07274166167597616
+ROC train: 0.977472	val: 0.802928	test: 0.799787
+PRC train: 0.751834	val: 0.420008	test: 0.400863
+
+Epoch: 90
+Loss: 0.07268098943516006
+ROC train: 0.977380	val: 0.804620	test: 0.807792
+PRC train: 0.761839	val: 0.426837	test: 0.404264
+
+Epoch: 91
+Loss: 0.07167484685351788
+ROC train: 0.978615	val: 0.800331	test: 0.815164
+PRC train: 0.762434	val: 0.398699	test: 0.394849
+
+Epoch: 92
+Loss: 0.07140600468012676
+ROC train: 0.978924	val: 0.796180	test: 0.815387
+PRC train: 0.763280	val: 0.408422	test: 0.389189
+
+Epoch: 93
+Loss: 0.07296017448667755
+ROC train: 0.976802	val: 0.811397	test: 0.809547
+PRC train: 0.755437	val: 0.423556	test: 0.409625
+ROC train: 0.908254	val: 0.798484	test: 0.834865
+PRC train: 0.537756	val: 0.423301	test: 0.437726
+
+Epoch: 34
+Loss: 0.09749709573537026
+ROC train: 0.909214	val: 0.806810	test: 0.830795
+PRC train: 0.534745	val: 0.403488	test: 0.415261
+
+Epoch: 35
+Loss: 0.09961352761510359
+ROC train: 0.912833	val: 0.806822	test: 0.838253
+PRC train: 0.548854	val: 0.424274	test: 0.434918
+
+Epoch: 36
+Loss: 0.0966370026031713
+ROC train: 0.916043	val: 0.801279	test: 0.832693
+PRC train: 0.545149	val: 0.401438	test: 0.434534
+
+Epoch: 37
+Loss: 0.09545940879982777
+ROC train: 0.923453	val: 0.813660	test: 0.826335
+PRC train: 0.572123	val: 0.442723	test: 0.441228
+
+Epoch: 38
+Loss: 0.09568063702405612
+ROC train: 0.905178	val: 0.798781	test: 0.824927
+PRC train: 0.511536	val: 0.379051	test: 0.409317
+
+Epoch: 39
+Loss: 0.09644198288416368
+ROC train: 0.926048	val: 0.809198	test: 0.826202
+PRC train: 0.579390	val: 0.433893	test: 0.438927
+
+Epoch: 40
+Loss: 0.09497678410696886
+ROC train: 0.921559	val: 0.797352	test: 0.834123
+PRC train: 0.552465	val: 0.412086	test: 0.413140
+
+Epoch: 41
+Loss: 0.09441475220389729
+ROC train: 0.922764	val: 0.810405	test: 0.828992
+PRC train: 0.571140	val: 0.429639	test: 0.452271
+
+Epoch: 42
+Loss: 0.09457158908616396
+ROC train: 0.927798	val: 0.796743	test: 0.828445
+PRC train: 0.586007	val: 0.441295	test: 0.451067
+
+Epoch: 43
+Loss: 0.09492672451496711
+ROC train: 0.926124	val: 0.802285	test: 0.835293
+PRC train: 0.589755	val: 0.433019	test: 0.450500
+
+Epoch: 44
+Loss: 0.09321784744125643
+ROC train: 0.928995	val: 0.810974	test: 0.842216
+PRC train: 0.576207	val: 0.445301	test: 0.446242
+
+Epoch: 45
+Loss: 0.09347869592694179
+ROC train: 0.932369	val: 0.795368	test: 0.835428
+PRC train: 0.590490	val: 0.418971	test: 0.421902
+
+Epoch: 46
+Loss: 0.09196301660008481
+ROC train: 0.931065	val: 0.804585	test: 0.839520
+PRC train: 0.592823	val: 0.430783	test: 0.449149
+
+Epoch: 47
+Loss: 0.09088006105071823
+ROC train: 0.937035	val: 0.805871	test: 0.836314
+PRC train: 0.614330	val: 0.443553	test: 0.464402
+
+Epoch: 48
+Loss: 0.09152284604451912
+ROC train: 0.944128	val: 0.799942	test: 0.828250
+PRC train: 0.625447	val: 0.430632	test: 0.451518
+
+Epoch: 49
+Loss: 0.09075330678714925
+ROC train: 0.941025	val: 0.798982	test: 0.836722
+PRC train: 0.606987	val: 0.401777	test: 0.439711
+
+Epoch: 50
+Loss: 0.09144374803022619
+ROC train: 0.938759	val: 0.806459	test: 0.832533
+PRC train: 0.606277	val: 0.420176	test: 0.424412
+
+Epoch: 51
+Loss: 0.08989099514245319
+ROC train: 0.940459	val: 0.808563	test: 0.834300
+PRC train: 0.614356	val: 0.446769	test: 0.454970
+
+Epoch: 52
+Loss: 0.08954643210069818
+ROC train: 0.940880	val: 0.790742	test: 0.826246
+PRC train: 0.624232	val: 0.424956	test: 0.447044
+
+Epoch: 53
+Loss: 0.08949161939262723
+ROC train: 0.943227	val: 0.799045	test: 0.820981
+PRC train: 0.632812	val: 0.457311	test: 0.456432
+
+Epoch: 54
+Loss: 0.08771829549487305
+ROC train: 0.946092	val: 0.797901	test: 0.823383
+PRC train: 0.631654	val: 0.405624	test: 0.440137
+
+Epoch: 55
+Loss: 0.08713499581367067
+ROC train: 0.950855	val: 0.796793	test: 0.833925
+PRC train: 0.638131	val: 0.434189	test: 0.452769
+
+Epoch: 56
+Loss: 0.08849330089836079
+ROC train: 0.946818	val: 0.791120	test: 0.821869
+PRC train: 0.635046	val: 0.404448	test: 0.424413
+
+Epoch: 57
+Loss: 0.08815659875220869
+ROC train: 0.944550	val: 0.793992	test: 0.820112
+PRC train: 0.644010	val: 0.419177	test: 0.434234
+
+Epoch: 58
+Loss: 0.08677754246897385
+ROC train: 0.946746	val: 0.797078	test: 0.827541
+PRC train: 0.640792	val: 0.419181	test: 0.453251
+
+Epoch: 59
+Loss: 0.08568321844432979
+ROC train: 0.948051	val: 0.789170	test: 0.816150
+PRC train: 0.624569	val: 0.410645	test: 0.409856
+
+Epoch: 60
+Loss: 0.08633028791199147
+ROC train: 0.954295	val: 0.797674	test: 0.828325
+PRC train: 0.643135	val: 0.418362	test: 0.443009
+
+Epoch: 61
+Loss: 0.08607494813188198
+ROC train: 0.951588	val: 0.796920	test: 0.828921
+PRC train: 0.653844	val: 0.419419	test: 0.460900
+
+Epoch: 62
+Loss: 0.08515706889886146
+ROC train: 0.950198	val: 0.791757	test: 0.823296
+PRC train: 0.644472	val: 0.393760	test: 0.434515
+
+Epoch: 63
+Loss: 0.08432038539019983
+ROC train: 0.954950	val: 0.798539	test: 0.823686
+PRC train: 0.656580	val: 0.426452	test: 0.434066
+
+Epoch: 64
+Loss: 0.08494609817676055
+ROC train: 0.958324	val: 0.807596	test: 0.831396
+PRC train: 0.669945	val: 0.436977	test: 0.438669
+
+Epoch: 65
+Loss: 0.082707946586222
+ROC train: 0.954743	val: 0.796281	test: 0.823544
+PRC train: 0.668175	val: 0.417295	test: 0.436601
+
+Epoch: 66
+Loss: 0.0829373995788706
+ROC train: 0.956612	val: 0.785993	test: 0.820497
+PRC train: 0.673178	val: 0.413334	test: 0.444118
+
+Epoch: 67
+Loss: 0.08348417519440275
+ROC train: 0.956500	val: 0.798931	test: 0.817417
+PRC train: 0.675496	val: 0.441113	test: 0.441194
+
+Epoch: 68
+Loss: 0.08250446567537266
+ROC train: 0.965287	val: 0.797556	test: 0.827980
+PRC train: 0.699180	val: 0.441900	test: 0.446558
+
+Epoch: 69
+Loss: 0.0827748725370854
+ROC train: 0.961603	val: 0.795155	test: 0.820360
+PRC train: 0.677955	val: 0.424215	test: 0.447846
+
+Epoch: 70
+Loss: 0.08082829448021654
+ROC train: 0.962799	val: 0.800063	test: 0.821843
+PRC train: 0.689145	val: 0.402285	test: 0.430666
+
+Epoch: 71
+Loss: 0.0808768431360182
+ROC train: 0.955271	val: 0.797273	test: 0.818582
+PRC train: 0.672786	val: 0.405960	test: 0.423708
+
+Epoch: 72
+Loss: 0.08228155393356483
+ROC train: 0.954875	val: 0.796680	test: 0.810939
+PRC train: 0.659077	val: 0.438726	test: 0.432734
+
+Epoch: 73
+Loss: 0.08288357847210757
+ROC train: 0.963455	val: 0.799898	test: 0.822269
+PRC train: 0.697613	val: 0.441184	test: 0.424854
+
+Epoch: 74
+Loss: 0.0798230894290538
+ROC train: 0.964439	val: 0.795760	test: 0.814266
+PRC train: 0.697054	val: 0.409577	test: 0.407532
+
+Epoch: 75
+Loss: 0.08048835417789933
+ROC train: 0.964900	val: 0.785788	test: 0.824958
+PRC train: 0.703233	val: 0.406915	test: 0.437525
+
+Epoch: 76
+Loss: 0.07767907809970277
+ROC train: 0.970428	val: 0.794821	test: 0.823874
+PRC train: 0.718418	val: 0.411576	test: 0.422332
+
+Epoch: 77
+Loss: 0.07989517238949521
+ROC train: 0.969684	val: 0.796766	test: 0.814501
+PRC train: 0.712362	val: 0.425399	test: 0.427659
+
+Epoch: 78
+Loss: 0.07911309371789094
+ROC train: 0.965437	val: 0.797328	test: 0.816586
+PRC train: 0.697436	val: 0.415802	test: 0.426713
+
+Epoch: 79
+Loss: 0.07931156421227004
+ROC train: 0.965776	val: 0.789058	test: 0.809339
+PRC train: 0.700926	val: 0.412647	test: 0.425890
+
+Epoch: 80
+Loss: 0.07809127474388514
+ROC train: 0.968775	val: 0.795811	test: 0.822951
+PRC train: 0.715661	val: 0.419803	test: 0.438216
+
+Epoch: 81
+Loss: 0.0759566684436387
+ROC train: 0.973961	val: 0.800430	test: 0.819318
+PRC train: 0.735485	val: 0.419682	test: 0.433236
+
+Epoch: 82
+Loss: 0.07723947596103037
+ROC train: 0.968313	val: 0.796924	test: 0.823302
+PRC train: 0.721207	val: 0.412051	test: 0.417120
+
+Epoch: 83
+Loss: 0.07760216257446081
+ROC train: 0.962271	val: 0.797468	test: 0.811960
+PRC train: 0.693221	val: 0.429212	test: 0.409260
+
+Epoch: 84
+Loss: 0.07428868983951674
+ROC train: 0.975884	val: 0.789985	test: 0.812846
+PRC train: 0.748817	val: 0.425546	test: 0.426920
+
+Epoch: 85
+Loss: 0.07601659163229608
+ROC train: 0.974319	val: 0.795471	test: 0.812505
+PRC train: 0.737923	val: 0.429571	test: 0.428579
+
+Epoch: 86
+Loss: 0.07607522283951688
+ROC train: 0.968018	val: 0.796138	test: 0.809178
+PRC train: 0.707618	val: 0.418584	test: 0.394275
+
+Epoch: 87
+Loss: 0.07559934258861792
+ROC train: 0.975577	val: 0.800167	test: 0.819741
+PRC train: 0.743958	val: 0.425615	test: 0.412743
+
+Epoch: 88
+Loss: 0.07409072143356614
+ROC train: 0.973335	val: 0.792749	test: 0.815230
+PRC train: 0.743885	val: 0.442656	test: 0.420371
+
+Epoch: 89
+Loss: 0.07361606161394223
+ROC train: 0.975567	val: 0.777617	test: 0.819107
+PRC train: 0.741137	val: 0.408446	test: 0.436060
+
+Epoch: 90
+Loss: 0.07469373435016614
+ROC train: 0.978881	val: 0.788509	test: 0.813885
+PRC train: 0.767685	val: 0.429443	test: 0.407302
+
+Epoch: 91
+Loss: 0.07472631828887161
+ROC train: 0.976703	val: 0.784218	test: 0.817634
+PRC train: 0.755356	val: 0.421849	test: 0.416693
+
+Epoch: 92
+Loss: 0.07286686822594321
+ROC train: 0.973702	val: 0.798529	test: 0.813820
+PRC train: 0.758348	val: 0.427130	test: 0.416262
+
+Epoch: 93
+Loss: 0.07218374342694482
+ROC train: 0.975439	val: 0.788337	test: 0.807552
+PRC train: 0.748924	val: 0.417480	test: 0.418642
+
+Epoch: 94
+Loss: 0.0714693558832929
+ROC train: 0.911851	val: 0.803480	test: 0.841160
+PRC train: 0.541197	val: 0.398948	test: 0.488214
+
+Epoch: 34
+Loss: 0.09990280794824813
+ROC train: 0.912379	val: 0.775267	test: 0.845583
+PRC train: 0.542384	val: 0.388212	test: 0.476502
+
+Epoch: 35
+Loss: 0.09997229499588743
+ROC train: 0.916880	val: 0.802500	test: 0.839759
+PRC train: 0.559761	val: 0.405990	test: 0.498191
+
+Epoch: 36
+Loss: 0.09718108494383029
+ROC train: 0.918197	val: 0.798591	test: 0.846982
+PRC train: 0.570966	val: 0.399388	test: 0.491148
+
+Epoch: 37
+Loss: 0.0979484671768162
+ROC train: 0.901556	val: 0.795055	test: 0.813116
+PRC train: 0.509317	val: 0.405271	test: 0.465831
+
+Epoch: 38
+Loss: 0.09700304288371102
+ROC train: 0.926851	val: 0.802284	test: 0.859759
+PRC train: 0.569714	val: 0.401860	test: 0.499711
+
+Epoch: 39
+Loss: 0.09570384035199314
+ROC train: 0.930825	val: 0.798124	test: 0.857627
+PRC train: 0.581472	val: 0.421603	test: 0.508678
+
+Epoch: 40
+Loss: 0.09582352257276229
+ROC train: 0.926719	val: 0.828581	test: 0.840170
+PRC train: 0.572574	val: 0.420474	test: 0.505263
+
+Epoch: 41
+Loss: 0.09511144592469967
+ROC train: 0.934616	val: 0.801107	test: 0.847131
+PRC train: 0.582680	val: 0.395173	test: 0.484780
+
+Epoch: 42
+Loss: 0.09383647549366624
+ROC train: 0.918918	val: 0.808171	test: 0.834979
+PRC train: 0.553461	val: 0.397999	test: 0.457759
+
+Epoch: 43
+Loss: 0.09467608977493924
+ROC train: 0.924246	val: 0.797726	test: 0.837516
+PRC train: 0.562450	val: 0.389034	test: 0.458429
+
+Epoch: 44
+Loss: 0.09526081348187797
+ROC train: 0.933393	val: 0.791975	test: 0.848527
+PRC train: 0.599710	val: 0.410053	test: 0.497719
+
+Epoch: 45
+Loss: 0.09333408054554446
+ROC train: 0.938466	val: 0.790661	test: 0.857622
+PRC train: 0.607404	val: 0.404444	test: 0.501692
+
+Epoch: 46
+Loss: 0.09247626215858919
+ROC train: 0.932144	val: 0.814114	test: 0.872375
+PRC train: 0.601294	val: 0.418822	test: 0.492853
+
+Epoch: 47
+Loss: 0.09256133903725484
+ROC train: 0.937430	val: 0.797354	test: 0.843376
+PRC train: 0.611066	val: 0.399527	test: 0.493608
+
+Epoch: 48
+Loss: 0.09296593488360141
+ROC train: 0.938809	val: 0.801497	test: 0.844085
+PRC train: 0.610635	val: 0.403314	test: 0.504015
+
+Epoch: 49
+Loss: 0.09255580709277912
+ROC train: 0.938056	val: 0.796768	test: 0.853930
+PRC train: 0.589112	val: 0.371823	test: 0.492345
+
+Epoch: 50
+Loss: 0.09143916857876408
+ROC train: 0.939329	val: 0.807395	test: 0.844752
+PRC train: 0.615169	val: 0.403573	test: 0.503574
+
+Epoch: 51
+Loss: 0.08982570711556873
+ROC train: 0.945495	val: 0.806765	test: 0.842791
+PRC train: 0.634161	val: 0.391773	test: 0.472891
+
+Epoch: 52
+Loss: 0.09198767074966444
+ROC train: 0.943775	val: 0.797116	test: 0.847780
+PRC train: 0.627386	val: 0.404267	test: 0.479744
+
+Epoch: 53
+Loss: 0.08930542295999641
+ROC train: 0.938627	val: 0.783446	test: 0.844180
+PRC train: 0.615284	val: 0.394471	test: 0.489641
+
+Epoch: 54
+Loss: 0.08887575742022949
+ROC train: 0.946349	val: 0.794368	test: 0.849245
+PRC train: 0.635343	val: 0.400359	test: 0.485887
+
+Epoch: 55
+Loss: 0.0895304441906736
+ROC train: 0.949146	val: 0.793334	test: 0.839019
+PRC train: 0.644685	val: 0.412126	test: 0.464463
+
+Epoch: 56
+Loss: 0.08800871097918384
+ROC train: 0.949394	val: 0.806344	test: 0.849500
+PRC train: 0.642029	val: 0.411263	test: 0.472237
+
+Epoch: 57
+Loss: 0.08680866950934663
+ROC train: 0.944877	val: 0.793603	test: 0.846046
+PRC train: 0.631890	val: 0.420247	test: 0.460971
+
+Epoch: 58
+Loss: 0.08816652744027043
+ROC train: 0.946515	val: 0.807228	test: 0.839319
+PRC train: 0.653246	val: 0.422419	test: 0.478260
+
+Epoch: 59
+Loss: 0.08644880317563465
+ROC train: 0.953867	val: 0.783079	test: 0.858686
+PRC train: 0.657837	val: 0.384342	test: 0.477932
+
+Epoch: 60
+Loss: 0.08649950224608242
+ROC train: 0.950008	val: 0.790715	test: 0.835768
+PRC train: 0.641579	val: 0.418011	test: 0.470057
+
+Epoch: 61
+Loss: 0.0861513878466409
+ROC train: 0.951492	val: 0.783449	test: 0.848618
+PRC train: 0.650595	val: 0.400904	test: 0.467293
+
+Epoch: 62
+Loss: 0.08503359733355326
+ROC train: 0.958144	val: 0.798140	test: 0.850685
+PRC train: 0.673084	val: 0.394475	test: 0.473788
+
+Epoch: 63
+Loss: 0.08534895015888853
+ROC train: 0.953861	val: 0.796604	test: 0.844783
+PRC train: 0.669669	val: 0.388110	test: 0.454996
+
+Epoch: 64
+Loss: 0.08510663186840052
+ROC train: 0.952657	val: 0.818377	test: 0.847625
+PRC train: 0.657786	val: 0.406010	test: 0.452998
+
+Epoch: 65
+Loss: 0.08569583014836152
+ROC train: 0.954562	val: 0.790053	test: 0.860472
+PRC train: 0.662224	val: 0.411647	test: 0.501595
+
+Epoch: 66
+Loss: 0.08328247056313827
+ROC train: 0.959535	val: 0.797834	test: 0.854162
+PRC train: 0.684937	val: 0.414077	test: 0.482899
+
+Epoch: 67
+Loss: 0.08335820107523637
+ROC train: 0.954913	val: 0.782390	test: 0.854103
+PRC train: 0.675369	val: 0.414979	test: 0.480016
+
+Epoch: 68
+Loss: 0.0820979964724855
+ROC train: 0.963628	val: 0.781201	test: 0.856090
+PRC train: 0.693260	val: 0.405942	test: 0.471558
+
+Epoch: 69
+Loss: 0.08209587011080846
+ROC train: 0.961369	val: 0.779883	test: 0.850976
+PRC train: 0.682555	val: 0.393218	test: 0.475188
+
+Epoch: 70
+Loss: 0.08211542835567717
+ROC train: 0.962007	val: 0.795210	test: 0.860181
+PRC train: 0.690930	val: 0.395800	test: 0.493981
+
+Epoch: 71
+Loss: 0.08171076959141176
+ROC train: 0.965671	val: 0.791633	test: 0.849529
+PRC train: 0.703625	val: 0.396444	test: 0.467790
+
+Epoch: 72
+Loss: 0.0806549540980134
+ROC train: 0.965811	val: 0.785365	test: 0.847936
+PRC train: 0.709553	val: 0.390345	test: 0.461457
+
+Epoch: 73
+Loss: 0.08054651004215453
+ROC train: 0.964081	val: 0.798013	test: 0.852261
+PRC train: 0.708985	val: 0.397343	test: 0.467230
+
+Epoch: 74
+Loss: 0.07931459085704469
+ROC train: 0.967386	val: 0.797832	test: 0.850394
+PRC train: 0.713301	val: 0.399257	test: 0.464005
+
+Epoch: 75
+Loss: 0.08028616182682848
+ROC train: 0.962089	val: 0.785520	test: 0.851220
+PRC train: 0.700219	val: 0.390422	test: 0.474629
+
+Epoch: 76
+Loss: 0.07995643563233108
+ROC train: 0.966246	val: 0.795159	test: 0.864055
+PRC train: 0.713932	val: 0.402419	test: 0.477631
+
+Epoch: 77
+Loss: 0.07818029240509686
+ROC train: 0.966782	val: 0.789288	test: 0.853662
+PRC train: 0.712138	val: 0.408078	test: 0.466087
+
+Epoch: 78
+Loss: 0.07881652585950039
+ROC train: 0.967897	val: 0.784394	test: 0.849256
+PRC train: 0.709136	val: 0.405982	test: 0.471859
+
+Epoch: 79
+Loss: 0.07828970414774819
+ROC train: 0.971470	val: 0.786684	test: 0.853891
+PRC train: 0.724244	val: 0.400488	test: 0.461250
+
+Epoch: 80
+Loss: 0.0784818762830743
+ROC train: 0.967447	val: 0.781657	test: 0.846697
+PRC train: 0.712202	val: 0.389158	test: 0.449446
+
+Epoch: 81
+Loss: 0.07835173870421785
+ROC train: 0.968983	val: 0.788296	test: 0.850296
+PRC train: 0.723917	val: 0.382986	test: 0.468471
+
+Epoch: 82
+Loss: 0.07676986341115702
+ROC train: 0.969266	val: 0.787451	test: 0.856523
+PRC train: 0.714118	val: 0.382343	test: 0.461347
+
+Epoch: 83
+Loss: 0.07668304686969779
+ROC train: 0.969378	val: 0.795060	test: 0.857738
+PRC train: 0.726859	val: 0.392008	test: 0.454357
+
+Epoch: 84
+Loss: 0.075404908782982
+ROC train: 0.969861	val: 0.792398	test: 0.857314
+PRC train: 0.727811	val: 0.393838	test: 0.457439
+
+Epoch: 85
+Loss: 0.07506024369127004
+ROC train: 0.969510	val: 0.782604	test: 0.837110
+PRC train: 0.731029	val: 0.377643	test: 0.446452
+
+Epoch: 86
+Loss: 0.07693955722252399
+ROC train: 0.974065	val: 0.805193	test: 0.853608
+PRC train: 0.744518	val: 0.400994	test: 0.464633
+
+Epoch: 87
+Loss: 0.07599846525685762
+ROC train: 0.973573	val: 0.786966	test: 0.853767
+PRC train: 0.744805	val: 0.404190	test: 0.464024
+
+Epoch: 88
+Loss: 0.0762731833649825
+ROC train: 0.975028	val: 0.776888	test: 0.848429
+PRC train: 0.751012	val: 0.386080	test: 0.443064
+
+Epoch: 89
+Loss: 0.07619366215296128
+ROC train: 0.973280	val: 0.799944	test: 0.851899
+PRC train: 0.745391	val: 0.396544	test: 0.485118
+
+Epoch: 90
+Loss: 0.07409018636499676
+ROC train: 0.974979	val: 0.770787	test: 0.860469
+PRC train: 0.753446	val: 0.378603	test: 0.468167
+
+Epoch: 91
+Loss: 0.07386413909466162
+ROC train: 0.977597	val: 0.784707	test: 0.851440
+PRC train: 0.767055	val: 0.389974	test: 0.457666
+
+Epoch: 92
+Loss: 0.07315925153292806
+ROC train: 0.972814	val: 0.770674	test: 0.841325
+PRC train: 0.747224	val: 0.378290	test: 0.450796
+
+Epoch: 93
+Loss: 0.07337273833269849
+ROC train: 0.975012	val: 0.801789	test: 0.844468
+PRC train: 0.751460	val: 0.392920	test: 0.461365
+
+Epoch: 94
+Loss: 0.07322677669124526
+ROC train: 0.909666	val: 0.803334	test: 0.835021
+PRC train: 0.565011	val: 0.422574	test: 0.516660
+
+Epoch: 34
+Loss: 0.09848381408106283
+ROC train: 0.899667	val: 0.812232	test: 0.811243
+PRC train: 0.520374	val: 0.425173	test: 0.464898
+
+Epoch: 35
+Loss: 0.0994753855859873
+ROC train: 0.900853	val: 0.792743	test: 0.825651
+PRC train: 0.553433	val: 0.418370	test: 0.512330
+
+Epoch: 36
+Loss: 0.0987162554754105
+ROC train: 0.910022	val: 0.819723	test: 0.834361
+PRC train: 0.547994	val: 0.435458	test: 0.499643
+
+Epoch: 37
+Loss: 0.09836852657311047
+ROC train: 0.912855	val: 0.810232	test: 0.847892
+PRC train: 0.559149	val: 0.421740	test: 0.510510
+
+Epoch: 38
+Loss: 0.0974014543821113
+ROC train: 0.917861	val: 0.802615	test: 0.837806
+PRC train: 0.570451	val: 0.426814	test: 0.514468
+
+Epoch: 39
+Loss: 0.09620426792508953
+ROC train: 0.924011	val: 0.796761	test: 0.846024
+PRC train: 0.589853	val: 0.423257	test: 0.519844
+
+Epoch: 40
+Loss: 0.09619959501120716
+ROC train: 0.916759	val: 0.810863	test: 0.844603
+PRC train: 0.571102	val: 0.408180	test: 0.496641
+
+Epoch: 41
+Loss: 0.09551710067099738
+ROC train: 0.925755	val: 0.804964	test: 0.819439
+PRC train: 0.576418	val: 0.411048	test: 0.483697
+
+Epoch: 42
+Loss: 0.09522125546548636
+ROC train: 0.920642	val: 0.800358	test: 0.840160
+PRC train: 0.567759	val: 0.416749	test: 0.494667
+
+Epoch: 43
+Loss: 0.09424606968118186
+ROC train: 0.924338	val: 0.807189	test: 0.842020
+PRC train: 0.574943	val: 0.399257	test: 0.506997
+
+Epoch: 44
+Loss: 0.09431249302493214
+ROC train: 0.926505	val: 0.819776	test: 0.839894
+PRC train: 0.593677	val: 0.426976	test: 0.500511
+
+Epoch: 45
+Loss: 0.09291017073555143
+ROC train: 0.926309	val: 0.813946	test: 0.828325
+PRC train: 0.578176	val: 0.418683	test: 0.431895
+
+Epoch: 46
+Loss: 0.09371791807763658
+ROC train: 0.930754	val: 0.816416	test: 0.834371
+PRC train: 0.617032	val: 0.434340	test: 0.492731
+
+Epoch: 47
+Loss: 0.09160461637475847
+ROC train: 0.927172	val: 0.822594	test: 0.841056
+PRC train: 0.595837	val: 0.414553	test: 0.466377
+
+Epoch: 48
+Loss: 0.09201207245073559
+ROC train: 0.928033	val: 0.794771	test: 0.838858
+PRC train: 0.579892	val: 0.402298	test: 0.471009
+
+Epoch: 49
+Loss: 0.09164813714423731
+ROC train: 0.942160	val: 0.798538	test: 0.846093
+PRC train: 0.630338	val: 0.407111	test: 0.498715
+
+Epoch: 50
+Loss: 0.09038698505142656
+ROC train: 0.929459	val: 0.804612	test: 0.839639
+PRC train: 0.601072	val: 0.418717	test: 0.491063
+
+Epoch: 51
+Loss: 0.09006436361682234
+ROC train: 0.945850	val: 0.794965	test: 0.843623
+PRC train: 0.637119	val: 0.419314	test: 0.489932
+
+Epoch: 52
+Loss: 0.08989569434264173
+ROC train: 0.943438	val: 0.818853	test: 0.846372
+PRC train: 0.634047	val: 0.428002	test: 0.492360
+
+Epoch: 53
+Loss: 0.08950083468857936
+ROC train: 0.941678	val: 0.811258	test: 0.852053
+PRC train: 0.631919	val: 0.419183	test: 0.499401
+
+Epoch: 54
+Loss: 0.08998142937847858
+ROC train: 0.943958	val: 0.798144	test: 0.845929
+PRC train: 0.635020	val: 0.407053	test: 0.454601
+
+Epoch: 55
+Loss: 0.0879719221820461
+ROC train: 0.943986	val: 0.822490	test: 0.862405
+PRC train: 0.634979	val: 0.420581	test: 0.469852
+
+Epoch: 56
+Loss: 0.08702733387493074
+ROC train: 0.947948	val: 0.795226	test: 0.839613
+PRC train: 0.639043	val: 0.413705	test: 0.471550
+
+Epoch: 57
+Loss: 0.08683383053674651
+ROC train: 0.953608	val: 0.801400	test: 0.848111
+PRC train: 0.648423	val: 0.402952	test: 0.464199
+
+Epoch: 58
+Loss: 0.08635435425899539
+ROC train: 0.949548	val: 0.802681	test: 0.845032
+PRC train: 0.646997	val: 0.394309	test: 0.492584
+
+Epoch: 59
+Loss: 0.086425165179512
+ROC train: 0.948682	val: 0.810627	test: 0.864423
+PRC train: 0.653337	val: 0.421563	test: 0.492437
+
+Epoch: 60
+Loss: 0.08586749115712809
+ROC train: 0.953200	val: 0.804252	test: 0.840873
+PRC train: 0.662878	val: 0.412517	test: 0.485256
+
+Epoch: 61
+Loss: 0.08473862203232256
+ROC train: 0.952766	val: 0.804404	test: 0.848348
+PRC train: 0.655028	val: 0.381399	test: 0.459466
+
+Epoch: 62
+Loss: 0.08497506887858357
+ROC train: 0.956452	val: 0.806728	test: 0.852684
+PRC train: 0.667264	val: 0.416575	test: 0.496593
+
+Epoch: 63
+Loss: 0.08516701455883059
+ROC train: 0.957817	val: 0.803213	test: 0.840314
+PRC train: 0.671618	val: 0.417606	test: 0.468366
+
+Epoch: 64
+Loss: 0.08452961985469971
+ROC train: 0.957358	val: 0.812038	test: 0.843346
+PRC train: 0.684116	val: 0.423888	test: 0.491588
+
+Epoch: 65
+Loss: 0.08584428025516079
+ROC train: 0.954707	val: 0.796234	test: 0.840439
+PRC train: 0.667480	val: 0.406563	test: 0.452904
+
+Epoch: 66
+Loss: 0.08342536403260874
+ROC train: 0.959215	val: 0.818640	test: 0.851709
+PRC train: 0.673355	val: 0.411210	test: 0.459757
+
+Epoch: 67
+Loss: 0.08225393795630087
+ROC train: 0.957793	val: 0.796877	test: 0.839007
+PRC train: 0.679576	val: 0.409326	test: 0.454640
+
+Epoch: 68
+Loss: 0.08267902474965981
+ROC train: 0.962022	val: 0.800489	test: 0.856941
+PRC train: 0.685075	val: 0.425075	test: 0.486729
+
+Epoch: 69
+Loss: 0.08029176684479393
+ROC train: 0.961581	val: 0.819322	test: 0.845634
+PRC train: 0.686410	val: 0.398612	test: 0.457939
+
+Epoch: 70
+Loss: 0.08196678627697424
+ROC train: 0.962811	val: 0.799481	test: 0.857180
+PRC train: 0.690185	val: 0.415119	test: 0.468657
+
+Epoch: 71
+Loss: 0.0817238061751366
+ROC train: 0.962593	val: 0.807311	test: 0.849808
+PRC train: 0.690369	val: 0.387952	test: 0.469163
+
+Epoch: 72
+Loss: 0.0806420702144734
+ROC train: 0.966666	val: 0.804071	test: 0.838594
+PRC train: 0.705659	val: 0.404770	test: 0.465971
+
+Epoch: 73
+Loss: 0.08110498253386016
+ROC train: 0.967174	val: 0.801275	test: 0.856894
+PRC train: 0.692455	val: 0.400785	test: 0.454750
+
+Epoch: 74
+Loss: 0.08099415076452171
+ROC train: 0.967216	val: 0.808694	test: 0.847804
+PRC train: 0.716302	val: 0.411212	test: 0.474101
+
+Epoch: 75
+Loss: 0.08092369790028846
+ROC train: 0.968379	val: 0.826177	test: 0.844854
+PRC train: 0.713083	val: 0.419440	test: 0.454199
+
+Epoch: 76
+Loss: 0.07899354095643034
+ROC train: 0.967152	val: 0.804689	test: 0.849763
+PRC train: 0.717975	val: 0.403359	test: 0.439159
+
+Epoch: 77
+Loss: 0.07894649781071038
+ROC train: 0.966183	val: 0.800565	test: 0.844820
+PRC train: 0.704705	val: 0.372723	test: 0.440949
+
+Epoch: 78
+Loss: 0.07786292060598565
+ROC train: 0.963267	val: 0.811420	test: 0.829075
+PRC train: 0.692141	val: 0.393514	test: 0.459962
+
+Epoch: 79
+Loss: 0.07886918366836797
+ROC train: 0.969507	val: 0.803738	test: 0.845159
+PRC train: 0.717337	val: 0.400884	test: 0.460988
+
+Epoch: 80
+Loss: 0.07787678716158104
+ROC train: 0.968202	val: 0.823131	test: 0.841105
+PRC train: 0.711544	val: 0.396671	test: 0.431760
+
+Epoch: 81
+Loss: 0.07626559982206656
+ROC train: 0.971588	val: 0.798219	test: 0.840263
+PRC train: 0.724317	val: 0.399184	test: 0.432971
+
+Epoch: 82
+Loss: 0.07765667522087637
+ROC train: 0.968536	val: 0.797198	test: 0.830285
+PRC train: 0.721806	val: 0.388027	test: 0.446625
+
+Epoch: 83
+Loss: 0.07676406676671718
+ROC train: 0.969525	val: 0.811210	test: 0.833379
+PRC train: 0.719502	val: 0.429037	test: 0.439665
+
+Epoch: 84
+Loss: 0.0757177531801308
+ROC train: 0.971309	val: 0.790774	test: 0.849544
+PRC train: 0.738908	val: 0.384171	test: 0.448550
+
+Epoch: 85
+Loss: 0.07486774970703551
+ROC train: 0.968342	val: 0.796021	test: 0.844339
+PRC train: 0.712536	val: 0.392228	test: 0.422779
+
+Epoch: 86
+Loss: 0.07585418272034439
+ROC train: 0.963621	val: 0.784804	test: 0.854263
+PRC train: 0.711084	val: 0.385609	test: 0.453132
+
+Epoch: 87
+Loss: 0.07533942715295182
+ROC train: 0.972799	val: 0.808493	test: 0.837557
+PRC train: 0.741211	val: 0.382878	test: 0.435566
+
+Epoch: 88
+Loss: 0.07529992641836353
+ROC train: 0.974407	val: 0.791692	test: 0.849905
+PRC train: 0.739898	val: 0.391281	test: 0.422292
+
+Epoch: 89
+Loss: 0.07419146688243392
+ROC train: 0.975108	val: 0.803059	test: 0.844324
+PRC train: 0.750399	val: 0.399321	test: 0.434026
+
+Epoch: 90
+Loss: 0.07373842291370028
+ROC train: 0.977070	val: 0.802607	test: 0.823530
+PRC train: 0.761934	val: 0.393953	test: 0.426963
+
+Epoch: 91
+Loss: 0.07173014323675236
+ROC train: 0.974701	val: 0.781943	test: 0.844597
+PRC train: 0.745316	val: 0.395548	test: 0.421787
+
+Epoch: 92
+Loss: 0.07568443218511328
+ROC train: 0.977048	val: 0.801009	test: 0.849463
+PRC train: 0.764617	val: 0.384687	test: 0.442971
+
+Epoch: 93
+Loss: 0.07121362721163493
+ROC train: 0.977711	val: 0.810655	test: 0.853441
+PRC train: 0.765470	val: 0.375096	test: 0.438898
+
+Epoch: 94
+Loss: 0.07284386600827322
+ROC train: 0.916056	val: 0.810741	test: 0.846978
+PRC train: 0.553668	val: 0.417954	test: 0.496080
+
+Epoch: 34
+Loss: 0.09787356684147461
+ROC train: 0.913539	val: 0.805873	test: 0.837433
+PRC train: 0.536875	val: 0.404815	test: 0.491580
+
+Epoch: 35
+Loss: 0.09805642565938869
+ROC train: 0.912042	val: 0.780479	test: 0.847840
+PRC train: 0.565923	val: 0.403579	test: 0.497665
+
+Epoch: 36
+Loss: 0.09721900719805547
+ROC train: 0.920099	val: 0.824569	test: 0.850448
+PRC train: 0.569806	val: 0.430560	test: 0.516444
+
+Epoch: 37
+Loss: 0.09605138424986627
+ROC train: 0.921990	val: 0.806944	test: 0.843507
+PRC train: 0.568287	val: 0.393223	test: 0.488879
+
+Epoch: 38
+Loss: 0.09582464909231972
+ROC train: 0.920727	val: 0.805589	test: 0.852051
+PRC train: 0.577731	val: 0.415215	test: 0.509581
+
+Epoch: 39
+Loss: 0.09547636074955786
+ROC train: 0.922112	val: 0.804014	test: 0.837709
+PRC train: 0.586371	val: 0.415081	test: 0.484458
+
+Epoch: 40
+Loss: 0.09446366496783067
+ROC train: 0.919141	val: 0.785467	test: 0.844343
+PRC train: 0.574811	val: 0.404402	test: 0.504725
+
+Epoch: 41
+Loss: 0.09425788341541667
+ROC train: 0.919902	val: 0.826022	test: 0.840748
+PRC train: 0.572219	val: 0.425963	test: 0.508962
+
+Epoch: 42
+Loss: 0.09528092079087568
+ROC train: 0.928123	val: 0.803674	test: 0.847901
+PRC train: 0.584208	val: 0.400722	test: 0.507059
+
+Epoch: 43
+Loss: 0.0926593047582928
+ROC train: 0.925392	val: 0.802369	test: 0.850595
+PRC train: 0.592423	val: 0.402065	test: 0.510365
+
+Epoch: 44
+Loss: 0.0936211261796076
+ROC train: 0.927577	val: 0.814119	test: 0.865772
+PRC train: 0.597936	val: 0.407825	test: 0.511459
+
+Epoch: 45
+Loss: 0.09260099537876462
+ROC train: 0.926787	val: 0.804812	test: 0.841210
+PRC train: 0.595016	val: 0.405566	test: 0.509037
+
+Epoch: 46
+Loss: 0.0912394113800445
+ROC train: 0.936847	val: 0.804997	test: 0.845675
+PRC train: 0.613860	val: 0.407250	test: 0.482771
+
+Epoch: 47
+Loss: 0.09324865144110984
+ROC train: 0.940529	val: 0.813433	test: 0.834872
+PRC train: 0.621226	val: 0.426694	test: 0.500622
+
+Epoch: 48
+Loss: 0.09210234301037809
+ROC train: 0.934043	val: 0.802883	test: 0.841824
+PRC train: 0.616428	val: 0.419697	test: 0.511015
+
+Epoch: 49
+Loss: 0.0902489359594001
+ROC train: 0.938777	val: 0.792490	test: 0.854778
+PRC train: 0.616895	val: 0.398547	test: 0.501660
+
+Epoch: 50
+Loss: 0.09080512967747015
+ROC train: 0.944526	val: 0.819671	test: 0.850545
+PRC train: 0.631266	val: 0.408871	test: 0.500404
+
+Epoch: 51
+Loss: 0.09067580397341919
+ROC train: 0.940731	val: 0.805468	test: 0.855369
+PRC train: 0.610676	val: 0.412716	test: 0.472947
+
+Epoch: 52
+Loss: 0.0892388904928499
+ROC train: 0.939500	val: 0.807977	test: 0.845331
+PRC train: 0.629780	val: 0.400610	test: 0.491715
+
+Epoch: 53
+Loss: 0.08917884536841816
+ROC train: 0.944758	val: 0.809434	test: 0.853591
+PRC train: 0.635185	val: 0.411993	test: 0.506864
+
+Epoch: 54
+Loss: 0.0873681925008306
+ROC train: 0.946823	val: 0.816069	test: 0.832191
+PRC train: 0.645347	val: 0.426730	test: 0.500582
+
+Epoch: 55
+Loss: 0.08680993166621606
+ROC train: 0.949251	val: 0.814320	test: 0.842511
+PRC train: 0.653692	val: 0.412482	test: 0.496433
+
+Epoch: 56
+Loss: 0.08510673061283307
+ROC train: 0.951604	val: 0.812979	test: 0.846347
+PRC train: 0.668217	val: 0.422413	test: 0.515172
+
+Epoch: 57
+Loss: 0.08738214978841022
+ROC train: 0.946222	val: 0.803757	test: 0.858778
+PRC train: 0.646286	val: 0.410564	test: 0.498999
+
+Epoch: 58
+Loss: 0.08547799176195006
+ROC train: 0.944700	val: 0.803718	test: 0.834622
+PRC train: 0.655090	val: 0.397128	test: 0.484023
+
+Epoch: 59
+Loss: 0.08593108714840339
+ROC train: 0.944123	val: 0.781328	test: 0.843974
+PRC train: 0.619362	val: 0.383497	test: 0.487921
+
+Epoch: 60
+Loss: 0.08606210167405869
+ROC train: 0.947309	val: 0.814942	test: 0.828506
+PRC train: 0.645140	val: 0.393232	test: 0.493669
+
+Epoch: 61
+Loss: 0.08543597783854016
+ROC train: 0.952130	val: 0.806553	test: 0.858619
+PRC train: 0.659688	val: 0.407474	test: 0.512933
+
+Epoch: 62
+Loss: 0.08444377956707343
+ROC train: 0.956503	val: 0.804101	test: 0.846760
+PRC train: 0.675500	val: 0.400957	test: 0.498242
+
+Epoch: 63
+Loss: 0.08475293559635803
+ROC train: 0.954971	val: 0.813567	test: 0.832469
+PRC train: 0.655369	val: 0.385714	test: 0.494586
+
+Epoch: 64
+Loss: 0.08416989419755092
+ROC train: 0.960987	val: 0.794593	test: 0.845990
+PRC train: 0.695982	val: 0.394191	test: 0.506961
+
+Epoch: 65
+Loss: 0.08286577486459931
+ROC train: 0.957120	val: 0.792432	test: 0.843715
+PRC train: 0.674216	val: 0.396172	test: 0.489536
+
+Epoch: 66
+Loss: 0.08227179220460432
+ROC train: 0.960453	val: 0.796894	test: 0.830668
+PRC train: 0.681968	val: 0.398390	test: 0.491227
+
+Epoch: 67
+Loss: 0.08437338994805178
+ROC train: 0.953474	val: 0.790629	test: 0.842889
+PRC train: 0.662296	val: 0.395518	test: 0.473387
+
+Epoch: 68
+Loss: 0.08273634674622952
+ROC train: 0.941968	val: 0.810544	test: 0.841882
+PRC train: 0.652435	val: 0.401791	test: 0.501813
+
+Epoch: 69
+Loss: 0.080541476519078
+ROC train: 0.962331	val: 0.811636	test: 0.860931
+PRC train: 0.703805	val: 0.382166	test: 0.490258
+
+Epoch: 70
+Loss: 0.07979958301157675
+ROC train: 0.960599	val: 0.804675	test: 0.845661
+PRC train: 0.683229	val: 0.373609	test: 0.464112
+
+Epoch: 71
+Loss: 0.07966219290593242
+ROC train: 0.964829	val: 0.785810	test: 0.840468
+PRC train: 0.714472	val: 0.383135	test: 0.472488
+
+Epoch: 72
+Loss: 0.08014132200998375
+ROC train: 0.964313	val: 0.789102	test: 0.853889
+PRC train: 0.708129	val: 0.375908	test: 0.474949
+
+Epoch: 73
+Loss: 0.08053321485111363
+ROC train: 0.959547	val: 0.789160	test: 0.839654
+PRC train: 0.678590	val: 0.358354	test: 0.460235
+
+Epoch: 74
+Loss: 0.07895772780431616
+ROC train: 0.965029	val: 0.805614	test: 0.844302
+PRC train: 0.702841	val: 0.388505	test: 0.478041
+
+Epoch: 75
+Loss: 0.07991730854241391
+ROC train: 0.966872	val: 0.813296	test: 0.852611
+PRC train: 0.720538	val: 0.401332	test: 0.477885
+
+Epoch: 76
+Loss: 0.07913889304003759
+ROC train: 0.963275	val: 0.804753	test: 0.852581
+PRC train: 0.702672	val: 0.384319	test: 0.487853
+
+Epoch: 77
+Loss: 0.0789947848001584
+ROC train: 0.959989	val: 0.797735	test: 0.845778
+PRC train: 0.691872	val: 0.410903	test: 0.523384
+
+Epoch: 78
+Loss: 0.07658012019301398
+ROC train: 0.969016	val: 0.805093	test: 0.846680
+PRC train: 0.734040	val: 0.387351	test: 0.498983
+
+Epoch: 79
+Loss: 0.07802921617452235
+ROC train: 0.968838	val: 0.818235	test: 0.846860
+PRC train: 0.715772	val: 0.421000	test: 0.493636
+
+Epoch: 80
+Loss: 0.07678814571372568
+ROC train: 0.969383	val: 0.814277	test: 0.845880
+PRC train: 0.716688	val: 0.372423	test: 0.473847
+
+Epoch: 81
+Loss: 0.07758812214444254
+ROC train: 0.972465	val: 0.805121	test: 0.842848
+PRC train: 0.742041	val: 0.400840	test: 0.478370
+
+Epoch: 82
+Loss: 0.0771639819949285
+ROC train: 0.968492	val: 0.798071	test: 0.845666
+PRC train: 0.726654	val: 0.389909	test: 0.495092
+
+Epoch: 83
+Loss: 0.07514906953481265
+ROC train: 0.972156	val: 0.807788	test: 0.855597
+PRC train: 0.738823	val: 0.391763	test: 0.491092
+
+Epoch: 84
+Loss: 0.07552223452388901
+ROC train: 0.959906	val: 0.798383	test: 0.848029
+PRC train: 0.688875	val: 0.373911	test: 0.483121
+
+Epoch: 85
+Loss: 0.07545245330177536
+ROC train: 0.974281	val: 0.798441	test: 0.847009
+PRC train: 0.745466	val: 0.388294	test: 0.493576
+
+Epoch: 86
+Loss: 0.0775898956224553
+ROC train: 0.974149	val: 0.815056	test: 0.852583
+PRC train: 0.738895	val: 0.410349	test: 0.484362
+
+Epoch: 87
+Loss: 0.07431105353979345
+ROC train: 0.972322	val: 0.802862	test: 0.853446
+PRC train: 0.734427	val: 0.423247	test: 0.490379
+
+Epoch: 88
+Loss: 0.07499624956771436
+ROC train: 0.976110	val: 0.808305	test: 0.844245
+PRC train: 0.760030	val: 0.406970	test: 0.483903
+
+Epoch: 89
+Loss: 0.073981573525994
+ROC train: 0.974229	val: 0.798177	test: 0.843994
+PRC train: 0.747058	val: 0.401458	test: 0.471613
+
+Epoch: 90
+Loss: 0.07334036928758766
+ROC train: 0.976684	val: 0.804178	test: 0.852268
+PRC train: 0.759372	val: 0.405425	test: 0.481949
+
+Epoch: 91
+Loss: 0.07375198548119415
+ROC train: 0.976770	val: 0.799735	test: 0.861232
+PRC train: 0.749068	val: 0.396300	test: 0.477088
+
+Epoch: 92
+Loss: 0.0707872198981714
+ROC train: 0.978454	val: 0.811111	test: 0.849602
+PRC train: 0.771074	val: 0.412939	test: 0.486458
+
+Epoch: 93
+Loss: 0.07279787089328907
+ROC train: 0.975117	val: 0.806918	test: 0.856902
+PRC train: 0.748893	val: 0.403613	test: 0.490827
+
+Epoch: 94
+Loss: 0.07266386131566699
+ROC train: 0.981833	val: 0.785495	test: 0.810826
+PRC train: 0.771441	val: 0.401890	test: 0.413606
+
+Epoch: 95
+Loss: 0.07010951378183004
+ROC train: 0.981298	val: 0.789403	test: 0.809346
+PRC train: 0.771465	val: 0.383359	test: 0.407019
+
+Epoch: 96
+Loss: 0.07182217977537828
+ROC train: 0.983377	val: 0.783109	test: 0.806035
+PRC train: 0.779548	val: 0.380060	test: 0.407728
+
+Epoch: 97
+Loss: 0.07250531878980722
+ROC train: 0.983030	val: 0.776078	test: 0.806168
+PRC train: 0.780388	val: 0.415247	test: 0.412262
+
+Epoch: 98
+Loss: 0.0703419475249639
+ROC train: 0.977376	val: 0.778726	test: 0.792541
+PRC train: 0.750520	val: 0.376464	test: 0.376677
+
+Epoch: 99
+Loss: 0.07045043632616478
+ROC train: 0.981072	val: 0.775284	test: 0.797388
+PRC train: 0.775919	val: 0.390972	test: 0.399183
+
+Epoch: 100
+Loss: 0.07074873080315246
+ROC train: 0.983390	val: 0.790288	test: 0.803557
+PRC train: 0.789516	val: 0.397246	test: 0.408642
+
+Epoch: 101
+Loss: 0.07119987107995752
+ROC train: 0.979189	val: 0.780371	test: 0.805698
+PRC train: 0.769859	val: 0.353564	test: 0.415769
+
+Epoch: 102
+Loss: 0.07011715038233994
+ROC train: 0.984350	val: 0.781322	test: 0.809756
+PRC train: 0.799186	val: 0.397441	test: 0.410314
+
+Epoch: 103
+Loss: 0.06977294268635986
+ROC train: 0.986130	val: 0.796729	test: 0.806300
+PRC train: 0.810885	val: 0.398237	test: 0.405064
+
+Epoch: 104
+Loss: 0.06791462927331421
+ROC train: 0.985710	val: 0.789022	test: 0.812836
+PRC train: 0.810939	val: 0.405142	test: 0.403098
+
+Epoch: 105
+Loss: 0.06620651448241324
+ROC train: 0.979168	val: 0.780975	test: 0.800349
+PRC train: 0.766338	val: 0.398266	test: 0.379315
+
+Epoch: 106
+Loss: 0.06956210358438432
+ROC train: 0.983273	val: 0.782693	test: 0.806021
+PRC train: 0.789302	val: 0.391037	test: 0.379034
+
+Epoch: 107
+Loss: 0.0693635098793396
+ROC train: 0.985936	val: 0.777022	test: 0.809840
+PRC train: 0.810300	val: 0.382928	test: 0.404968
+
+Epoch: 108
+Loss: 0.06917399267034131
+ROC train: 0.986395	val: 0.788517	test: 0.813910
+PRC train: 0.811198	val: 0.408509	test: 0.409179
+
+Epoch: 109
+Loss: 0.06845716050837712
+ROC train: 0.985523	val: 0.785825	test: 0.810441
+PRC train: 0.799138	val: 0.387491	test: 0.368726
+
+Epoch: 110
+Loss: 0.06910451605289869
+ROC train: 0.987191	val: 0.777891	test: 0.803747
+PRC train: 0.812760	val: 0.384515	test: 0.394867
+
+Epoch: 111
+Loss: 0.06478569312874942
+ROC train: 0.985864	val: 0.783675	test: 0.798089
+PRC train: 0.814969	val: 0.371936	test: 0.368718
+
+Epoch: 112
+Loss: 0.06662479706357696
+ROC train: 0.988092	val: 0.786050	test: 0.814197
+PRC train: 0.824600	val: 0.381148	test: 0.399061
+
+Epoch: 113
+Loss: 0.06555244035980234
+ROC train: 0.986517	val: 0.784772	test: 0.802803
+PRC train: 0.815275	val: 0.346607	test: 0.377203
+
+Epoch: 114
+Loss: 0.06488883923829551
+ROC train: 0.988698	val: 0.790484	test: 0.808340
+PRC train: 0.829616	val: 0.375449	test: 0.408281
+
+Epoch: 115
+Loss: 0.06772074802325087
+ROC train: 0.986915	val: 0.792751	test: 0.806202
+PRC train: 0.819833	val: 0.401582	test: 0.387533
+
+Epoch: 116
+Loss: 0.06423611873514028
+ROC train: 0.989145	val: 0.787304	test: 0.798498
+PRC train: 0.844361	val: 0.382652	test: 0.401227
+
+Epoch: 117
+Loss: 0.06497905293330723
+ROC train: 0.988384	val: 0.786178	test: 0.798363
+PRC train: 0.826555	val: 0.391268	test: 0.399114
+
+Epoch: 118
+Loss: 0.06500373850167158
+ROC train: 0.987933	val: 0.783155	test: 0.805240
+PRC train: 0.828204	val: 0.378710	test: 0.391114
+
+Epoch: 119
+Loss: 0.0638131211160238
+ROC train: 0.988434	val: 0.784830	test: 0.809887
+PRC train: 0.839254	val: 0.367897	test: 0.387715
+
+Epoch: 120
+Loss: 0.06407552558134992
+ROC train: 0.987937	val: 0.784495	test: 0.803929
+PRC train: 0.820109	val: 0.370471	test: 0.379774
+
+Early stopping
+Best (ROC):	 train: 0.931923	val: 0.808678	test: 0.812527
+Best (PRC):	 train: 0.573335	val: 0.376435	test: 0.417312
+
+ROC train: 0.982683	val: 0.798962	test: 0.803646
+PRC train: 0.793285	val: 0.433020	test: 0.419297
+
+Epoch: 95
+Loss: 0.06794210910665623
+ROC train: 0.985678	val: 0.791791	test: 0.806610
+PRC train: 0.803250	val: 0.404685	test: 0.426222
+
+Epoch: 96
+Loss: 0.06947807919548042
+ROC train: 0.983380	val: 0.799757	test: 0.799396
+PRC train: 0.796316	val: 0.413687	test: 0.405455
+
+Epoch: 97
+Loss: 0.06927994862241452
+ROC train: 0.983080	val: 0.780786	test: 0.799530
+PRC train: 0.790197	val: 0.388128	test: 0.394158
+
+Epoch: 98
+Loss: 0.06682062762800858
+ROC train: 0.984680	val: 0.802101	test: 0.803340
+PRC train: 0.794040	val: 0.408009	test: 0.400955
+
+Epoch: 99
+Loss: 0.06754069608005951
+ROC train: 0.982494	val: 0.792476	test: 0.787327
+PRC train: 0.771823	val: 0.363447	test: 0.358666
+
+Epoch: 100
+Loss: 0.06950001965697296
+ROC train: 0.983268	val: 0.805563	test: 0.804828
+PRC train: 0.794720	val: 0.431688	test: 0.402149
+
+Epoch: 101
+Loss: 0.06633444518820746
+ROC train: 0.985256	val: 0.797878	test: 0.800468
+PRC train: 0.802693	val: 0.408438	test: 0.397389
+
+Epoch: 102
+Loss: 0.06579012046224805
+ROC train: 0.986805	val: 0.792616	test: 0.805672
+PRC train: 0.817582	val: 0.401779	test: 0.402282
+
+Epoch: 103
+Loss: 0.06536743488936296
+ROC train: 0.984776	val: 0.800663	test: 0.810053
+PRC train: 0.809810	val: 0.401477	test: 0.399670
+
+Epoch: 104
+Loss: 0.06594439912072773
+ROC train: 0.985937	val: 0.799734	test: 0.807912
+PRC train: 0.822836	val: 0.397319	test: 0.406707
+
+Epoch: 105
+Loss: 0.06535848511846845
+ROC train: 0.986737	val: 0.790423	test: 0.802558
+PRC train: 0.814638	val: 0.403757	test: 0.395443
+
+Epoch: 106
+Loss: 0.06402353761609313
+ROC train: 0.987091	val: 0.795329	test: 0.810042
+PRC train: 0.818071	val: 0.396511	test: 0.395433
+
+Epoch: 107
+Loss: 0.06563357946703777
+ROC train: 0.988117	val: 0.799246	test: 0.802716
+PRC train: 0.826227	val: 0.421251	test: 0.408817
+
+Epoch: 108
+Loss: 0.06347923782760932
+ROC train: 0.987896	val: 0.802326	test: 0.802685
+PRC train: 0.826852	val: 0.403925	test: 0.389098
+
+Epoch: 109
+Loss: 0.06476599764977901
+ROC train: 0.987404	val: 0.798904	test: 0.796767
+PRC train: 0.824683	val: 0.401451	test: 0.391471
+
+Epoch: 110
+Loss: 0.06504355634441518
+ROC train: 0.982208	val: 0.800299	test: 0.802291
+PRC train: 0.781734	val: 0.405209	test: 0.389475
+
+Epoch: 111
+Loss: 0.06528013679678246
+ROC train: 0.989283	val: 0.797541	test: 0.803073
+PRC train: 0.842702	val: 0.417473	test: 0.407936
+
+Epoch: 112
+Loss: 0.06375669199778054
+ROC train: 0.989241	val: 0.787735	test: 0.803517
+PRC train: 0.834874	val: 0.402733	test: 0.404728
+
+Epoch: 113
+Loss: 0.061472537540585695
+ROC train: 0.987094	val: 0.789071	test: 0.805140
+PRC train: 0.826122	val: 0.399845	test: 0.385690
+
+Epoch: 114
+Loss: 0.06287001629382892
+ROC train: 0.987677	val: 0.791150	test: 0.798694
+PRC train: 0.829563	val: 0.417533	test: 0.393681
+
+Epoch: 115
+Loss: 0.06226511395598593
+ROC train: 0.989408	val: 0.801094	test: 0.801399
+PRC train: 0.839808	val: 0.417628	test: 0.386264
+
+Epoch: 116
+Loss: 0.06136155051989033
+ROC train: 0.987845	val: 0.794737	test: 0.808668
+PRC train: 0.830580	val: 0.418435	test: 0.410714
+
+Epoch: 117
+Loss: 0.06258693441094976
+ROC train: 0.988621	val: 0.792404	test: 0.810808
+PRC train: 0.845634	val: 0.422850	test: 0.412696
+
+Epoch: 118
+Loss: 0.06231193495448807
+ROC train: 0.987313	val: 0.787209	test: 0.805181
+PRC train: 0.825292	val: 0.385135	test: 0.372882
+
+Epoch: 119
+Loss: 0.06329815580024678
+ROC train: 0.989994	val: 0.800714	test: 0.813763
+PRC train: 0.848530	val: 0.417738	test: 0.406451
+
+Epoch: 120
+Loss: 0.060716096058066
+ROC train: 0.989859	val: 0.795918	test: 0.804735
+PRC train: 0.837541	val: 0.378036	test: 0.376877
+
+Early stopping
+Best (ROC):	 train: 0.958628	val: 0.810619	test: 0.801557
+Best (PRC):	 train: 0.662621	val: 0.405360	test: 0.429939
+
+
+Epoch: 94
+Loss: 0.07144939195626798
+ROC train: 0.977615	val: 0.791886	test: 0.816274
+PRC train: 0.752434	val: 0.409314	test: 0.403681
+
+Epoch: 95
+Loss: 0.07172905685218264
+ROC train: 0.981978	val: 0.797263	test: 0.813095
+PRC train: 0.775531	val: 0.402500	test: 0.399704
+
+Epoch: 96
+Loss: 0.07010782500939039
+ROC train: 0.981488	val: 0.793829	test: 0.813449
+PRC train: 0.771108	val: 0.410752	test: 0.397584
+
+Epoch: 97
+Loss: 0.07155435366894301
+ROC train: 0.977673	val: 0.817950	test: 0.813168
+PRC train: 0.762182	val: 0.418486	test: 0.414199
+
+Epoch: 98
+Loss: 0.07162131108815452
+ROC train: 0.982961	val: 0.797599	test: 0.820431
+PRC train: 0.789552	val: 0.415281	test: 0.416370
+
+Epoch: 99
+Loss: 0.06951010941037078
+ROC train: 0.980153	val: 0.800541	test: 0.808418
+PRC train: 0.772058	val: 0.410497	test: 0.387829
+
+Epoch: 100
+Loss: 0.06964104547901154
+ROC train: 0.981371	val: 0.795850	test: 0.819847
+PRC train: 0.780159	val: 0.400240	test: 0.395673
+
+Epoch: 101
+Loss: 0.06925169556421051
+ROC train: 0.983243	val: 0.807291	test: 0.813234
+PRC train: 0.787813	val: 0.407343	test: 0.409591
+
+Epoch: 102
+Loss: 0.06630420712813537
+ROC train: 0.982994	val: 0.807571	test: 0.811355
+PRC train: 0.786005	val: 0.406563	test: 0.393128
+
+Epoch: 103
+Loss: 0.06938003284533002
+ROC train: 0.985174	val: 0.796274	test: 0.813120
+PRC train: 0.802533	val: 0.407472	test: 0.394943
+
+Epoch: 104
+Loss: 0.0683030134791929
+ROC train: 0.982652	val: 0.798241	test: 0.808424
+PRC train: 0.791152	val: 0.426813	test: 0.390398
+
+Epoch: 105
+Loss: 0.06989660402623314
+ROC train: 0.982743	val: 0.788571	test: 0.809443
+PRC train: 0.796164	val: 0.413586	test: 0.401131
+
+Epoch: 106
+Loss: 0.06829288036702033
+ROC train: 0.984403	val: 0.802071	test: 0.813249
+PRC train: 0.802824	val: 0.437139	test: 0.404600
+
+Epoch: 107
+Loss: 0.06726258464878461
+ROC train: 0.981980	val: 0.793521	test: 0.802915
+PRC train: 0.792183	val: 0.420781	test: 0.393256
+
+Epoch: 108
+Loss: 0.06616014139568088
+ROC train: 0.981189	val: 0.805535	test: 0.810181
+PRC train: 0.797823	val: 0.389497	test: 0.393646
+
+Epoch: 109
+Loss: 0.06677059402425872
+ROC train: 0.983181	val: 0.805647	test: 0.808668
+PRC train: 0.792969	val: 0.388196	test: 0.388287
+
+Epoch: 110
+Loss: 0.06586549870413896
+ROC train: 0.984606	val: 0.805410	test: 0.813792
+PRC train: 0.801209	val: 0.398354	test: 0.407025
+
+Epoch: 111
+Loss: 0.06517814203856984
+ROC train: 0.986266	val: 0.805898	test: 0.806412
+PRC train: 0.810204	val: 0.407564	test: 0.404281
+
+Epoch: 112
+Loss: 0.06632562053724
+ROC train: 0.986061	val: 0.804906	test: 0.805226
+PRC train: 0.809078	val: 0.417790	test: 0.379105
+
+Epoch: 113
+Loss: 0.06544032807848467
+ROC train: 0.984558	val: 0.804754	test: 0.800479
+PRC train: 0.811910	val: 0.416778	test: 0.391408
+
+Epoch: 114
+Loss: 0.06421686756314969
+ROC train: 0.987091	val: 0.813361	test: 0.807068
+PRC train: 0.820815	val: 0.435163	test: 0.390077
+
+Epoch: 115
+Loss: 0.06304573411799569
+ROC train: 0.985907	val: 0.798165	test: 0.799703
+PRC train: 0.813846	val: 0.420082	test: 0.385227
+
+Epoch: 116
+Loss: 0.06535210761102392
+ROC train: 0.983882	val: 0.794544	test: 0.807158
+PRC train: 0.800193	val: 0.383919	test: 0.367903
+
+Epoch: 117
+Loss: 0.06512947644941544
+ROC train: 0.987336	val: 0.808702	test: 0.819064
+PRC train: 0.827113	val: 0.404887	test: 0.407963
+
+Epoch: 118
+Loss: 0.06459260621885385
+ROC train: 0.987937	val: 0.796904	test: 0.811611
+PRC train: 0.834222	val: 0.422935	test: 0.411845
+
+Epoch: 119
+Loss: 0.06131807547797159
+ROC train: 0.988425	val: 0.802865	test: 0.811257
+PRC train: 0.832958	val: 0.420252	test: 0.399872
+
+Epoch: 120
+Loss: 0.06254900227175546
+ROC train: 0.988772	val: 0.799726	test: 0.807575
+PRC train: 0.825990	val: 0.407520	test: 0.390088
+
+Early stopping
+Best (ROC):	 train: 0.945430	val: 0.823400	test: 0.834485
+Best (PRC):	 train: 0.623621	val: 0.443347	test: 0.438583
+
+Epoch: 94
+Loss: 0.07356499054198573
+ROC train: 0.972397	val: 0.790911	test: 0.808316
+PRC train: 0.727982	val: 0.378921	test: 0.378462
+
+Epoch: 95
+Loss: 0.07365629825183667
+ROC train: 0.974597	val: 0.787744	test: 0.832528
+PRC train: 0.754636	val: 0.417328	test: 0.406354
+
+Epoch: 96
+Loss: 0.0729171710262396
+ROC train: 0.976852	val: 0.789514	test: 0.817553
+PRC train: 0.755086	val: 0.385975	test: 0.379240
+
+Epoch: 97
+Loss: 0.0729751337359125
+ROC train: 0.976338	val: 0.796656	test: 0.816826
+PRC train: 0.760193	val: 0.414895	test: 0.399872
+
+Epoch: 98
+Loss: 0.0716114983470368
+ROC train: 0.979131	val: 0.785231	test: 0.819709
+PRC train: 0.777346	val: 0.420981	test: 0.411790
+
+Epoch: 99
+Loss: 0.06947135999283952
+ROC train: 0.979530	val: 0.783550	test: 0.824268
+PRC train: 0.780862	val: 0.392790	test: 0.395995
+
+Epoch: 100
+Loss: 0.07067966831308559
+ROC train: 0.980305	val: 0.796917	test: 0.811566
+PRC train: 0.767995	val: 0.401618	test: 0.391551
+
+Epoch: 101
+Loss: 0.07117772717447371
+ROC train: 0.979630	val: 0.793589	test: 0.810658
+PRC train: 0.778827	val: 0.407771	test: 0.395693
+
+Epoch: 102
+Loss: 0.06971064297752672
+ROC train: 0.979538	val: 0.801227	test: 0.820926
+PRC train: 0.774548	val: 0.415339	test: 0.398764
+
+Epoch: 103
+Loss: 0.06929651882643705
+ROC train: 0.980014	val: 0.793014	test: 0.816975
+PRC train: 0.774899	val: 0.407854	test: 0.391158
+
+Epoch: 104
+Loss: 0.06845540186303227
+ROC train: 0.982165	val: 0.789282	test: 0.825498
+PRC train: 0.786593	val: 0.414422	test: 0.414986
+
+Epoch: 105
+Loss: 0.07004016341193216
+ROC train: 0.984290	val: 0.794017	test: 0.819383
+PRC train: 0.797770	val: 0.417213	test: 0.413438
+
+Epoch: 106
+Loss: 0.06917487675403736
+ROC train: 0.981468	val: 0.789093	test: 0.833841
+PRC train: 0.778341	val: 0.395903	test: 0.397591
+
+Epoch: 107
+Loss: 0.06782626422225455
+ROC train: 0.980465	val: 0.791173	test: 0.817488
+PRC train: 0.774522	val: 0.385308	test: 0.382911
+
+Epoch: 108
+Loss: 0.06725028864877539
+ROC train: 0.982500	val: 0.787535	test: 0.831009
+PRC train: 0.790207	val: 0.417735	test: 0.413906
+
+Epoch: 109
+Loss: 0.06665341056883856
+ROC train: 0.985666	val: 0.789949	test: 0.814659
+PRC train: 0.815742	val: 0.420128	test: 0.390567
+
+Epoch: 110
+Loss: 0.06895183695779765
+ROC train: 0.983387	val: 0.795185	test: 0.811826
+PRC train: 0.795013	val: 0.424836	test: 0.385879
+
+Epoch: 111
+Loss: 0.06618412364568926
+ROC train: 0.982022	val: 0.789564	test: 0.824574
+PRC train: 0.787865	val: 0.403012	test: 0.390415
+
+Epoch: 112
+Loss: 0.06889402163244875
+ROC train: 0.984390	val: 0.799136	test: 0.834536
+PRC train: 0.809136	val: 0.425680	test: 0.400194
+
+Epoch: 113
+Loss: 0.06701489403516303
+ROC train: 0.986170	val: 0.791379	test: 0.824040
+PRC train: 0.820644	val: 0.420786	test: 0.408007
+
+Epoch: 114
+Loss: 0.06499588889746136
+ROC train: 0.984762	val: 0.791254	test: 0.827862
+PRC train: 0.811335	val: 0.407938	test: 0.399157
+
+Epoch: 115
+Loss: 0.06708228745188144
+ROC train: 0.985493	val: 0.794093	test: 0.828729
+PRC train: 0.809782	val: 0.407244	test: 0.396804
+
+Epoch: 116
+Loss: 0.06437338466437054
+ROC train: 0.984582	val: 0.786049	test: 0.818321
+PRC train: 0.796535	val: 0.399275	test: 0.363881
+
+Epoch: 117
+Loss: 0.06434377756123362
+ROC train: 0.984422	val: 0.792456	test: 0.832333
+PRC train: 0.790233	val: 0.407907	test: 0.395130
+
+Epoch: 118
+Loss: 0.0649504375284376
+ROC train: 0.984444	val: 0.794350	test: 0.830552
+PRC train: 0.800587	val: 0.392198	test: 0.379958
+
+Epoch: 119
+Loss: 0.0665223977866166
+ROC train: 0.985834	val: 0.776613	test: 0.825458
+PRC train: 0.818570	val: 0.390493	test: 0.380991
+
+Epoch: 120
+Loss: 0.06465174768684834
+ROC train: 0.986971	val: 0.786031	test: 0.823077
+PRC train: 0.823641	val: 0.408193	test: 0.385899
+
+Early stopping
+Best (ROC):	 train: 0.899142	val: 0.811315	test: 0.827969
+Best (PRC):	 train: 0.523881	val: 0.435072	test: 0.435963
+
+ROC train: 0.978230	val: 0.788592	test: 0.815869
+PRC train: 0.767811	val: 0.409803	test: 0.414828
+
+Epoch: 95
+Loss: 0.07285453039012169
+ROC train: 0.979920	val: 0.785586	test: 0.817017
+PRC train: 0.771823	val: 0.402880	test: 0.410977
+
+Epoch: 96
+Loss: 0.07047785889824441
+ROC train: 0.979076	val: 0.788469	test: 0.811663
+PRC train: 0.768948	val: 0.418217	test: 0.415193
+
+Epoch: 97
+Loss: 0.07086575151222131
+ROC train: 0.981548	val: 0.782119	test: 0.807507
+PRC train: 0.785237	val: 0.417080	test: 0.407726
+
+Epoch: 98
+Loss: 0.07135828638669166
+ROC train: 0.980812	val: 0.780034	test: 0.808467
+PRC train: 0.778383	val: 0.419432	test: 0.397339
+
+Epoch: 99
+Loss: 0.07144596366698631
+ROC train: 0.982193	val: 0.787087	test: 0.819244
+PRC train: 0.784749	val: 0.415888	test: 0.412773
+
+Epoch: 100
+Loss: 0.06937963315257308
+ROC train: 0.981636	val: 0.782021	test: 0.808808
+PRC train: 0.784877	val: 0.418205	test: 0.418184
+
+Epoch: 101
+Loss: 0.07001450216187143
+ROC train: 0.978953	val: 0.779854	test: 0.814531
+PRC train: 0.773078	val: 0.417816	test: 0.417726
+
+Epoch: 102
+Loss: 0.07173620803415774
+ROC train: 0.981690	val: 0.786892	test: 0.814202
+PRC train: 0.784244	val: 0.416538	test: 0.408457
+
+Epoch: 103
+Loss: 0.06904552813975134
+ROC train: 0.981821	val: 0.792135	test: 0.812350
+PRC train: 0.786031	val: 0.412990	test: 0.421811
+
+Epoch: 104
+Loss: 0.06719496668746544
+ROC train: 0.983115	val: 0.786249	test: 0.803797
+PRC train: 0.802810	val: 0.431845	test: 0.411618
+
+Epoch: 105
+Loss: 0.06811633582791787
+ROC train: 0.982873	val: 0.789259	test: 0.808357
+PRC train: 0.788262	val: 0.386677	test: 0.404904
+
+Epoch: 106
+Loss: 0.06899348148641378
+ROC train: 0.980775	val: 0.780971	test: 0.804490
+PRC train: 0.781222	val: 0.402697	test: 0.396581
+
+Epoch: 107
+Loss: 0.06888529278988284
+ROC train: 0.984861	val: 0.789478	test: 0.809207
+PRC train: 0.805967	val: 0.424515	test: 0.411699
+
+Epoch: 108
+Loss: 0.06794377144756525
+ROC train: 0.979651	val: 0.789224	test: 0.810868
+PRC train: 0.777513	val: 0.404518	test: 0.406690
+
+Epoch: 109
+Loss: 0.06657824657301074
+ROC train: 0.984817	val: 0.790592	test: 0.813166
+PRC train: 0.808693	val: 0.408683	test: 0.402757
+
+Epoch: 110
+Loss: 0.06543362395414999
+ROC train: 0.985322	val: 0.784883	test: 0.802920
+PRC train: 0.816916	val: 0.377487	test: 0.391429
+
+Epoch: 111
+Loss: 0.06704307622558912
+ROC train: 0.984941	val: 0.792760	test: 0.816365
+PRC train: 0.808360	val: 0.412269	test: 0.408675
+
+Epoch: 112
+Loss: 0.06530663304277426
+ROC train: 0.985201	val: 0.794335	test: 0.823530
+PRC train: 0.800543	val: 0.387691	test: 0.437925
+
+Epoch: 113
+Loss: 0.06760881380518902
+ROC train: 0.984762	val: 0.789875	test: 0.810926
+PRC train: 0.801489	val: 0.410067	test: 0.408360
+
+Epoch: 114
+Loss: 0.06465996241915509
+ROC train: 0.985666	val: 0.791128	test: 0.812274
+PRC train: 0.812837	val: 0.419108	test: 0.405088
+
+Epoch: 115
+Loss: 0.06611930392960708
+ROC train: 0.985835	val: 0.796093	test: 0.816927
+PRC train: 0.819435	val: 0.410404	test: 0.418090
+
+Epoch: 116
+Loss: 0.06331663801505147
+ROC train: 0.985474	val: 0.787830	test: 0.815802
+PRC train: 0.810299	val: 0.431307	test: 0.415181
+
+Epoch: 117
+Loss: 0.06325877185830729
+ROC train: 0.986363	val: 0.792716	test: 0.825478
+PRC train: 0.812564	val: 0.380916	test: 0.392811
+
+Epoch: 118
+Loss: 0.06440758912100769
+ROC train: 0.987921	val: 0.793247	test: 0.819062
+PRC train: 0.833278	val: 0.418332	test: 0.414618
+
+Epoch: 119
+Loss: 0.06290610396427897
+ROC train: 0.985941	val: 0.789716	test: 0.808999
+PRC train: 0.827131	val: 0.418683	test: 0.399178
+
+Epoch: 120
+Loss: 0.06394956545155932
+ROC train: 0.985638	val: 0.784523	test: 0.809863
+PRC train: 0.817192	val: 0.423050	test: 0.402766
+
+Early stopping
+Best (ROC):	 train: 0.923453	val: 0.813660	test: 0.826335
+Best (PRC):	 train: 0.572123	val: 0.442723	test: 0.441228
+All runs completed.
+
+ROC train: 0.979626	val: 0.805921	test: 0.850020
+PRC train: 0.777467	val: 0.378737	test: 0.465765
+
+Epoch: 95
+Loss: 0.07180174665327559
+ROC train: 0.978047	val: 0.791470	test: 0.865401
+PRC train: 0.764281	val: 0.387574	test: 0.469083
+
+Epoch: 96
+Loss: 0.07143028269536818
+ROC train: 0.972772	val: 0.776081	test: 0.856664
+PRC train: 0.739377	val: 0.383713	test: 0.480789
+
+Epoch: 97
+Loss: 0.07349190812841937
+ROC train: 0.979481	val: 0.794258	test: 0.859225
+PRC train: 0.770693	val: 0.389602	test: 0.472405
+
+Epoch: 98
+Loss: 0.07125544431443882
+ROC train: 0.978208	val: 0.775313	test: 0.849448
+PRC train: 0.770746	val: 0.369905	test: 0.434470
+
+Epoch: 99
+Loss: 0.07138333010960896
+ROC train: 0.980167	val: 0.786024	test: 0.864303
+PRC train: 0.778547	val: 0.380563	test: 0.461989
+
+Epoch: 100
+Loss: 0.07228248758977894
+ROC train: 0.977302	val: 0.786011	test: 0.855873
+PRC train: 0.763200	val: 0.389691	test: 0.477965
+
+Epoch: 101
+Loss: 0.07136965877757971
+ROC train: 0.979186	val: 0.809538	test: 0.855973
+PRC train: 0.775082	val: 0.383876	test: 0.451329
+
+Epoch: 102
+Loss: 0.0719217856036396
+ROC train: 0.979405	val: 0.798140	test: 0.849251
+PRC train: 0.772758	val: 0.391679	test: 0.447241
+
+Epoch: 103
+Loss: 0.06947740306204248
+ROC train: 0.980927	val: 0.791094	test: 0.837713
+PRC train: 0.782291	val: 0.372726	test: 0.444878
+
+Epoch: 104
+Loss: 0.07158516634560606
+ROC train: 0.981192	val: 0.779864	test: 0.851066
+PRC train: 0.781315	val: 0.359797	test: 0.457167
+
+Epoch: 105
+Loss: 0.06911385216435693
+ROC train: 0.982603	val: 0.789380	test: 0.858355
+PRC train: 0.800449	val: 0.386241	test: 0.453501
+
+Epoch: 106
+Loss: 0.0693415343449027
+ROC train: 0.978838	val: 0.806224	test: 0.857254
+PRC train: 0.775081	val: 0.392524	test: 0.448644
+
+Epoch: 107
+Loss: 0.06893567442654232
+ROC train: 0.981206	val: 0.792227	test: 0.860519
+PRC train: 0.791558	val: 0.381091	test: 0.434797
+
+Epoch: 108
+Loss: 0.06796621308673251
+ROC train: 0.980716	val: 0.796244	test: 0.851223
+PRC train: 0.793011	val: 0.360909	test: 0.430581
+
+Epoch: 109
+Loss: 0.06706229800713305
+ROC train: 0.984831	val: 0.778780	test: 0.851763
+PRC train: 0.809762	val: 0.378641	test: 0.444295
+
+Epoch: 110
+Loss: 0.06674659752791168
+ROC train: 0.981771	val: 0.780229	test: 0.844957
+PRC train: 0.790473	val: 0.368055	test: 0.399818
+
+Epoch: 111
+Loss: 0.06722376877102897
+ROC train: 0.982019	val: 0.782688	test: 0.844404
+PRC train: 0.794462	val: 0.361966	test: 0.433195
+
+Epoch: 112
+Loss: 0.06696926382597572
+ROC train: 0.983787	val: 0.789163	test: 0.855897
+PRC train: 0.803697	val: 0.372786	test: 0.432171
+
+Epoch: 113
+Loss: 0.06742898749418137
+ROC train: 0.985035	val: 0.788577	test: 0.854177
+PRC train: 0.813806	val: 0.365861	test: 0.450273
+
+Epoch: 114
+Loss: 0.06563840371075623
+ROC train: 0.981901	val: 0.789533	test: 0.857672
+PRC train: 0.796952	val: 0.372434	test: 0.419691
+
+Epoch: 115
+Loss: 0.0659617774141111
+ROC train: 0.985800	val: 0.775394	test: 0.854634
+PRC train: 0.819194	val: 0.384560	test: 0.441874
+
+Epoch: 116
+Loss: 0.06595403329473365
+ROC train: 0.982072	val: 0.773144	test: 0.852583
+PRC train: 0.786712	val: 0.358448	test: 0.415523
+
+Epoch: 117
+Loss: 0.06620570251426006
+ROC train: 0.985608	val: 0.781487	test: 0.861071
+PRC train: 0.811606	val: 0.370115	test: 0.445928
+
+Epoch: 118
+Loss: 0.06521192999294366
+ROC train: 0.986133	val: 0.785003	test: 0.851775
+PRC train: 0.818977	val: 0.376247	test: 0.467646
+
+Epoch: 119
+Loss: 0.06496551453501315
+ROC train: 0.982925	val: 0.780461	test: 0.856168
+PRC train: 0.804743	val: 0.369321	test: 0.441218
+
+Epoch: 120
+Loss: 0.06397627198811369
+ROC train: 0.987197	val: 0.791064	test: 0.863776
+PRC train: 0.825907	val: 0.384748	test: 0.457807
+
+Early stopping
+Best (ROC):	 train: 0.926719	val: 0.828581	test: 0.840170
+Best (PRC):	 train: 0.572574	val: 0.420474	test: 0.505263
+
+ROC train: 0.973868	val: 0.786409	test: 0.844879
+PRC train: 0.742355	val: 0.371270	test: 0.392968
+
+Epoch: 95
+Loss: 0.0738180936353606
+ROC train: 0.977629	val: 0.798707	test: 0.850353
+PRC train: 0.767597	val: 0.391350	test: 0.441899
+
+Epoch: 96
+Loss: 0.06974660239459948
+ROC train: 0.977600	val: 0.808225	test: 0.846934
+PRC train: 0.771868	val: 0.395975	test: 0.430315
+
+Epoch: 97
+Loss: 0.07293433741599027
+ROC train: 0.979887	val: 0.814882	test: 0.848591
+PRC train: 0.783020	val: 0.382203	test: 0.441126
+
+Epoch: 98
+Loss: 0.07148866886505216
+ROC train: 0.981401	val: 0.800346	test: 0.847962
+PRC train: 0.786178	val: 0.384828	test: 0.426684
+
+Epoch: 99
+Loss: 0.07236400956022403
+ROC train: 0.978603	val: 0.784871	test: 0.846426
+PRC train: 0.776116	val: 0.388338	test: 0.441239
+
+Epoch: 100
+Loss: 0.07222976309061756
+ROC train: 0.981490	val: 0.797190	test: 0.852625
+PRC train: 0.796563	val: 0.398311	test: 0.433335
+
+Epoch: 101
+Loss: 0.07260374450310048
+ROC train: 0.977882	val: 0.808458	test: 0.850661
+PRC train: 0.777768	val: 0.374073	test: 0.436356
+
+Epoch: 102
+Loss: 0.06946723345988651
+ROC train: 0.980515	val: 0.793679	test: 0.851384
+PRC train: 0.783888	val: 0.357553	test: 0.443279
+
+Epoch: 103
+Loss: 0.07044628652717129
+ROC train: 0.980538	val: 0.805598	test: 0.835593
+PRC train: 0.778222	val: 0.398502	test: 0.429606
+
+Epoch: 104
+Loss: 0.07052520555248155
+ROC train: 0.981351	val: 0.799143	test: 0.854577
+PRC train: 0.789361	val: 0.367340	test: 0.446484
+
+Epoch: 105
+Loss: 0.06950989865384015
+ROC train: 0.981299	val: 0.795903	test: 0.851677
+PRC train: 0.783984	val: 0.387596	test: 0.461369
+
+Epoch: 106
+Loss: 0.06890382613041028
+ROC train: 0.980564	val: 0.790680	test: 0.858575
+PRC train: 0.785254	val: 0.392677	test: 0.446933
+
+Epoch: 107
+Loss: 0.07100221781671784
+ROC train: 0.979763	val: 0.792088	test: 0.858338
+PRC train: 0.789495	val: 0.391084	test: 0.456353
+
+Epoch: 108
+Loss: 0.06825558516629027
+ROC train: 0.983843	val: 0.805380	test: 0.859517
+PRC train: 0.804573	val: 0.388977	test: 0.431167
+
+Epoch: 109
+Loss: 0.06729299481286599
+ROC train: 0.981102	val: 0.802897	test: 0.858949
+PRC train: 0.783949	val: 0.395976	test: 0.434729
+
+Epoch: 110
+Loss: 0.0681610946338155
+ROC train: 0.980191	val: 0.796586	test: 0.852721
+PRC train: 0.779812	val: 0.369809	test: 0.451686
+
+Epoch: 111
+Loss: 0.06702394094637766
+ROC train: 0.984623	val: 0.796421	test: 0.860462
+PRC train: 0.809035	val: 0.365344	test: 0.455728
+
+Epoch: 112
+Loss: 0.06779330814421158
+ROC train: 0.983846	val: 0.800543	test: 0.847080
+PRC train: 0.805722	val: 0.367489	test: 0.445002
+
+Epoch: 113
+Loss: 0.06706735790901519
+ROC train: 0.984370	val: 0.793938	test: 0.852887
+PRC train: 0.806128	val: 0.376352	test: 0.427629
+
+Epoch: 114
+Loss: 0.0664420082698855
+ROC train: 0.983582	val: 0.801264	test: 0.858129
+PRC train: 0.794529	val: 0.384845	test: 0.408207
+
+Epoch: 115
+Loss: 0.06711286651932594
+ROC train: 0.985844	val: 0.797827	test: 0.855508
+PRC train: 0.819802	val: 0.371950	test: 0.442263
+
+Epoch: 116
+Loss: 0.06400276976635048
+ROC train: 0.985385	val: 0.818518	test: 0.853099
+PRC train: 0.823109	val: 0.369154	test: 0.431602
+
+Epoch: 117
+Loss: 0.0631938018605177
+ROC train: 0.986099	val: 0.792442	test: 0.854184
+PRC train: 0.818553	val: 0.358946	test: 0.429025
+
+Epoch: 118
+Loss: 0.06361928053952083
+ROC train: 0.986578	val: 0.808671	test: 0.849815
+PRC train: 0.824718	val: 0.370958	test: 0.422412
+
+Epoch: 119
+Loss: 0.06478405441189439
+ROC train: 0.983856	val: 0.798538	test: 0.846511
+PRC train: 0.816014	val: 0.377081	test: 0.431631
+
+Epoch: 120
+Loss: 0.06473865701644217
+ROC train: 0.984633	val: 0.797467	test: 0.829710
+PRC train: 0.814703	val: 0.387128	test: 0.414170
+
+Early stopping
+Best (ROC):	 train: 0.968379	val: 0.826177	test: 0.844854
+Best (PRC):	 train: 0.713083	val: 0.419440	test: 0.454199
+
+ROC train: 0.975383	val: 0.811354	test: 0.846894
+PRC train: 0.757265	val: 0.381560	test: 0.474748
+
+Epoch: 95
+Loss: 0.07131471291648447
+ROC train: 0.975990	val: 0.793813	test: 0.858371
+PRC train: 0.755523	val: 0.395468	test: 0.469445
+
+Epoch: 96
+Loss: 0.06973224531105533
+ROC train: 0.979799	val: 0.798105	test: 0.856075
+PRC train: 0.774757	val: 0.393726	test: 0.475519
+
+Epoch: 97
+Loss: 0.07156064978680186
+ROC train: 0.974249	val: 0.797418	test: 0.859715
+PRC train: 0.739657	val: 0.379607	test: 0.482889
+
+Epoch: 98
+Loss: 0.07103373438461875
+ROC train: 0.974770	val: 0.810810	test: 0.831346
+PRC train: 0.759690	val: 0.377902	test: 0.452210
+
+Epoch: 99
+Loss: 0.07075800434129736
+ROC train: 0.981609	val: 0.797242	test: 0.844106
+PRC train: 0.792745	val: 0.399270	test: 0.469065
+
+Epoch: 100
+Loss: 0.0705614265576339
+ROC train: 0.976027	val: 0.772589	test: 0.837878
+PRC train: 0.766145	val: 0.394213	test: 0.442052
+
+Epoch: 101
+Loss: 0.07070607621653678
+ROC train: 0.979724	val: 0.795224	test: 0.852471
+PRC train: 0.783308	val: 0.398178	test: 0.487250
+
+Epoch: 102
+Loss: 0.07130197165572333
+ROC train: 0.980116	val: 0.798015	test: 0.849825
+PRC train: 0.784969	val: 0.398544	test: 0.473744
+
+Epoch: 103
+Loss: 0.06860127345395528
+ROC train: 0.978574	val: 0.797899	test: 0.854956
+PRC train: 0.771465	val: 0.373801	test: 0.458184
+
+Epoch: 104
+Loss: 0.07042427884284111
+ROC train: 0.979906	val: 0.793223	test: 0.862808
+PRC train: 0.789923	val: 0.399280	test: 0.474078
+
+Epoch: 105
+Loss: 0.06933259835926532
+ROC train: 0.981287	val: 0.785551	test: 0.864062
+PRC train: 0.790981	val: 0.389923	test: 0.469379
+
+Epoch: 106
+Loss: 0.06850930042965608
+ROC train: 0.981048	val: 0.788770	test: 0.846106
+PRC train: 0.789934	val: 0.374142	test: 0.428514
+
+Epoch: 107
+Loss: 0.06873188592312907
+ROC train: 0.982856	val: 0.778719	test: 0.850074
+PRC train: 0.802420	val: 0.363767	test: 0.448733
+
+Epoch: 108
+Loss: 0.06687596111927316
+ROC train: 0.984603	val: 0.789179	test: 0.852918
+PRC train: 0.814224	val: 0.399571	test: 0.472020
+
+Epoch: 109
+Loss: 0.06618139033731987
+ROC train: 0.982896	val: 0.799969	test: 0.850858
+PRC train: 0.804464	val: 0.369005	test: 0.447610
+
+Epoch: 110
+Loss: 0.06750744842473752
+ROC train: 0.981566	val: 0.790839	test: 0.847533
+PRC train: 0.784665	val: 0.366861	test: 0.422336
+
+Epoch: 111
+Loss: 0.06566533239094091
+ROC train: 0.979973	val: 0.806492	test: 0.857197
+PRC train: 0.785218	val: 0.382372	test: 0.472567
+
+Epoch: 112
+Loss: 0.06911276282028771
+ROC train: 0.984679	val: 0.786223	test: 0.851586
+PRC train: 0.822805	val: 0.375428	test: 0.441244
+
+Epoch: 113
+Loss: 0.06858754293151849
+ROC train: 0.984920	val: 0.794290	test: 0.859489
+PRC train: 0.819538	val: 0.373058	test: 0.487497
+
+Epoch: 114
+Loss: 0.06610462801913508
+ROC train: 0.982962	val: 0.786184	test: 0.852474
+PRC train: 0.812872	val: 0.369496	test: 0.450119
+
+Epoch: 115
+Loss: 0.06519729243229848
+ROC train: 0.981497	val: 0.791759	test: 0.844441
+PRC train: 0.797714	val: 0.386903	test: 0.474784
+
+Epoch: 116
+Loss: 0.0650696122046972
+ROC train: 0.985000	val: 0.779540	test: 0.850538
+PRC train: 0.816219	val: 0.351356	test: 0.460733
+
+Epoch: 117
+Loss: 0.0648268572593713
+ROC train: 0.986413	val: 0.787299	test: 0.855546
+PRC train: 0.829349	val: 0.362090	test: 0.457678
+
+Epoch: 118
+Loss: 0.0638662590786395
+ROC train: 0.984822	val: 0.774835	test: 0.839398
+PRC train: 0.812265	val: 0.338481	test: 0.442548
+
+Epoch: 119
+Loss: 0.06671501902514594
+ROC train: 0.984284	val: 0.797652	test: 0.844796
+PRC train: 0.815452	val: 0.385532	test: 0.451109
+
+Epoch: 120
+Loss: 0.06386507780336739
+ROC train: 0.986128	val: 0.785070	test: 0.845957
+PRC train: 0.828037	val: 0.358197	test: 0.446328
+
+Early stopping
+Best (ROC):	 train: 0.895753	val: 0.827358	test: 0.859475
+Best (PRC):	 train: 0.506749	val: 0.398473	test: 0.502550
+All runs completed.
+
+ROC train: 0.981316	val: 0.787542	test: 0.809224
+PRC train: 0.772400	val: 0.408079	test: 0.412161
+
+Epoch: 95
+Loss: 0.07100210470512514
+ROC train: 0.977948	val: 0.784417	test: 0.795376
+PRC train: 0.757604	val: 0.361878	test: 0.419936
+
+Epoch: 96
+Loss: 0.07130530531678164
+ROC train: 0.973206	val: 0.779970	test: 0.798150
+PRC train: 0.728570	val: 0.385324	test: 0.389228
+
+Epoch: 97
+Loss: 0.07021442147384156
+ROC train: 0.978942	val: 0.774616	test: 0.796023
+PRC train: 0.737181	val: 0.379689	test: 0.407091
+
+Epoch: 98
+Loss: 0.07393386926855047
+ROC train: 0.984757	val: 0.797062	test: 0.801881
+PRC train: 0.800042	val: 0.403656	test: 0.401418
+
+Epoch: 99
+Loss: 0.06983904832528204
+ROC train: 0.981925	val: 0.786546	test: 0.800125
+PRC train: 0.781137	val: 0.386643	test: 0.410703
+
+Epoch: 100
+Loss: 0.06881317910637093
+ROC train: 0.985113	val: 0.785096	test: 0.800772
+PRC train: 0.802241	val: 0.381027	test: 0.401598
+
+Epoch: 101
+Loss: 0.07003216398809108
+ROC train: 0.983453	val: 0.794695	test: 0.804581
+PRC train: 0.797613	val: 0.385921	test: 0.404007
+
+Epoch: 102
+Loss: 0.06810204481705937
+ROC train: 0.981415	val: 0.778665	test: 0.792213
+PRC train: 0.780024	val: 0.370284	test: 0.389459
+
+Epoch: 103
+Loss: 0.07105859638145816
+ROC train: 0.984381	val: 0.795853	test: 0.803665
+PRC train: 0.801290	val: 0.388495	test: 0.405963
+
+Epoch: 104
+Loss: 0.06689375475547782
+ROC train: 0.982445	val: 0.781165	test: 0.803303
+PRC train: 0.790736	val: 0.381591	test: 0.394867
+
+Epoch: 105
+Loss: 0.07022796884767349
+ROC train: 0.986746	val: 0.791641	test: 0.787711
+PRC train: 0.813868	val: 0.401605	test: 0.405669
+
+Epoch: 106
+Loss: 0.06793657186231188
+ROC train: 0.984893	val: 0.793670	test: 0.799058
+PRC train: 0.797685	val: 0.384267	test: 0.390856
+
+Epoch: 107
+Loss: 0.06875668679955191
+ROC train: 0.985304	val: 0.789238	test: 0.793932
+PRC train: 0.797175	val: 0.391633	test: 0.401950
+
+Epoch: 108
+Loss: 0.06773204028379809
+ROC train: 0.987008	val: 0.794176	test: 0.803199
+PRC train: 0.814597	val: 0.405857	test: 0.408372
+
+Epoch: 109
+Loss: 0.0680506547976085
+ROC train: 0.986099	val: 0.803413	test: 0.792646
+PRC train: 0.812437	val: 0.404466	test: 0.403424
+
+Epoch: 110
+Loss: 0.06560980951124028
+ROC train: 0.985361	val: 0.800758	test: 0.800173
+PRC train: 0.798913	val: 0.384600	test: 0.383914
+
+Epoch: 111
+Loss: 0.0659340515821713
+ROC train: 0.987968	val: 0.792878	test: 0.803416
+PRC train: 0.825457	val: 0.391899	test: 0.397720
+
+Epoch: 112
+Loss: 0.06430698166492341
+ROC train: 0.985620	val: 0.782259	test: 0.791556
+PRC train: 0.809580	val: 0.360298	test: 0.379061
+
+Epoch: 113
+Loss: 0.06496302659796276
+ROC train: 0.986287	val: 0.792291	test: 0.807435
+PRC train: 0.817087	val: 0.367721	test: 0.387711
+
+Epoch: 114
+Loss: 0.06414318236016174
+ROC train: 0.987296	val: 0.792007	test: 0.792817
+PRC train: 0.828040	val: 0.395234	test: 0.400865
+
+Epoch: 115
+Loss: 0.0648941339225177
+ROC train: 0.989617	val: 0.793175	test: 0.795600
+PRC train: 0.841793	val: 0.411730	test: 0.401685
+
+Epoch: 116
+Loss: 0.06435016287115058
+ROC train: 0.985143	val: 0.791977	test: 0.790952
+PRC train: 0.811307	val: 0.364667	test: 0.382754
+
+Epoch: 117
+Loss: 0.06411920104186297
+ROC train: 0.989231	val: 0.793023	test: 0.787242
+PRC train: 0.838759	val: 0.387044	test: 0.392097
+
+Epoch: 118
+Loss: 0.06200741621993949
+ROC train: 0.987541	val: 0.799425	test: 0.795765
+PRC train: 0.827121	val: 0.385694	test: 0.381377
+
+Epoch: 119
+Loss: 0.06303850013952651
+ROC train: 0.988665	val: 0.795215	test: 0.795020
+PRC train: 0.828920	val: 0.385300	test: 0.366095
+
+Epoch: 120
+Loss: 0.06344036390049781
+ROC train: 0.987902	val: 0.788099	test: 0.794487
+PRC train: 0.826982	val: 0.396515	test: 0.382787
+
+Epoch: 121
+Loss: 0.06193688827123739
+ROC train: 0.987275	val: 0.786036	test: 0.790630
+PRC train: 0.822175	val: 0.380987	test: 0.368509
+
+Epoch: 122
+Loss: 0.06590235439398319
+ROC train: 0.990575	val: 0.791251	test: 0.799767
+PRC train: 0.854383	val: 0.386118	test: 0.369986
+
+Epoch: 123
+Loss: 0.05972034792898511
+ROC train: 0.988834	val: 0.787320	test: 0.783767
+PRC train: 0.834483	val: 0.370837	test: 0.363207
+
+Epoch: 124
+Loss: 0.06093379393493495
+ROC train: 0.989675	val: 0.787861	test: 0.789478
+PRC train: 0.839179	val: 0.391058	test: 0.387351
+
+Epoch: 125
+Loss: 0.06444001070235003
+ROC train: 0.988786	val: 0.779626	test: 0.796780
+PRC train: 0.830335	val: 0.364848	test: 0.366541
+
+Epoch: 126
+Loss: 0.06091624615398844
+ROC train: 0.989189	val: 0.794870	test: 0.788286
+PRC train: 0.831001	val: 0.368760	test: 0.353522
+
+Epoch: 127
+Loss: 0.0608420111689891
+ROC train: 0.991629	val: 0.798534	test: 0.790801
+PRC train: 0.859926	val: 0.381870	test: 0.399651
+
+Epoch: 128
+Loss: 0.06122673667418135
+ROC train: 0.990595	val: 0.798614	test: 0.807259
+PRC train: 0.847776	val: 0.391995	test: 0.377744
+
+Epoch: 129
+Loss: 0.060195123761057547
+ROC train: 0.990890	val: 0.774280	test: 0.798241
+PRC train: 0.847668	val: 0.392196	test: 0.391570
+
+Epoch: 130
+Loss: 0.06069872632820686
+ROC train: 0.990793	val: 0.801738	test: 0.800410
+PRC train: 0.858492	val: 0.387999	test: 0.377178
+
+Epoch: 131
+Loss: 0.05784474738064958
+ROC train: 0.992461	val: 0.790404	test: 0.791567
+PRC train: 0.870763	val: 0.365526	test: 0.362525
+
+Epoch: 132
+Loss: 0.058841205528013904
+ROC train: 0.988963	val: 0.787084	test: 0.797479
+PRC train: 0.843611	val: 0.371371	test: 0.378543
+
+Epoch: 133
+Loss: 0.05952846482915597
+ROC train: 0.991794	val: 0.789372	test: 0.793790
+PRC train: 0.861608	val: 0.383203	test: 0.382879
+
+Epoch: 134
+Loss: 0.058380089029490295
+ROC train: 0.992555	val: 0.793976	test: 0.799940
+PRC train: 0.872793	val: 0.377639	test: 0.381189
+
+Epoch: 135
+Loss: 0.057396220818371015
+ROC train: 0.991249	val: 0.797416	test: 0.799948
+PRC train: 0.861191	val: 0.395297	test: 0.384732
+
+Epoch: 136
+Loss: 0.06214280237772932
+ROC train: 0.989641	val: 0.788824	test: 0.804579
+PRC train: 0.842080	val: 0.385645	test: 0.399140
+
+Epoch: 137
+Loss: 0.058469974141910075
+ROC train: 0.992133	val: 0.788076	test: 0.797476
+PRC train: 0.867776	val: 0.376568	test: 0.378178
+
+Epoch: 138
+Loss: 0.05894497269711353
+ROC train: 0.990848	val: 0.784623	test: 0.799584
+PRC train: 0.857362	val: 0.377254	test: 0.386641
+
+Epoch: 139
+Loss: 0.057389436457806045
+ROC train: 0.992054	val: 0.791273	test: 0.796786
+PRC train: 0.873870	val: 0.379670	test: 0.376206
+
+Epoch: 140
+Loss: 0.056670050320421265
+ROC train: 0.992504	val: 0.793740	test: 0.787343
+PRC train: 0.876040	val: 0.376234	test: 0.388297
+
+Epoch: 141
+Loss: 0.05674876044082982
+ROC train: 0.992368	val: 0.788214	test: 0.787875
+PRC train: 0.870740	val: 0.394989	test: 0.380633
+
+Epoch: 142
+Loss: 0.057351773696708415
+ROC train: 0.990823	val: 0.779077	test: 0.796241
+PRC train: 0.861787	val: 0.378370	test: 0.371742
+
+Epoch: 143
+Loss: 0.05729678199717779
+ROC train: 0.991489	val: 0.783805	test: 0.799615
+PRC train: 0.866460	val: 0.362026	test: 0.372045
+
+Epoch: 144
+Loss: 0.05793761595208703
+ROC train: 0.992740	val: 0.777814	test: 0.797277
+PRC train: 0.884860	val: 0.373550	test: 0.365011
+
+Early stopping
+Best (ROC):	 train: 0.986099	val: 0.803413	test: 0.792646
+Best (PRC):	 train: 0.812437	val: 0.404466	test: 0.403424
+All runs completed.
