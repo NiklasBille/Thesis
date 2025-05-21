@@ -41,6 +41,21 @@ To run the training script for e.g. lipo, cd into src_regression and run:
 
 For all the downstream tasks the author of GraphMVP did not tune the hyperparameters. 
 
+## Pre-training
+The repo of GraphMVP includes baseline weights for GraphCL classification, but not regression so these we pretrain ourselves. To do this we follow their instructions on data preperation, cd into `src_regression` and run:
+
+    dropout_ratio=0
+    dataset=GEOM/GEOM_2D_nmol50000_nconf1_nupper1000_morefeat
+    output_model_dir=/workspace/results/pretrain_graphCL_regression
+
+    python pretrain_GraphCL.py \
+        --epochs=100 \
+        --dataset="$dataset" \
+        --batch_size=256 \
+        --dropout_ratio="$dropout_ratio" --num_workers=0 \
+        --output_model_dir="$output_model_dir" \
+        --device 0
+
 
 ## Changes made
 * cu111 instead of cu102 or cu110 due to our hardware (not compatible with version cu102 and cu110 has been removed from the link in original repo)
