@@ -6,11 +6,12 @@ import warnings
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning) # To supress an annoying warning
 
 class RawTableGenerator:
-    def __init__(self, model, experiment, partition, decimals=None):
+    def __init__(self, model=None, experiment=None, partition=None, decimals=None, isComparingModels=False):
         self.model = model
         self.experiment = experiment
         self.partition = partition
         self.decimals = decimals
+        self.isComparingModels = isComparingModels    # Flag is only True when using model_comparison scripts
         self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
         self.allowed_experiments = ["noise", "split"]
         self.allowed_models = ["3DInfomax", "GraphMVP", "GraphCL"]
@@ -22,7 +23,7 @@ class RawTableGenerator:
         if self.experiment not in self.allowed_experiments:
             raise ValueError(f"Invalid experiment '{self.experiment}'. Must be one of {self.allowed_experiments}")
         
-        if self.model not in self.allowed_models:
+        if self.model not in self.allowed_models and not self.isComparingModels:
             raise ValueError(f"Invalid model '{self.model}'. Must be one of {self.allowed_models}")
         
         
@@ -43,19 +44,39 @@ class RawTableGenerator:
 
     def print_result_table(self, print_secondary_metric=False):
         print("\n" + "="*80)
-        print(f"MODEL: {self.model} | EXPERIMENT: {self.experiment} | PARITION: {self.partition}")
+        print(f"MODEL: {self.model} | EXPERIMENT: {self.experiment} | PARTITION: {self.partition}")
         print("="*80)
         table_primary_metric, table_secondary_metric = self.create_table(self.experiment, self.model, self.partition)
         if self.decimals is not None:
             self.round_table(table_primary_metric)
             self.round_table(table_secondary_metric)
-        print("\n PRIMARY METRIC TABLE")
-        print(table_primary_metric.to_string())
-        print("\n" + "-"*80)
-        if print_secondary_metric:
-            print("\n SECONDARY METRIC TABLE")
-            print(table_secondary_metric.to_string())
+        print("PRIMARY METRIC")
+    
+        if self.experiment == 'noise':
+            print(table_primary_metric.to_string())
             print("\n" + "-"*80)
+            if print_secondary_metric:
+                print("\n SECONDARY METRIC")
+                print(table_secondary_metric.to_string())
+                print("\n" + "-"*80)
+            
+        # Split table is very large so we present it as two tables, one for random and one for scaffold
+        else: 
+            print("[RANDOM]")
+            table_primary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+            print(table_primary_metric.loc[:, 'random'].to_string(), '\n')
+            print("[SCAFFOLD]")
+            print(table_primary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+
+            if print_secondary_metric:
+                table_secondary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+                print("SECONDARY METRIC")
+                print("[RANDOM]")
+                print(table_secondary_metric.loc[:, 'random'].to_string(), '\n')
+                print("[SCAFFOLD]")
+                print(table_secondary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+
+        
     
     def round_table(self, table):
          if self.decimals is not None:
@@ -74,7 +95,7 @@ class RawTableGenerator:
         secondary_metric = "mae" if task_type == "regression" else "prcauc"
         return primary_metric, secondary_metric
     
-    def create_table(self, experiment=None, model=None, partition=None):     
+    def create_table(self, experiment=None, model=None, partition=None):
         # Create empty MultiIndex table
         if experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
@@ -136,7 +157,17 @@ class RawTableGenerator:
                 
                 if not eval_file_exists:
                     continue # Skip computations if no evaluation file exists
+                
+                # if primary_metric == 'rmse':
+                #     k = 10   # keep k best runs 
+                #     runs_to_keep = np.argsort(np.argsort(results[f'test_{primary_metric}'])) < k
 
+                #     from itertools import compress
+                #     for key in results.keys():
+                #         results[key] = list(compress(results[key], runs_to_keep))
+                
+                
+        
                 if experiment == "split":
                     sub_experiment_key = tuple(os.path.normpath(sub_experiment).split(os.sep)) # In split we have scaff/train_prop=0.8 etc
                 else:

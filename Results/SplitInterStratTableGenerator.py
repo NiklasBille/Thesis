@@ -5,7 +5,7 @@ import pandas as pd
 import RawTableGenerator as tg
 
 
-class DeltaSplitTableGenerator(tg.RawTableGenerator):
+class SplitInterStratTableGenerator(tg.RawTableGenerator):
     def __init__(self, model, experiment, partition, decimals=None):
         super().__init__(model, experiment, partition, decimals)
         self.raw_primary_table, self.raw_secondary_table = super().create_table(experiment, model, partition)
@@ -56,7 +56,7 @@ class DeltaSplitTableGenerator(tg.RawTableGenerator):
         print(primary_table.to_string())
         print("\n" + "-"*80)
         if print_secondary_metric:
-            print("\n SECONDARY DELTA TABLE")
+            print("\n SECONDARY METRIC DELTA TABLE")
             print(secondary_table.to_string())
             print("\n" + "-"*80)
 
