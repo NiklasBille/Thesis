@@ -35,10 +35,12 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
                 
                 for strategy in strategies:
                     baseline = row.loc[strategy, 'train_prop=0.8', 'mean']
-                    # TODO percentage for split
                     for train_prop in train_props:
                         readout = row.loc[strategy, train_prop, 'mean']
-                        metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = readout - baseline
+                        if self.use_percentage is True:
+                            metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = 100*(readout - baseline)/baseline
+                        else:
+                            metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = readout - baseline
 
         return metric_diff_table
 
