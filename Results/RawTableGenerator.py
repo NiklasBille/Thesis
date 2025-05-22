@@ -77,7 +77,54 @@ class RawTableGenerator:
                 print("[SCAFFOLD]")
                 print(table_secondary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
 
-        
+    def convert_table_to_latex(self):
+        table_primary_metric, table_secondary_metric = self.create_table(self.experiment, self.model, self.partition)
+
+        if self.experiment == "noise":
+            possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
+
+        # Combine mean and std into "mean \pm std"
+        combined = pd.DataFrame(index=table_primary_metric.index)
+        for sub_exp in possible_sub_experiments:
+            mean_col = (sub_exp, "mean")
+            std_col = (sub_exp, "std")
+            combined[sub_exp] = table_primary_metric.apply(
+                lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                            if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                            else pd.NA,
+                axis=1
+            )
+
+        # Add metric column back
+        combined.insert(0, "Metric", table_primary_metric["metric"])
+
+        rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
+        combined.rename(columns=rename_mapping, inplace=True)
+
+        dataset_rename = {
+            "freesolv": "FreeSolv",
+            "esol": "ESOL",
+            "lipo": "Lipo",
+            "bace": "BACE",
+            "bbbp": "BBBP",
+            "clintox": "ClinTox",
+            "hiv": "HIV",
+            "sider": "SIDER",
+            "toxcast": "ToxCast",
+            "tox21": "Tox21"
+        }
+        combined.rename(index=dataset_rename, inplace=True)
+
+        metric_rename = {
+            "rmse": "RMSE $\\downarrow$",
+            "mae": "MAE $\\downarrow$",
+            "rocauc": "ROC-AUC $\\uparrow$",
+            "prcauc": "PRC-AUC $\\uparrow$"
+        }
+        combined["Metric"] = combined["Metric"].replace(metric_rename)
+
+        print(combined.to_latex())
+
     
     def round_table(self, table):
          if self.decimals is not None:

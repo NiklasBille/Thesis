@@ -10,7 +10,9 @@ if __name__ == '__main__':
     parser.add_argument('--partition', default='test', choices=["train", "val", "test"], help="Data partition")
     parser.add_argument('--print_decimals', default=3, type=int, help="How many decimals to print")
     parser.add_argument('--print_secondary_metric', action='store_true', help="Whether the table with secondary metrics is part of output")
+    parser.add_argument('--to_latex', action='store_true', help="Whether to print the table as LaTeX")
     args = parser.parse_args()
+
 
     # If only one model or all models are specified
     if len(args.model) == 1:
@@ -28,15 +30,15 @@ if __name__ == '__main__':
         
         else:
             # Create an instance of the TableGenerator class
-            model_comparison_table_generator = mctg.ModelComparisonTableGenerator(
+            table_generator = mctg.ModelComparisonTableGenerator(
                 experiment=args.experiment,
                 partition=args.partition,
                 decimals=args.print_decimals
             )
-            model_comparison_table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
+            table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
     
     else:
-        model_comparison_table_generator = mctg.ModelComparisonTableGenerator(
+        table_generator = mctg.ModelComparisonTableGenerator(
             experiment=args.experiment,
             partition=args.partition,
             list_of_models=args.model,
@@ -46,18 +48,21 @@ if __name__ == '__main__':
         # First we extract tables for all models specified and put them in a dictionary
         table_dict = dict.fromkeys(args.model)
         for model in args.model:
-            table_generator = tg.RawTableGenerator(
+            raw_table_generator = tg.RawTableGenerator(
                     model=model, 
                     experiment=args.experiment, 
                     partition=args.partition, 
                     decimals=args.print_decimals
             )
-            primary_table, secondary_table =  table_generator.create_table(args.experiment, model, args.partition)
+            primary_table, secondary_table =  raw_table_generator.create_table(args.experiment, model, args.partition)
             table_dict[model] = {'primary': primary_table, 'secondary': secondary_table}
         
         # Then we inject the new metric table dictionary 
-        model_comparison_table_generator.set_table_dict(table_dict)
-        model_comparison_table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
+        table_generator.set_table_dict(table_dict)
+        table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
+    
+    if args.to_latex is True:
+        table_generator.convert_table_to_latex()
 
     
     
