@@ -62,7 +62,7 @@ if __name__ == '__main__':
         table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
     
     if args.to_latex is True:
-        table_generator.convert_table_to_latex()
+        table_generator.convert_table_to_latex(print_secondary_metric=args.print_secondary_metric)
 
     
     
