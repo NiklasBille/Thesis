@@ -51,28 +51,31 @@ class RawTableGenerator:
         if self.decimals is not None:
             self.round_table(table_primary_metric)
             self.round_table(table_secondary_metric)
-        print("PRIMARY METRIC")
     
         if self.experiment == 'noise':
-            print(table_primary_metric.to_string())
-            print("\n" + "-"*80)
-            if print_secondary_metric:
-                print("\n SECONDARY METRIC")
+            if print_secondary_metric is False:
+                print("PRIMARY METRIC")
+                print(table_primary_metric.to_string())
+                print("\n" + "-"*80)
+            else:
+                print("SECONDARY METRIC")
                 print(table_secondary_metric.to_string())
                 print("\n" + "-"*80)
             
         # Split table is very large so we present it as two tables, one for random and one for scaffold
         else: 
-            print("[RANDOM]")
-            table_primary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
-            print(table_primary_metric.loc[:, 'random'].to_string(), '\n')
-            print("[SCAFFOLD]")
-            print(table_primary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+            if print_secondary_metric is False:
+                print("PRIMARY METRIC")
+                print("[RANDOM]")
+                table_primary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+                print(table_primary_metric.loc[:, 'random'].to_string(), '\n')
+                print("[SCAFFOLD]")
+                print(table_primary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
 
-            if print_secondary_metric:
-                table_secondary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+            else:
                 print("SECONDARY METRIC")
                 print("[RANDOM]")
+                table_secondary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
                 print(table_secondary_metric.loc[:, 'random'].to_string(), '\n')
                 print("[SCAFFOLD]")
                 print(table_secondary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)

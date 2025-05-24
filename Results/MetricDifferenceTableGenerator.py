@@ -62,11 +62,12 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
             self.round_table(primary_table)
             self.round_table(secondary_table)
 
-        print("\n PRIMARY METRIC TABLE")
-        print(primary_table.to_string())
-        print("\n" + "-"*80)
-        if print_secondary_metric:
-            print("\n SECONDARY METRIC TABLE")
+        if print_secondary_metric is False:
+            print("PRIMARY METRIC TABLE")
+            print(primary_table.to_string())
+            print("\n" + "-"*80)
+        else:
+            print("SECONDARY METRIC TABLE")
             print(secondary_table.to_string())
             print("\n" + "-"*80)
 

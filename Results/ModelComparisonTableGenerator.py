@@ -84,25 +84,28 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         if self.decimals is not None:
             self.round_table(primary_table)
             self.round_table(secondary_table)
-        print("PRIMARY METRIC")
     
         if self.experiment == 'noise':
-            print(primary_table.to_string())
-            print("\n" + "-"*80)
-            if print_secondary_metric:
-                print("\n SECONDARY METRIC")
+            if print_secondary_metric is False:
+                print("PRIMARY METRIC")
+                print(primary_table.to_string())
+                print("\n" + "-"*80)
+            else:
+                print("SECONDARY METRIC")
                 print(secondary_table.to_string())
                 print("\n" + "-"*80)
             
         # Split table is very large so we present it as two tables, one for random and one for scaffold
         else: 
-            print("[RANDOM]")
-            primary_table.set_index('metric', append=True, inplace=True) # keep metric column when slicing
-            print(primary_table.loc[:, 'random'].to_string(), '\n')
-            print("[SCAFFOLD]")
-            print(primary_table.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+            if print_secondary_metric is False:
+                print("PRIMARY METRIC")
+                print("[RANDOM]")
+                primary_table.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+                print(primary_table.loc[:, 'random'].to_string(), '\n')
+                print("[SCAFFOLD]")
+                print(primary_table.loc[:, 'scaff'].to_string(), '\n', '-'*80)
 
-            if print_secondary_metric:
+            else:
                 secondary_table.set_index('metric', append=True, inplace=True) # keep metric column when slicing
                 print("SECONDARY METRIC")
                 print("[RANDOM]")
