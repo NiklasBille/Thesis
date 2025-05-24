@@ -1,10 +1,8 @@
-import RawTableGenerator as tg 
-
-def extract_tables(lis_of_models, experiment, partition, decimals):
+def extract_tables(list_of_models, experiment, partition, decimals, TableGenerator):
     # Extract tables for all models specified and put them in a dictionary
-    table_dict = dict.fromkeys(lis_of_models)
-    for model in lis_of_models:
-        raw_table_generator = tg.RawTableGenerator(
+    table_dict = dict.fromkeys(list_of_models)
+    for model in list_of_models:
+        raw_table_generator = TableGenerator(
                 model=model, 
                 experiment=experiment, 
                 partition=partition, 
