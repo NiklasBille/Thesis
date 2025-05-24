@@ -171,7 +171,7 @@ class RawTableGenerator:
 
             
             title_random = rf"\toprule" + "\n" + rf"\multicolumn{{5}}{{c}}{{\textbf{{{self.model}: Random splits}}}} \\" + "\n" + r"\midrule"
-            title_scaff = rf"\toprule" + "\n" + rf"\multicolumn{{5}}{{c}}{{\textbf{{{self.model}: Scaff splits}}}} \\" + "\n" + r"\midrule"
+            title_scaff = rf"\toprule" + "\n" + rf"\multicolumn{{5}}{{c}}{{\textbf{{{self.model}: Scaffold splits}}}} \\" + "\n" + r"\midrule"
 
             # Inject the title after \toprule and before the column headers
             latex_str_random = latex_str_random.replace(r"\toprule", title_random, 1)

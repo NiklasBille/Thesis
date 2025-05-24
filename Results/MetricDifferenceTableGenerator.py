@@ -45,7 +45,7 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
         return metric_diff_table
 
     @override
-    def create_table(self):
+    def create_table(self, experiment, model, partition):
         primary_table = self._compute_metric_diff_table(self.raw_primary_table)
         secondary_table = self._compute_metric_diff_table(self.raw_secondary_table)
 
@@ -57,7 +57,7 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
         print("\n" + "="*80)
         print(f"MODEL: {self.model} | EXPERIMENT: {self.experiment} | PARTITION: {self.partition} | FORMAT: Relative changes")
         print("="*80)
-        primary_table, secondary_table = self.create_table()
+        primary_table, secondary_table = self.create_table(self.experiment, self.model, self.partition)
         if self.decimals is not None:
             self.round_table(primary_table)
             self.round_table(secondary_table)

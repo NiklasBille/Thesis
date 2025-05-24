@@ -112,3 +112,7 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                 print(secondary_table.loc[:, 'random'].to_string(), '\n')
                 print("[SCAFFOLD]")
                 print(secondary_table.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+
+    @override
+    def convert_table_to_latex(self, print_secondary_metric=False):
+        pass
