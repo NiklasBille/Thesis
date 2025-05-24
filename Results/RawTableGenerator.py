@@ -83,28 +83,67 @@ class RawTableGenerator:
     def convert_table_to_latex(self, print_secondary_metric=False):
         table_primary_metric, table_secondary_metric = self.create_table(self.experiment, self.model, self.partition)
         table = table_primary_metric if print_secondary_metric is False else table_secondary_metric
+        # Combine mean and std into "mean \pm std"
+        combined = pd.DataFrame(index=table.index)
 
         if self.experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
+            for sub_exp in possible_sub_experiments:
+                mean_col = (sub_exp, "mean")
+                std_col = (sub_exp, "std")
+                combined[sub_exp] = table.apply(
+                    lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                else pd.NA,
+                    axis=1
+                )
+                
+        elif self.experiment =="split":
+            possible_sub_experiments = ["random", "scaff"]
+            train_props = ["train_prop=0.8", "train_prop=0.7", "train_prop=0.6"]
+            for sub_exp in possible_sub_experiments:
+                for train_prop in train_props:
+                
+                    mean_col = (sub_exp, train_prop, "mean")
+                    std_col = (sub_exp, train_prop, "std")
+                    combined[sub_exp, train_prop] = table.apply(
+                        lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                    if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                    else "*",
+                        axis=1
+                    )
 
-        # Combine mean and std into "mean \pm std"
-        combined = pd.DataFrame(index=table.index)
-        for sub_exp in possible_sub_experiments:
-            mean_col = (sub_exp, "mean")
-            std_col = (sub_exp, "std")
-            combined[sub_exp] = table.apply(
-                lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
-                            if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
-                            else pd.NA,
-                axis=1
-            )
+        if self.experiment == "split":
+            # Extract columns
+            random_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'random']
+            scaff_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'scaff']
 
-        # Add metric column back
-        combined.insert(0, "Metric", table["metric"])
+            # Create new tables 
+            combined_random = combined[random_cols]
+            combined_scaff = combined[scaff_cols]
 
-        rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
-        combined.rename(columns=rename_mapping, inplace=True)
+            # Rename tables
+            combined_random.columns = [f"$p={col[1].split('=')[1]}$" for col in combined_random.columns]
+            combined_scaff.columns = [f"p={col[1].split('=')[1]}" for col in combined_scaff.columns]
 
+            # Add metric column back
+            combined_random.insert(0, "Metric", table["metric"])
+            combined_scaff.insert(0, "Metric", table["metric"])
+         
+        else:            
+            rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
+            combined.rename(columns=rename_mapping, inplace=True)
+
+            # Add metric column back
+            combined.insert(0, "Metric", table["metric"])
+
+        # Rename metrics
+        metric_rename = {
+            "rmse": "RMSE $\\downarrow$",
+            "mae": "MAE $\\downarrow$",
+            "rocauc": "ROC-AUC $\\uparrow$",
+            "prcauc": "PRC-AUC $\\uparrow$"
+        }
         dataset_rename = {
             "freesolv": "FreeSolv",
             "esol": "ESOL",
@@ -117,17 +156,40 @@ class RawTableGenerator:
             "toxcast": "ToxCast",
             "tox21": "Tox21"
         }
-        combined.rename(index=dataset_rename, inplace=True)
+        if self.experiment == "split":
+            combined_random = combined_random.copy() # to suppres a warning
+            combined_random["Metric"].replace(metric_rename, inplace=True)
 
-        metric_rename = {
-            "rmse": "RMSE $\\downarrow$",
-            "mae": "MAE $\\downarrow$",
-            "rocauc": "ROC-AUC $\\uparrow$",
-            "prcauc": "PRC-AUC $\\uparrow$"
-        }
-        combined["Metric"] = combined["Metric"].replace(metric_rename)
+            combined_scaff = combined_scaff.copy() # to suppres a warning
+            combined_scaff["Metric"].replace(metric_rename, inplace=True)
 
-        print(combined.to_latex())
+            combined_random.rename(index=dataset_rename, inplace=True)
+            combined_scaff.rename(index=dataset_rename, inplace=True)
+            
+            latex_str_random = combined_random.to_latex()
+            latex_str_scaff = combined_scaff.to_latex()
+
+            
+            title_random = rf"\toprule" + "\n" + rf"\multicolumn{{5}}{{c}}{{\textbf{{{self.model}: Random splits}}}} \\" + "\n" + r"\midrule"
+            title_scaff = rf"\toprule" + "\n" + rf"\multicolumn{{5}}{{c}}{{\textbf{{{self.model}: Scaff splits}}}} \\" + "\n" + r"\midrule"
+
+            # Inject the title after \toprule and before the column headers
+            latex_str_random = latex_str_random.replace(r"\toprule", title_random, 1)
+            latex_str_scaff = latex_str_scaff.replace(r"\toprule", title_scaff, 1)
+            print(latex_str_random, "\n")
+            print(latex_str_scaff)
+        else:
+            combined["Metric"] = combined["Metric"].replace(metric_rename)
+            combined.rename(index=dataset_rename, inplace=True)
+
+            latex_str = combined.to_latex()
+
+            # Define title row (spanning all columns)
+            title = rf"\toprule" + "\n" + rf"\multicolumn{{6}}{{c}}{{\textbf{{{self.model}: Noise}}}} \\" + "\n" + r"\midrule"
+
+            # Inject the title after \toprule and before the column headers
+            latex_str = latex_str.replace(r"\toprule", title, 1)
+            print(latex_str)
 
     
     def round_table(self, table):
