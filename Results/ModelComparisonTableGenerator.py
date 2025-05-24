@@ -115,4 +115,5 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
 
     @override
     def convert_table_to_latex(self, print_secondary_metric=False):
-        pass
+        primary_table, secondary_table = self.create_table()
+        # TODO
