@@ -1,5 +1,7 @@
 import argparse
 import sys
+from utils import extract_tables
+
 import MetricDifferenceTableGenerator as mdtg
 import ModelComparisonTableGenerator as mctg
 
@@ -13,6 +15,28 @@ if __name__ == "__main__":
     parser.add_argument('--to_latex', action='store_true', help="Whether to print the table as LaTeX")
     parser.add_argument('--percentage', action='store_true', help="Whether the comparison is percentage based")
     args = parser.parse_args()
+
+    if len(args.model) == 1 and args.model[0] !="all":
+        model = args.model[0]
+        table_generator = mdtg.MetricDifferenceTableGenerator(model=model, experiment=args.experiment, partition=args.partition, decimals=args.print_decimals)
+    
+    else:
+        if args.model == ['all']:
+            models = ["3DInfomax", "GraphCL_1", "GraphMVP", "GraphCL_2"]
+        else:
+            models = args.model
+
+        table_generator = mctg.ModelComparisonTableGenerator(list_of_models=models, experiment=args.experiment,partition=args.partition,decimals=args.print_decimals)
+        table_dict = extract_tables(
+            list_of_models=models, experiment=args.experiment, 
+            partition=args.partition, decimals=args.print_decimals, 
+            mode="metric_difference", use_percentage=args.percentage)
+
+        table_generator.set_table_dict(table_dict)
+
+    table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
+
+    sys.exit()
 
     # If only one model or all models are specified
     if len(args.model) == 1:
@@ -31,6 +55,7 @@ if __name__ == "__main__":
         
         else:
             table_generator = mctg.ModelComparisonTableGenerator(
+                list_of_models=["3DInfomax", "GraphCL_1", "GraphMVP", "GraphCL_2"],
                 experiment=args.experiment,
                 partition=args.partition,
                 decimals=args.print_decimals
@@ -43,7 +68,7 @@ if __name__ == "__main__":
                 delta_table_generator = mdtg.MetricDifferenceTableGenerator(
                         model=model, experiment=args.experiment, partition=args.partition, decimals=args.print_decimals
                         )
-                primary_table, secondary_table =  delta_table_generator.create_table()
+                primary_table, secondary_table =  delta_table_generator.create_table(experiment=args.experiment, model=model, partition=args.partition)
                 table_dict[model] = {'primary': primary_table, 'secondary': secondary_table}
             
             # Then we inject the new metric table dictionary 
@@ -68,7 +93,7 @@ if __name__ == "__main__":
                     decimals=args.print_decimals,
                     use_percentage=args.percentage
             )
-            primary_table, secondary_table =  delta_table_generator.create_table()
+            primary_table, secondary_table =  delta_table_generator.create_table(experiment=args.experiment, model=model, partition=args.partition)
             table_dict[model] = {'primary': primary_table, 'secondary': secondary_table}
         
         # Then we inject the new metric table dictionary 

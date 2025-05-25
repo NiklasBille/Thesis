@@ -15,7 +15,7 @@ class RawTableGenerator:
         self.isComparingModels = isComparingModels    # Flag is only True when using model_comparison scripts
         self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
         self.allowed_experiments = ["noise", "split"]
-        self.allowed_models = ["3DInfomax", "GraphMVP", "GraphCL_1", "GraphCL_2"]
+        self.allowed_models = ["3DInfomax", "GraphCL_1", "GraphMVP", "GraphCL_2"]
         self.allowed_partitions = ["train", "val", "test"]
 
         self.validate_inputs()

@@ -43,6 +43,9 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
                             metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = readout - baseline
 
         return metric_diff_table
+    
+    def set_use_percentage(self, use_percentage):
+        self.use_percentage = use_percentage
 
     @override
     def create_table(self, experiment, model, partition):

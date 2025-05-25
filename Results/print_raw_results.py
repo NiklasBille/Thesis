@@ -26,7 +26,11 @@ if __name__ == '__main__':
             models = args.model
 
         table_generator = mctg.ModelComparisonTableGenerator(list_of_models=models, experiment=args.experiment,partition=args.partition,decimals=args.print_decimals)
-        table_dict = extract_tables(list_of_models=models, experiment=args.experiment, partition=args.partition, decimals=args.print_decimals, TableGenerator=tg.RawTableGenerator)
+        table_dict = extract_tables(
+            list_of_models=models, experiment=args.experiment, 
+            partition=args.partition, decimals=args.print_decimals, 
+            mode="raw")
+        
         table_generator.set_table_dict(table_dict)
 
     table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
