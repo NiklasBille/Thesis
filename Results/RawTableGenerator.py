@@ -130,14 +130,14 @@ class RawTableGenerator:
             combined_random.insert(0, "Metric", table["metric"])
             combined_scaff.insert(0, "Metric", table["metric"])
          
-        else:            
+        else:
+            # Rename columns
             rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
             combined.rename(columns=rename_mapping, inplace=True)
 
             # Add metric column back
             combined.insert(0, "Metric", table["metric"])
 
-        # Rename metrics
         metric_rename = {
             "rmse": "RMSE $\\downarrow$",
             "mae": "MAE $\\downarrow$",

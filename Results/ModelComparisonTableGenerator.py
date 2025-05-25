@@ -26,15 +26,15 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         if self.experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
             columns = pd.MultiIndex.from_product(
-                [possible_sub_experiments, self.list_of_models],
-                names=["sub_experiment", "model"]
+                [possible_sub_experiments, self.list_of_models, ["mean", "std"]],
+                names=["sub_experiment", "model", "stat"]
                 )
         else:
             possible_sub_experiments = ["random", "scaff"]
             train_props = ["train_prop=0.8", "train_prop=0.7", "train_prop=0.6"]
             columns = pd.MultiIndex.from_product(
-                [possible_sub_experiments, train_props, self.list_of_models],
-                names=["sub_experiment", "train_prop", "model"]
+                [possible_sub_experiments, train_props, self.list_of_models, ["mean", "std"]],
+                names=["sub_experiment", "train_prop", "model", "stat"]
             )
             
         table = pd.DataFrame(index=self.datasets, columns=columns)
@@ -52,14 +52,16 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                 # Add each sub experiment metrics to the correct colunm
                 for sub_experiment in possible_sub_experiments:
                     R = raw_table.loc[self.datasets, sub_experiment]
-                    table.loc[:, (sub_experiment, model)] = R['mean']
-            
-            elif self.experiment =='split':
+                    table.loc[:, (sub_experiment, model, "mean")] = R["mean"]
+                    table.loc[:, (sub_experiment, model, "std")] = R["std"]
 
+            elif self.experiment =='split':
+                # Add each sub experiment metrics to the correct colunm
                 for sub_experiment in possible_sub_experiments:
                     for train_prop in train_props:
                         R = raw_table.loc[self.datasets, (sub_experiment, train_prop)]
-                        table.loc[:, (sub_experiment, train_prop, model)] = R['mean']
+                        table.loc[:, (sub_experiment, train_prop, model, "mean")] = R["mean"]
+                        table.loc[:, (sub_experiment, train_prop, model, "std")] = R["std"]
 
         return table
 
@@ -116,4 +118,58 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
     @override
     def convert_table_to_latex(self, print_secondary_metric=False):
         primary_table, secondary_table = self.create_table()
+        table = primary_table if print_secondary_metric is False else secondary_table
+         # Combine mean and std into "mean \pm std"
+        mean_columns = table.columns.get_level_values('stat') == 'mean'
+        columns_without_stat = table.columns[mean_columns].droplevel('stat').set_names([None, None])
+        combined = pd.DataFrame(index=table.index, columns=columns_without_stat)
+
+        if self.experiment == "noise":
+            possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
+            for sub_exp in possible_sub_experiments:
+                for model in self.list_of_models:
+                    mean_col = (sub_exp, model, "mean")
+                    std_col = (sub_exp, model, "std")
+                    combined[sub_exp, model] = table.apply(
+                        lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                    if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                    else pd.NA,
+                        axis=1
+                    )
+        
+        metric_rename = {
+            "rmse": "RMSE $\\downarrow$",
+            "mae": "MAE $\\downarrow$",
+            "rocauc": "ROC-AUC $\\uparrow$",
+            "prcauc": "PRC-AUC $\\uparrow$"
+        }
+        dataset_rename = {
+            "freesolv": "FreeSolv",
+            "esol": "ESOL",
+            "lipo": "Lipo",
+            "bace": "BACE",
+            "bbbp": "BBBP",
+            "clintox": "ClinTox",
+            "hiv": "HIV",
+            "sider": "SIDER",
+            "toxcast": "ToxCast",
+            "tox21": "Tox21"
+        }
+
+        if self.experiment == "noise":
+            # Rename columns
+            rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
+            combined.rename(columns=rename_mapping, inplace=True)
+
+            # Add metric column back
+            combined.insert(0, "Metric", table["metric"])
+
+            combined["Metric"] = combined["Metric"].replace(metric_rename)
+            combined.rename(index=dataset_rename, inplace=True)
+
+        latex_str = combined.to_latex()
+        latex_str = latex_str.replace("GraphCL_1", "GraphCL").replace("GraphCL_2", "GraphCL")
+
+        print(latex_str)
+        
         # TODO
