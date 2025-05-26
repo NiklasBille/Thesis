@@ -119,13 +119,21 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
     def convert_table_to_latex(self, print_secondary_metric=False):
         primary_table, secondary_table = self.create_table()
         table = primary_table if print_secondary_metric is False else secondary_table
-         # Combine mean and std into "mean \pm std"
+
+         # Create a table to hold "mean \pm std"
         mean_columns = table.columns.get_level_values('stat') == 'mean'
         columns_without_stat = table.columns[mean_columns].droplevel('stat').set_names([None, None])
         combined = pd.DataFrame(index=table.index, columns=columns_without_stat)
 
+        # Dictionaries for rename mapping
+        metric_rename = {"rmse": "RMSE $\\downarrow$", "mae": "MAE $\\downarrow$", "rocauc": "ROC-AUC $\\uparrow$", "prcauc": "PRC-AUC $\\uparrow$"}
+        dataset_rename = {"freesolv": "FreeSolv", "esol": "ESOL", "lipo": "Lipo", "bace": "BACE", "bbbp": "BBBP", "clintox": "ClinTox", "hiv": "HIV", "muv": "MUV", "sider": "SIDER", "toxcast": "ToxCast", "tox21": "Tox21"}
+
+        # For noise experiment
         if self.experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
+
+            # Populate the table
             for sub_exp in possible_sub_experiments:
                 for model in self.list_of_models:
                     mean_col = (sub_exp, model, "mean")
@@ -136,40 +144,27 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                                     else pd.NA,
                         axis=1
                     )
-        
-        metric_rename = {
-            "rmse": "RMSE $\\downarrow$",
-            "mae": "MAE $\\downarrow$",
-            "rocauc": "ROC-AUC $\\uparrow$",
-            "prcauc": "PRC-AUC $\\uparrow$"
-        }
-        dataset_rename = {
-            "freesolv": "FreeSolv",
-            "esol": "ESOL",
-            "lipo": "Lipo",
-            "bace": "BACE",
-            "bbbp": "BBBP",
-            "clintox": "ClinTox",
-            "hiv": "HIV",
-            "sider": "SIDER",
-            "toxcast": "ToxCast",
-            "tox21": "Tox21"
-        }
-
-        if self.experiment == "noise":
+            
             # Rename columns
             rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
             combined.rename(columns=rename_mapping, inplace=True)
-
             # Add metric column back
-            combined.insert(0, "Metric", table["metric"])
-
-            combined["Metric"] = combined["Metric"].replace(metric_rename)
+            combined.insert(0, column=('', 'Metric'), value=table["metric"])
+            combined["","Metric"] = combined["","Metric"].replace(metric_rename)
             combined.rename(index=dataset_rename, inplace=True)
 
-        latex_str = combined.to_latex()
-        latex_str = latex_str.replace("GraphCL_1", "GraphCL").replace("GraphCL_2", "GraphCL")
+            latex_str = combined.to_latex()
+            latex_str = latex_str.replace("GraphCL_1", "GraphCL").replace("GraphCL_2", "GraphCL")
+            latex_str = latex_str.replace(r'\multicolumn{2}{r}', r'\multicolumn{2}{c}')
 
-        print(latex_str)
+            # Define title row (spanning all columns)
+            title = rf"\toprule" + "\n" + rf"\multicolumn{{10}}{{c}}{{\textbf{{Experiment: noise}}}} \\" + "\n" + r"\midrule"
+
+            # Inject the title after \toprule and before the column headers
+            latex_str = latex_str.replace(r"\toprule", title, 1)
+
+            # Wrap entire str in a resize box
+            latex_str = "\\resizebox{\\textwidth}{!}{%\n" + latex_str + "}"
+            print(latex_str)
         
         # TODO

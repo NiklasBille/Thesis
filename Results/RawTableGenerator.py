@@ -84,11 +84,19 @@ class RawTableGenerator:
     def convert_table_to_latex(self, print_secondary_metric=False):
         table_primary_metric, table_secondary_metric = self.create_table(self.experiment, self.model, self.partition)
         table = table_primary_metric if print_secondary_metric is False else table_secondary_metric
-        # Combine mean and std into "mean \pm std"
+        
+        # Create a table to hold "mean \pm std"
         combined = pd.DataFrame(index=table.index)
 
+        # Dictionaries for rename mapping
+        metric_rename = {"rmse": "RMSE $\\downarrow$", "mae": "MAE $\\downarrow$", "rocauc": "ROC-AUC $\\uparrow$", "prcauc": "PRC-AUC $\\uparrow$"}
+        dataset_rename = {"freesolv": "FreeSolv", "esol": "ESOL", "lipo": "Lipo", "bace": "BACE", "bbbp": "BBBP", "clintox": "ClinTox", "hiv": "HIV", "muv": "MUV", "sider": "SIDER", "toxcast": "ToxCast", "tox21": "Tox21"}
+
+        # For noise experiment
         if self.experiment == "noise":
             possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
+
+            # First populate the table
             for sub_exp in possible_sub_experiments:
                 mean_col = (sub_exp, "mean")
                 std_col = (sub_exp, "std")
@@ -98,10 +106,31 @@ class RawTableGenerator:
                                 else pd.NA,
                     axis=1
                 )
-                
+
+            # Then rename columns accordingly
+            rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
+            combined.rename(columns=rename_mapping, inplace=True)
+
+            # Add metric column back
+            combined.insert(0, "Metric", table["metric"])
+            combined["Metric"] = combined["Metric"].replace(metric_rename)
+            combined.rename(index=dataset_rename, inplace=True)
+
+            latex_str = combined.to_latex()
+
+            # Define title row (spanning all columns)
+            title = rf"\toprule" + "\n" + rf"\multicolumn{{6}}{{c}}{{\textbf{{{self.model}: Noise}}}} \\" + "\n" + r"\midrule"
+
+            # Inject the title after \toprule and before the column headers
+            latex_str = latex_str.replace(r"\toprule", title, 1)
+            print(latex_str)
+
+        # For split experiment
         elif self.experiment =="split":
             possible_sub_experiments = ["random", "scaff"]
             train_props = ["train_prop=0.8", "train_prop=0.7", "train_prop=0.6"]
+
+            # First populate the table
             for sub_exp in possible_sub_experiments:
                 for train_prop in train_props:
                 
@@ -113,8 +142,7 @@ class RawTableGenerator:
                                     else "*",
                         axis=1
                     )
-
-        if self.experiment == "split":
+            
             # Extract columns
             random_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'random']
             scaff_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'scaff']
@@ -123,7 +151,7 @@ class RawTableGenerator:
             combined_random = combined[random_cols]
             combined_scaff = combined[scaff_cols]
 
-            # Rename tables
+            # Rename columns
             combined_random.columns = [f"$p={col[1].split('=')[1]}$" for col in combined_random.columns]
             combined_scaff.columns = [f"p={col[1].split('=')[1]}" for col in combined_scaff.columns]
 
@@ -131,36 +159,9 @@ class RawTableGenerator:
             combined_random.insert(0, "Metric", table["metric"])
             combined_scaff.insert(0, "Metric", table["metric"])
          
-        else:
-            # Rename columns
-            rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
-            combined.rename(columns=rename_mapping, inplace=True)
-
-            # Add metric column back
-            combined.insert(0, "Metric", table["metric"])
-
-        metric_rename = {
-            "rmse": "RMSE $\\downarrow$",
-            "mae": "MAE $\\downarrow$",
-            "rocauc": "ROC-AUC $\\uparrow$",
-            "prcauc": "PRC-AUC $\\uparrow$"
-        }
-        dataset_rename = {
-            "freesolv": "FreeSolv",
-            "esol": "ESOL",
-            "lipo": "Lipo",
-            "bace": "BACE",
-            "bbbp": "BBBP",
-            "clintox": "ClinTox",
-            "hiv": "HIV",
-            "sider": "SIDER",
-            "toxcast": "ToxCast",
-            "tox21": "Tox21"
-        }
-        if self.experiment == "split":
+            # Rename metrics
             combined_random = combined_random.copy() # to suppres a warning
             combined_random["Metric"].replace(metric_rename, inplace=True)
-
             combined_scaff = combined_scaff.copy() # to suppres a warning
             combined_scaff["Metric"].replace(metric_rename, inplace=True)
 
@@ -179,19 +180,6 @@ class RawTableGenerator:
             latex_str_scaff = latex_str_scaff.replace(r"\toprule", title_scaff, 1)
             print(latex_str_random, "\n")
             print(latex_str_scaff)
-        else:
-            combined["Metric"] = combined["Metric"].replace(metric_rename)
-            combined.rename(index=dataset_rename, inplace=True)
-
-            latex_str = combined.to_latex()
-
-            # Define title row (spanning all columns)
-            title = rf"\toprule" + "\n" + rf"\multicolumn{{6}}{{c}}{{\textbf{{{self.model}: Noise}}}} \\" + "\n" + r"\midrule"
-
-            # Inject the title after \toprule and before the column headers
-            latex_str = latex_str.replace(r"\toprule", title, 1)
-            print(latex_str)
-
     
     def round_table(self, table):
          if self.decimals is not None:
