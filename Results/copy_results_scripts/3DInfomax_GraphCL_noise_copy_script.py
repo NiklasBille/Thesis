@@ -2,7 +2,7 @@ import os
 import shutil
 
 base_root = "3DInfomax/runs/static_noise/GraphCL"
-target_root = "Results/noise/GraphCL"
+target_root = "Results/noise/3DInfomax_GraphCL"
 
 # Metrics to extract
 allowed_metrics = {"mae", "rmse", "prcauc", "rocauc", "BCEWithLogitsLoss", "OGBNanLabelBCEWithLogitsLoss", "L1Loss", "OGBNanLabelloss"}

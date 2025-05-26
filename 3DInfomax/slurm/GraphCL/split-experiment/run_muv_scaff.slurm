@@ -21,6 +21,7 @@ fi
 apptainer exec --nv --bind $PWD:/workspace 3dinfomax-complete.sif bash -c "
     cd /workspace && \
     gpu_counter=0 && \
+    pip install ogb==1.3.3 && \
     # Loop over the different training proportions
     for prop in 0.6 0.7 0.8; do
         config=configs_split_experiments/GraphCL/muv/scaff/train_prop=\$prop.yml

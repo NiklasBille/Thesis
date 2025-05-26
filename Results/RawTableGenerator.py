@@ -13,7 +13,7 @@ class RawTableGenerator:
         self.partition = partition
         self.decimals = decimals
         self.isComparingModels = isComparingModels    # Flag is only True when using model_comparison scripts
-        self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "sider", "toxcast", "tox21"]
+        self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "muv", "sider", "toxcast", "tox21"]
         self.allowed_experiments = ["noise", "split"]
         self.allowed_models = ["3DInfomax", "GraphCL_1", "GraphMVP", "GraphCL_2"]
         self.allowed_partitions = ["train", "val", "test"]
@@ -34,6 +34,7 @@ class RawTableGenerator:
         'freesolv': 'regression',
         'lipo': 'regression',
         'hiv': 'classification',
+        'muv': 'classification',
         'bace': 'classification',
         'bbbp': 'classification',
         'tox21': 'classification',

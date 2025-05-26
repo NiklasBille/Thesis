@@ -2,7 +2,7 @@ import os
 import shutil
 
 base_root = "3DInfomax/runs/split/GraphCL"
-target_root = "Results/split/GraphCL"
+target_root = "Results/split/3DInfomax_GraphCL"
 
 # Metrics to extract
 allowed_metrics = {"mae", "rmse", "prcauc", "rocauc", "BCEWithLogitsLoss", "OGBNanLabelBCEWithLogitsLoss", "L1Loss", "OGBNanLabelloss"}
