@@ -122,7 +122,12 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
 
          # Create a table to hold "mean \pm std"
         mean_columns = table.columns.get_level_values('stat') == 'mean'
-        columns_without_stat = table.columns[mean_columns].droplevel('stat').set_names([None, None])
+
+        if self.experiment == "noise":
+            columns_without_stat = table.columns[mean_columns].droplevel('stat').set_names([None, None])
+        elif self.experiment == "split":
+            columns_without_stat = table.columns[mean_columns].droplevel('stat')
+
         combined = pd.DataFrame(index=table.index, columns=columns_without_stat)
 
         # Dictionaries for rename mapping
@@ -167,4 +172,70 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
             latex_str = "\\resizebox{\\textwidth}{!}{%\n" + latex_str + "}"
             print(latex_str)
         
-        # TODO
+        elif self.experiment == "split":
+            possible_sub_experiments = ["random", "scaff"]
+            train_props = ["train_prop=0.8", "train_prop=0.7", "train_prop=0.6"]
+
+            # First populate the table
+            for sub_exp in possible_sub_experiments:
+                for train_prop in train_props:
+                    for model in self.list_of_models:
+                        mean_col = (sub_exp, train_prop, model, "mean")
+                        std_col = (sub_exp, train_prop, model, "std")
+                        combined[sub_exp, train_prop, model] = table.apply(
+                            lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                        if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                        else "*",
+                            axis=1
+                        )
+            
+            # Extract columns
+            random_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'random']
+            scaff_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'scaff']
+
+            # Create new tables 
+            combined_random = combined[random_cols]
+            combined_scaff = combined[scaff_cols]
+
+            # Rename columns
+            combined_random.columns =  pd.MultiIndex.from_tuples([(f"$p={col[1].split('=')[1]}$", col[2]) for col in combined_random.columns if isinstance(col, tuple) and len(col) == 3], names=["train_prop", "model"])
+            combined_scaff.columns =  pd.MultiIndex.from_tuples([(f"$p={col[1].split('=')[1]}$", col[2]) for col in combined_scaff.columns if isinstance(col, tuple) and len(col) == 3], names=["train_prop", "model"])
+
+            # Add metric column back
+            combined_random.insert(0, column=('', 'Metric'), value=table["metric"])
+            combined_scaff.insert(0, column=('', 'Metric'), value=table["metric"])
+            
+         
+            # Rename metrics
+            combined_random = combined_random.copy() # to suppres a warning
+            combined_random[("", "Metric")] = combined_random[("", "Metric")].replace(metric_rename)
+
+            combined_scaff = combined_scaff.copy() # to suppres a warning
+            combined_scaff[("", "Metric")] = combined_scaff[("", "Metric")].replace(metric_rename)
+
+            combined_random.rename(index=dataset_rename, inplace=True)
+            combined_scaff.rename(index=dataset_rename, inplace=True)
+
+            combined_random.columns.names = [None, None]  # remove 'train_prop' and 'model' names
+            combined_scaff.columns.names = [None, None]  # remove 'train_prop' and 'model' names
+            
+            latex_str_random = combined_random.to_latex()
+            latex_str_scaff = combined_scaff.to_latex()
+
+            latex_str_random = latex_str_random.replace("GraphCL_1", "GraphCL").replace("GraphCL_2", "GraphCL")
+            latex_str_scaff = latex_str_scaff.replace("GraphCL_1", "GraphCL").replace("GraphCL_2", "GraphCL")
+            latex_str_random = latex_str_random.replace(r'\multicolumn{2}{r}', r'\multicolumn{2}{c}')
+            latex_str_scaff = latex_str_scaff.replace(r'\multicolumn{2}{r}', r'\multicolumn{2}{c}')
+
+            title_random = rf"\toprule" + "\n" + rf"\textbf{{Random splits}} \\" + "\n" + r"\midrule"
+            title_scaff = rf"\toprule" + "\n" + rf"\textbf{{Scaffold splits}} \\" + "\n" + r"\midrule"
+
+            # Inject the title after \toprule and before the column headers
+            latex_str_random = latex_str_random.replace(r"\toprule", title_random, 1)
+            latex_str_scaff = latex_str_scaff.replace(r"\toprule", title_scaff, 1)
+
+            # Wrap entire str in a resize box
+            latex_str_random = "\\resizebox{\\textwidth}{!}{%\n" + latex_str_random + "}"
+            latex_str_scaff = "\\resizebox{\\textwidth}{!}{%\n" + latex_str_scaff + "}"
+            print(latex_str_random, "\n")
+            print(latex_str_scaff)
