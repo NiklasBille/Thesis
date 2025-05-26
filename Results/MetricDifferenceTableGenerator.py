@@ -43,9 +43,12 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
                             metric_diff_table.loc[index, (strategy, train_prop, 'mean')] = readout - baseline
 
         return metric_diff_table
+    
+    def set_use_percentage(self, use_percentage):
+        self.use_percentage = use_percentage
 
     @override
-    def create_table(self):
+    def create_table(self, experiment, model, partition):
         primary_table = self._compute_metric_diff_table(self.raw_primary_table)
         secondary_table = self._compute_metric_diff_table(self.raw_secondary_table)
 
@@ -57,16 +60,17 @@ class MetricDifferenceTableGenerator(tg.RawTableGenerator):
         print("\n" + "="*80)
         print(f"MODEL: {self.model} | EXPERIMENT: {self.experiment} | PARTITION: {self.partition} | FORMAT: Relative changes")
         print("="*80)
-        primary_table, secondary_table = self.create_table()
+        primary_table, secondary_table = self.create_table(self.experiment, self.model, self.partition)
         if self.decimals is not None:
             self.round_table(primary_table)
             self.round_table(secondary_table)
 
-        print("\n PRIMARY METRIC TABLE")
-        print(primary_table.to_string())
-        print("\n" + "-"*80)
-        if print_secondary_metric:
-            print("\n SECONDARY METRIC TABLE")
+        if print_secondary_metric is False:
+            print("PRIMARY METRIC TABLE")
+            print(primary_table.to_string())
+            print("\n" + "-"*80)
+        else:
+            print("SECONDARY METRIC TABLE")
             print(secondary_table.to_string())
             print("\n" + "-"*80)
 
