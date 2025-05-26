@@ -1,9 +1,9 @@
 experiment_name: GraphCL_toxcast_random=0.8
 logdir: runs/split/GraphCL/toxcast/random/train_prop=0.8
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 train_prop: 0.8
 force_random_split: True
 pretrain_checkpoint: runs/PNA_graphcl_drugs_smaller/best_checkpoint.pt

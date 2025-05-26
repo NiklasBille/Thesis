@@ -25,7 +25,7 @@ def create_config(dataset, noise):
     return {
         'experiment_name': f'GraphCL_{dataset}_static_noise={noise}',
         'logdir': f'runs/static_noise/GraphCL/{dataset}/noise={noise}', 
-        'multiple_seeds': [1, 2, 3], 
+        'multiple_seeds': [4, 5, 6],  
         'pretrain_checkpoint': 'runs/PNA_graphcl_drugs_smaller/best_checkpoint.pt',
         'transfer_layers': ['gnn.'],
         'dataset': f'ogbg-mol{dataset}',

@@ -1,9 +1,9 @@
 experiment_name: GraphCL_clintox_scaff=0.7
 logdir: runs/split/GraphCL/clintox/scaff/train_prop=0.7
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 train_prop: 0.7
 force_random_split: False
 pretrain_checkpoint: runs/PNA_graphcl_drugs_smaller/best_checkpoint.pt

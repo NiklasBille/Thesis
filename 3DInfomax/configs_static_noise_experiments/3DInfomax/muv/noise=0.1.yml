@@ -1,9 +1,9 @@
 experiment_name: 3DInfomax_muv_static_noise=0.1
 logdir: runs/static_noise/3DInfomax/muv/noise=0.1
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 pretrain_checkpoint: runs/PNA_3DInfomax_drugs_smaller/best_checkpoint.pt
 transfer_layers:
 - gnn.

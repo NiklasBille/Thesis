@@ -1,9 +1,9 @@
 experiment_name: 3DInfomax_bace_scaff=0.6
 logdir: runs/split/3DInfomax/bace/scaff/train_prop=0.6
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 train_prop: 0.6
 force_random_split: False
 pretrain_checkpoint: runs/PNA_3DInfomax_drugs_smaller/best_checkpoint.pt
