@@ -1,9 +1,9 @@
 output_model_dir: ../runs/split/GraphCL/lipo/scaff/train_prop=0.7
 input_model_file: ../weights/pretrained/GraphCL_regression.pth
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 train_prop: 0.7
 split: scaffold
 dataset: lipophilicity

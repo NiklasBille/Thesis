@@ -39,7 +39,7 @@ def create_config(dataset, noise_level):
     return {
         'output_model_dir': f'../runs/static-noise/GraphMVP/{dataset}/noise={noise_level}',  
         'input_model_file': f'../weights/pretrained/GraphMVP_{dataset_task_type[dataset]}.pth',
-        'multiple_seeds': [1, 2, 3], 
+        'multiple_seeds': [4, 5, 6], 
         'dataset': dataset,
         'noise_level': noise_level,
         'dynamic_noise': False,

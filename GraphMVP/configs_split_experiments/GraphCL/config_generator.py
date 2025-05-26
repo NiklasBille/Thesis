@@ -43,7 +43,7 @@ def create_config(dataset, train_prop, split_type):
     return {
         'output_model_dir': f'../runs/split/GraphCL/{dataset_naming}/{split_type}/train_prop={train_prop}', 
         'input_model_file': f'../weights/pretrained/GraphCL_{dataset_task_type[dataset]}.pth',
-        'multiple_seeds': [1, 2, 3], 
+        'multiple_seeds': [4, 5, 6], 
         'train_prop': train_prop, 
         'split': split,
         'dataset': dataset,
