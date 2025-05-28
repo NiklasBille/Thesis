@@ -198,6 +198,42 @@ class RawTableGenerator:
         secondary_metric = "mae" if task_type == "regression" else "prcauc"
         return primary_metric, secondary_metric
     
+    def get_model_dir_name(self, model):
+        if model == "GraphCL_1":
+            return "3DInfomax_GraphCL"
+        elif model == "GraphCL_2":
+            return "GraphMVP_GraphCL"
+        else:
+            return model
+    
+    def extract_results_noise(self, model, dataset, noise_level):
+
+        model_dir_name = self.get_model_dir_name(model)
+
+        # First find all possible seeds
+        path_to_sub_experiments = os.path.join("Results", "noise", model_dir_name, dataset)
+        path_to_seeds = os.path.join(path_to_sub_experiments, noise_level)
+        seeds = os.listdir(path_to_seeds)
+        
+        # compute mean and std for each sub-experiment
+        results = {}
+        for seed in seeds:
+            eval_path = os.path.join(path_to_seeds, seed, "evaluation.txt")
+
+            if not os.path.exists(eval_path):
+                continue  # Skip this seed if file is missing
+
+            eval_file_exists = True
+            with open(eval_path, "r") as file:
+                for line in file:
+                    key, value = line.strip().split(": ")
+                    value = float(value)
+                    if key not in results:
+                        results[key] = []
+                    results[key].append(value)
+
+        return results
+    
     def create_table(self, experiment, model, partition):
         # Create empty MultiIndex table
         if experiment == "noise":
@@ -220,13 +256,8 @@ class RawTableGenerator:
         # Insert a column for information on metrics
         table_primary_metric.insert(0, "metric", pd.NA)
         table_secondary_metric.insert(0, "metric", pd.NA)
-
-        if model == "GraphCL_1":
-            model_dir_name = "3DInfomax_GraphCL"
-        elif model == "GraphCL_2":
-            model_dir_name = "GraphMVP_GraphCL"
-        else:
-            model_dir_name = model
+        
+        model_dir_name = self.get_model_dir_name(model)
 
         for dataset in self.datasets:
             path_to_sub_experiments = os.path.join("Results", experiment, model_dir_name, dataset)
