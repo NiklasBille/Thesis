@@ -34,74 +34,10 @@ if __name__ == "__main__":
 
         table_generator.set_table_dict(table_dict)
 
-    table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
-
-    sys.exit()
-
-    # If only one model or all models are specified
-    if len(args.model) == 1:
-        args.model = args.model[0]
-
-        if not args.model == "all":
-            table_generator = mdtg.MetricDifferenceTableGenerator(
-                model=args.model,
-                experiment=args.experiment,
-                partition=args.partition,
-                decimals=args.print_decimals
-            )
-
-            # Create an instance of the DeltaTableGenerator class
-            table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
-        
-        else:
-            table_generator = mctg.ModelComparisonTableGenerator(
-                list_of_models=["3DInfomax", "GraphCL_1", "GraphMVP", "GraphCL_2"],
-                experiment=args.experiment,
-                partition=args.partition,
-                decimals=args.print_decimals
-            )
-
-            # First we compute delta tables for all models and put them in a dictionary
-            allowed_models = table_generator.allowed_models
-            table_dict = dict.fromkeys(allowed_models)
-            for model in allowed_models:
-                delta_table_generator = mdtg.MetricDifferenceTableGenerator(
-                        model=model, experiment=args.experiment, partition=args.partition, decimals=args.print_decimals
-                        )
-                primary_table, secondary_table =  delta_table_generator.create_table(experiment=args.experiment, model=model, partition=args.partition)
-                table_dict[model] = {'primary': primary_table, 'secondary': secondary_table}
-            
-            # Then we inject the new metric table dictionary 
-            table_generator.set_table_dict(table_dict)
-            table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric)
-
-    else:
-        table_generator = mctg.ModelComparisonTableGenerator(
-            experiment=args.experiment,
-            partition=args.partition,
-            list_of_models=args.model,
-            decimals=args.print_decimals
-        )
-
-        # First we extract tables for all models specified and put them in a dictionary
-        table_dict = dict.fromkeys(args.model)
-        for model in args.model:
-            delta_table_generator = mdtg.MetricDifferenceTableGenerator(
-                    model=model, 
-                    experiment=args.experiment, 
-                    partition=args.partition, 
-                    decimals=args.print_decimals,
-                    use_percentage=args.percentage
-            )
-            primary_table, secondary_table =  delta_table_generator.create_table(experiment=args.experiment, model=model, partition=args.partition)
-            table_dict[model] = {'primary': primary_table, 'secondary': secondary_table}
-        
-        # Then we inject the new metric table dictionary 
-        table_generator.set_table_dict(table_dict)
-        table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric, use_percentage=args.percentage)
+    table_generator.print_result_table(print_secondary_metric=args.print_secondary_metric, use_percentage=args.percentage)
 
     if args.to_latex is True:
-        table_generator.convert_table_to_latex(print_secondary_metric=args.print_secondary_metric)
+        table_generator.convert_table_to_latex(print_secondary_metric=args.print_secondary_metric, use_percentage=args.percentage)
 
         
 

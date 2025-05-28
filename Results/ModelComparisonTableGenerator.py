@@ -1,6 +1,7 @@
 import sys
 import RawTableGenerator as tg
 import pandas as pd
+import numpy as np
 
 from typing import Literal
 from typing_extensions import override #to explicitly state when overriding metho
@@ -116,7 +117,7 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                 print(secondary_table.loc[:, 'scaff'].to_string(), '\n', '-'*80)
 
     @override
-    def convert_table_to_latex(self, print_secondary_metric=False):
+    def convert_table_to_latex(self, print_secondary_metric=False, use_percentage=False):
         primary_table, secondary_table = self.create_table()
         table = primary_table if print_secondary_metric is False else secondary_table
 
@@ -143,12 +144,63 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                 for model in self.list_of_models:
                     mean_col = (sub_exp, model, "mean")
                     std_col = (sub_exp, model, "std")
-                    combined[sub_exp, model] = table.apply(
-                        lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
-                                    if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
-                                    else pd.NA,
-                        axis=1
-                    )
+                    
+                    # Baseline should always show raw numbers + standard deviation regardless if we use_percentage
+                    if sub_exp == "noise=0.0" or not use_percentage:
+                        combined[sub_exp, model] = table.apply(
+                            lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                        if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                        else pd.NA,
+                            axis=1
+                        )
+        
+                    else:
+                        
+                        def compute_std_noise(dataset, model, noise_level, partition, use_secondary_metric):
+                            # First extract baseline results
+                            baseline_noise = 'noise=0.0'
+                            baseline_results = self.extract_results_noise(model, dataset, baseline_noise)
+                            # Then extract readout results
+                            readout_results = self.extract_results_noise(model, dataset, noise_level)
+                            
+                            if dataset in ['freesolv', 'esol', 'lipo']:
+                                metric = 'mae' if use_secondary_metric else 'rmse'                                
+                            else:
+                                metric = 'prcauc' if use_secondary_metric else 'rocauc'
+
+                            X = readout_results[f'{partition}_{metric}']
+                            Y = baseline_results[f'{partition}_{metric}']
+                            
+                            def approx_variance_delta_method(X, Y):
+                                n = len(X)
+
+                                mu_X = np.mean(X)
+                                mu_Y = np.mean(Y)
+                                sigma2_X = np.var(X)/n
+                                sigma2_Y = np.var(Y)/n
+                                cov = np.cov(X, Y)[0,1]/n
+                                
+                                return 100**2 * (sigma2_X/(mu_Y**2) + mu_X**2 * sigma2_Y/(mu_Y**4) - 2 * mu_X/(mu_Y**3)*cov)
+                            std_noise = np.sqrt(approx_variance_delta_method(X,Y))
+
+                            #TODO figure out why this variance can be negative for HIV?
+
+                            return std_noise
+
+
+                        # print(std_col)
+                        # print(table.loc[:, std_col])
+                        # print(
+                        #     table.apply(lambda row: f"{row[mean_col]:.{self.decimals}f}\% $\\pm$ {compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric)}",
+                        #                 axis=1)
+                        #     )
+
+                        combined[sub_exp, model] = table.apply(
+                            lambda row: f"{row[mean_col]:.{self.decimals}f}\% $\\pm$ {compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric)}"
+                                        if pd.notna(row[mean_col]) 
+                                        else pd.NA,
+                            axis=1
+                        )
             
             # Rename columns
             rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
@@ -182,12 +234,21 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                     for model in self.list_of_models:
                         mean_col = (sub_exp, train_prop, model, "mean")
                         std_col = (sub_exp, train_prop, model, "std")
-                        combined[sub_exp, train_prop, model] = table.apply(
-                            lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
-                                        if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
-                                        else "*",
-                            axis=1
-                        )
+                        if use_percentage:
+                            combined[sub_exp, train_prop, model] = table.apply(
+                                lambda row: f"{row[mean_col]:.{self.decimals}f}\%" 
+                                            if pd.notna(row[mean_col]) 
+                                            else "*",
+                                axis=1
+                            )
+                        else:
+                            combined[sub_exp, train_prop, model] = table.apply(
+                                lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                            if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                            else "*",
+                                axis=1
+                            )
+            
             
             # Extract columns
             random_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'random']
