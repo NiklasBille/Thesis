@@ -52,11 +52,12 @@ class SplitInterStratTableGenerator(tg.RawTableGenerator):
         if self.decimals is not None:
             self.round_table(primary_table)
             self.round_table(secondary_table)
-        print("\n PRIMARY METRIC DELTA TABLE")
-        print(primary_table.to_string())
-        print("\n" + "-"*80)
-        if print_secondary_metric:
-            print("\n SECONDARY METRIC DELTA TABLE")
+        if print_secondary_metric is False:
+            print("PRIMARY METRIC DELTA TABLE")
+            print(primary_table.to_string())
+            print("\n" + "-"*80)
+        else:
+            print("SECONDARY METRIC DELTA TABLE")
             print(secondary_table.to_string())
             print("\n" + "-"*80)
 

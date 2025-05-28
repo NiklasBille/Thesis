@@ -15,7 +15,7 @@ class RawTableGenerator:
         self.isComparingModels = isComparingModels    # Flag is only True when using model_comparison scripts
         self.datasets = ["freesolv", "esol", "lipo", "bace", "bbbp", "clintox", "hiv", "muv", "sider", "toxcast", "tox21"]
         self.allowed_experiments = ["noise", "split"]
-        self.allowed_models = ["3DInfomax", "GraphMVP", "GraphCL_1", "GraphCL_2"]
+        self.allowed_models = ["3DInfomax", "GraphCL_1", "GraphMVP", "GraphCL_2"]
         self.allowed_partitions = ["train", "val", "test"]
 
         self.validate_inputs()
@@ -52,33 +52,134 @@ class RawTableGenerator:
         if self.decimals is not None:
             self.round_table(table_primary_metric)
             self.round_table(table_secondary_metric)
-        print("PRIMARY METRIC")
     
         if self.experiment == 'noise':
-            print(table_primary_metric.to_string())
-            print("\n" + "-"*80)
-            if print_secondary_metric:
-                print("\n SECONDARY METRIC")
+            if print_secondary_metric is False:
+                print("PRIMARY METRIC")
+                print(table_primary_metric.to_string())
+                print("\n" + "-"*80)
+            else:
+                print("SECONDARY METRIC")
                 print(table_secondary_metric.to_string())
                 print("\n" + "-"*80)
             
         # Split table is very large so we present it as two tables, one for random and one for scaffold
         else: 
-            print("[RANDOM]")
-            table_primary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
-            print(table_primary_metric.loc[:, 'random'].to_string(), '\n')
-            print("[SCAFFOLD]")
-            print(table_primary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
+            if print_secondary_metric is False:
+                print("PRIMARY METRIC")
+                print("[RANDOM]")
+                table_primary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+                print(table_primary_metric.loc[:, 'random'].to_string(), '\n')
+                print("[SCAFFOLD]")
+                print(table_primary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
 
-            if print_secondary_metric:
-                table_secondary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
+            else:
                 print("SECONDARY METRIC")
                 print("[RANDOM]")
+                table_secondary_metric.set_index('metric', append=True, inplace=True) # keep metric column when slicing
                 print(table_secondary_metric.loc[:, 'random'].to_string(), '\n')
                 print("[SCAFFOLD]")
                 print(table_secondary_metric.loc[:, 'scaff'].to_string(), '\n', '-'*80)
 
+    def convert_table_to_latex(self, print_secondary_metric=False):
+        table_primary_metric, table_secondary_metric = self.create_table(self.experiment, self.model, self.partition)
+        table = table_primary_metric if print_secondary_metric is False else table_secondary_metric
         
+        # Create a table to hold "mean \pm std"
+        combined = pd.DataFrame(index=table.index)
+
+        # Dictionaries for rename mapping
+        metric_rename = {"rmse": "RMSE $\\downarrow$", "mae": "MAE $\\downarrow$", "rocauc": "ROC-AUC $\\uparrow$", "prcauc": "PRC-AUC $\\uparrow$"}
+        dataset_rename = {"freesolv": "FreeSolv", "esol": "ESOL", "lipo": "Lipo", "bace": "BACE", "bbbp": "BBBP", "clintox": "ClinTox", "hiv": "HIV", "muv": "MUV", "sider": "SIDER", "toxcast": "ToxCast", "tox21": "Tox21"}
+
+        # For noise experiment
+        if self.experiment == "noise":
+            possible_sub_experiments = ["noise=0.0", "noise=0.05", "noise=0.1", "noise=0.2"] 
+
+            # First populate the table
+            for sub_exp in possible_sub_experiments:
+                mean_col = (sub_exp, "mean")
+                std_col = (sub_exp, "std")
+                combined[sub_exp] = table.apply(
+                    lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                else pd.NA,
+                    axis=1
+                )
+
+            # Then rename columns accordingly
+            rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
+            combined.rename(columns=rename_mapping, inplace=True)
+
+            # Add metric column back
+            combined.insert(0, "Metric", table["metric"])
+            combined["Metric"] = combined["Metric"].replace(metric_rename)
+            combined.rename(index=dataset_rename, inplace=True)
+
+            latex_str = combined.to_latex()
+
+            # Define title row (spanning all columns)
+            title = rf"\toprule" + "\n" + rf"\multicolumn{{6}}{{c}}{{\textbf{{{self.model}: Noise}}}} \\" + "\n" + r"\midrule"
+
+            # Inject the title after \toprule and before the column headers
+            latex_str = latex_str.replace(r"\toprule", title, 1)
+            print(latex_str)
+
+        # For split experiment
+        elif self.experiment =="split":
+            possible_sub_experiments = ["random", "scaff"]
+            train_props = ["train_prop=0.8", "train_prop=0.7", "train_prop=0.6"]
+
+            # First populate the table
+            for sub_exp in possible_sub_experiments:
+                for train_prop in train_props:
+                
+                    mean_col = (sub_exp, train_prop, "mean")
+                    std_col = (sub_exp, train_prop, "std")
+                    combined[sub_exp, train_prop] = table.apply(
+                        lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
+                                    if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
+                                    else "*",
+                        axis=1
+                    )
+            
+            # Extract columns
+            random_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'random']
+            scaff_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'scaff']
+
+            # Create new tables 
+            combined_random = combined[random_cols]
+            combined_scaff = combined[scaff_cols]
+
+            # Rename columns
+            combined_random.columns = [f"$p={col[1].split('=')[1]}$" for col in combined_random.columns]
+            combined_scaff.columns = [f"p={col[1].split('=')[1]}" for col in combined_scaff.columns]
+
+            # Add metric column back
+            combined_random.insert(0, "Metric", table["metric"])
+            combined_scaff.insert(0, "Metric", table["metric"])
+         
+            # Rename metrics
+            combined_random = combined_random.copy() # to suppres a warning
+            combined_random["Metric"].replace(metric_rename, inplace=True)
+            combined_scaff = combined_scaff.copy() # to suppres a warning
+            combined_scaff["Metric"].replace(metric_rename, inplace=True)
+
+            combined_random.rename(index=dataset_rename, inplace=True)
+            combined_scaff.rename(index=dataset_rename, inplace=True)
+            
+            latex_str_random = combined_random.to_latex()
+            latex_str_scaff = combined_scaff.to_latex()
+
+            
+            title_random = rf"\toprule" + "\n" + rf"\multicolumn{{5}}{{c}}{{\textbf{{{self.model}: Random splits}}}} \\" + "\n" + r"\midrule"
+            title_scaff = rf"\toprule" + "\n" + rf"\multicolumn{{5}}{{c}}{{\textbf{{{self.model}: Scaffold splits}}}} \\" + "\n" + r"\midrule"
+
+            # Inject the title after \toprule and before the column headers
+            latex_str_random = latex_str_random.replace(r"\toprule", title_random, 1)
+            latex_str_scaff = latex_str_scaff.replace(r"\toprule", title_scaff, 1)
+            print(latex_str_random, "\n")
+            print(latex_str_scaff)
     
     def round_table(self, table):
          if self.decimals is not None:
@@ -96,6 +197,42 @@ class RawTableGenerator:
         primary_metric = "rmse" if task_type == "regression" else "rocauc"
         secondary_metric = "mae" if task_type == "regression" else "prcauc"
         return primary_metric, secondary_metric
+    
+    def get_model_dir_name(self, model):
+        if model == "GraphCL_1":
+            return "3DInfomax_GraphCL"
+        elif model == "GraphCL_2":
+            return "GraphMVP_GraphCL"
+        else:
+            return model
+    
+    def extract_results_noise(self, model, dataset, noise_level):
+
+        model_dir_name = self.get_model_dir_name(model)
+
+        # First find all possible seeds
+        path_to_sub_experiments = os.path.join("Results", "noise", model_dir_name, dataset)
+        path_to_seeds = os.path.join(path_to_sub_experiments, noise_level)
+        seeds = os.listdir(path_to_seeds)
+        
+        # compute mean and std for each sub-experiment
+        results = {}
+        for seed in seeds:
+            eval_path = os.path.join(path_to_seeds, seed, "evaluation.txt")
+
+            if not os.path.exists(eval_path):
+                continue  # Skip this seed if file is missing
+
+            eval_file_exists = True
+            with open(eval_path, "r") as file:
+                for line in file:
+                    key, value = line.strip().split(": ")
+                    value = float(value)
+                    if key not in results:
+                        results[key] = []
+                    results[key].append(value)
+
+        return results
     
     def create_table(self, experiment, model, partition):
         # Create empty MultiIndex table
@@ -119,13 +256,8 @@ class RawTableGenerator:
         # Insert a column for information on metrics
         table_primary_metric.insert(0, "metric", pd.NA)
         table_secondary_metric.insert(0, "metric", pd.NA)
-
-        if model == "GraphCL_1":
-            model_dir_name = "3DInfomax_GraphCL"
-        elif model == "GraphCL_2":
-            model_dir_name = "GraphMVP_GraphCL"
-        else:
-            model_dir_name = model
+        
+        model_dir_name = self.get_model_dir_name(model)
 
         for dataset in self.datasets:
             path_to_sub_experiments = os.path.join("Results", experiment, model_dir_name, dataset)
