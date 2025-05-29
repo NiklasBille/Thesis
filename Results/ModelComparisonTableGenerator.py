@@ -133,7 +133,7 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
 
         # Dictionaries for rename mapping
         metric_rename = {"rmse": "RMSE $\\downarrow$", "mae": "MAE $\\downarrow$", "rocauc": "ROC-AUC $\\uparrow$", "prcauc": "PRC-AUC $\\uparrow$"}
-        dataset_rename = {"freesolv": "FreeSolv", "esol": "ESOL", "lipo": "Lipo", "bace": "BACE", "bbbp": "BBBP", "clintox": "ClinTox", "hiv": "HIV", "muv": "MUV", "sider": "SIDER", "toxcast": "ToxCast", "tox21": "Tox21"}
+        dataset_rename = {"freesolv": "FreeSolv $\\downarrow$", "esol": "ESOL $\\downarrow$", "lipo": "Lipo $\\downarrow$", "bace": "BACE $\\uparrow$", "bbbp": "BBBP $\\uparrow$", "clintox": "ClinTox $\\uparrow$", "hiv": "HIV $\\uparrow$", "muv": "MUV $\\uparrow$", "sider": "SIDER $\\uparrow$", "toxcast": "ToxCast $\\uparrow$", "tox21": "Tox21 $\\uparrow$"}
 
         # For noise experiment
         if self.experiment == "noise":
@@ -181,7 +181,8 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                                 cov = np.cov(X, Y)[0,1]/n
                                 
                                 return 100**2 * (sigma2_X/(mu_Y**2) + mu_X**2 * sigma2_Y/(mu_Y**4) - 2 * mu_X/(mu_Y**3)*cov)
-                            std_noise = np.sqrt(approx_variance_delta_method(X,Y))
+                                                        
+                            std_noise = np.sqrt(approx_variance_delta_method(X, Y))
 
                             #TODO figure out why this variance can be negative for HIV?
 
@@ -196,18 +197,18 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                         #     )
 
                         combined[sub_exp, model] = table.apply(
-                            lambda row: f"{row[mean_col]:.{self.decimals}f}\% $\\pm$ {compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric)}"
+                            lambda row: f"{row[mean_col]:.{self.decimals}f}\pct$\\pm${compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric):.{self.decimals}f}"
                                         if pd.notna(row[mean_col]) 
                                         else pd.NA,
                             axis=1
                         )
             
             # Rename columns
-            rename_mapping = {f"noise={p}": f"$p={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
+            rename_mapping = {f"noise={p}": f"$\eta={p}$" for p in [0.0, 0.05, 0.1, 0.2]}
             combined.rename(columns=rename_mapping, inplace=True)
             # Add metric column back
-            combined.insert(0, column=('', 'Metric'), value=table["metric"])
-            combined["","Metric"] = combined["","Metric"].replace(metric_rename)
+            # combined.insert(0, column=('', 'Metric'), value=table["metric"])
+            # combined["","Metric"] = combined["","Metric"].replace(metric_rename)
             combined.rename(index=dataset_rename, inplace=True)
 
             latex_str = combined.to_latex()
@@ -215,7 +216,7 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
             latex_str = latex_str.replace(r'\multicolumn{2}{r}', r'\multicolumn{2}{c}')
 
             # Define title row (spanning all columns)
-            title = rf"\toprule" + "\n" + rf"\multicolumn{{10}}{{c}}{{\textbf{{Experiment: noise}}}} \\" + "\n" + r"\midrule"
+            title = rf"\toprule" + "\n" + rf"\multicolumn{{9}}{{c}}{{\textbf{{Noise experiment}}}} \\" + "\n" + r"\midrule"
 
             # Inject the title after \toprule and before the column headers
             latex_str = latex_str.replace(r"\toprule", title, 1)

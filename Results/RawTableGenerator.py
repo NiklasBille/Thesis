@@ -112,8 +112,8 @@ class RawTableGenerator:
             combined.rename(columns=rename_mapping, inplace=True)
 
             # Add metric column back
-            combined.insert(0, "Metric", table["metric"])
-            combined["Metric"] = combined["Metric"].replace(metric_rename)
+            # combined.insert(0, "Metric", table["metric"])
+            # combined["Metric"] = combined["Metric"].replace(metric_rename)
             combined.rename(index=dataset_rename, inplace=True)
 
             latex_str = combined.to_latex()
