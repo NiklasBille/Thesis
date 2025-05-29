@@ -4,7 +4,18 @@ import pandas as pd
 import numpy as np
 
 from typing import Literal
-from typing_extensions import override #to explicitly state when overriding metho
+from typing_extensions import override #to explicitly state when overriding method
+
+def approx_variance_delta_method(X, Y):
+    n = len(X)
+
+    mu_X = np.mean(X)
+    mu_Y = np.mean(Y)
+    sigma2_X = np.var(X)/n
+    sigma2_Y = np.var(Y)/n
+    cov = np.cov(X, Y)[0,1]/n
+    
+    return 100**2 * (sigma2_X/(mu_Y**2) + mu_X**2 * sigma2_Y/(mu_Y**4) - 2 * mu_X/(mu_Y**3)*cov)
 
 class ModelComparisonTableGenerator(tg.RawTableGenerator):
     def __init__(self, experiment, partition, list_of_models, decimals=None):
@@ -116,6 +127,27 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                 print("[SCAFFOLD]")
                 print(secondary_table.loc[:, 'scaff'].to_string(), '\n', '-'*80)
 
+    def compute_std_noise(self, dataset, model, noise_level, partition, use_secondary_metric):
+        # First extract baseline results
+        baseline_noise = 'noise=0.0'
+        baseline_results = self.extract_results_noise(model, dataset, baseline_noise)
+        # Then extract readout results
+        readout_results = self.extract_results_noise(model, dataset, noise_level)
+        
+        if dataset in ['freesolv', 'esol', 'lipo']:
+            metric = 'mae' if use_secondary_metric else 'rmse'                                
+        else:
+            metric = 'prcauc' if use_secondary_metric else 'rocauc'
+
+        X = readout_results[f'{partition}_{metric}']
+        Y = baseline_results[f'{partition}_{metric}']
+                                                                
+        std_noise = np.sqrt(approx_variance_delta_method(X, Y))
+
+        #TODO figure out why this variance can be negative for HIV?
+
+        return std_noise
+
     @override
     def convert_table_to_latex(self, print_secondary_metric=False, use_percentage=False):
         primary_table, secondary_table = self.create_table()
@@ -155,49 +187,8 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                         )
         
                     else:
-                        
-                        def compute_std_noise(dataset, model, noise_level, partition, use_secondary_metric):
-                            # First extract baseline results
-                            baseline_noise = 'noise=0.0'
-                            baseline_results = self.extract_results_noise(model, dataset, baseline_noise)
-                            # Then extract readout results
-                            readout_results = self.extract_results_noise(model, dataset, noise_level)
-                            
-                            if dataset in ['freesolv', 'esol', 'lipo']:
-                                metric = 'mae' if use_secondary_metric else 'rmse'                                
-                            else:
-                                metric = 'prcauc' if use_secondary_metric else 'rocauc'
-
-                            X = readout_results[f'{partition}_{metric}']
-                            Y = baseline_results[f'{partition}_{metric}']
-                            
-                            def approx_variance_delta_method(X, Y):
-                                n = len(X)
-
-                                mu_X = np.mean(X)
-                                mu_Y = np.mean(Y)
-                                sigma2_X = np.var(X)/n
-                                sigma2_Y = np.var(Y)/n
-                                cov = np.cov(X, Y)[0,1]/n
-                                
-                                return 100**2 * (sigma2_X/(mu_Y**2) + mu_X**2 * sigma2_Y/(mu_Y**4) - 2 * mu_X/(mu_Y**3)*cov)
-                                                        
-                            std_noise = np.sqrt(approx_variance_delta_method(X, Y))
-
-                            #TODO figure out why this variance can be negative for HIV?
-
-                            return std_noise
-
-
-                        # print(std_col)
-                        # print(table.loc[:, std_col])
-                        # print(
-                        #     table.apply(lambda row: f"{row[mean_col]:.{self.decimals}f}\% $\\pm$ {compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric)}",
-                        #                 axis=1)
-                        #     )
-
                         combined[sub_exp, model] = table.apply(
-                            lambda row: f"{row[mean_col]:.{self.decimals}f}\pct$\\pm${compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric):.{self.decimals}f}"
+                            lambda row: f"{row[mean_col]:.{self.decimals}f}\pct$\\pm${self.compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric):.{self.decimals}f}"
                                         if pd.notna(row[mean_col]) 
                                         else pd.NA,
                             axis=1
