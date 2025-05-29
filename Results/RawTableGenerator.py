@@ -234,6 +234,33 @@ class RawTableGenerator:
 
         return results
     
+    def extract_results_split(self, model, dataset, split_strategy, train_prop):
+
+        model_dir_name = self.get_model_dir_name(model)
+
+        # First find all possible seeds
+        path_to_sub_experiments = os.path.join("Results", "split", model_dir_name, dataset, split_strategy)
+        path_to_seeds = os.path.join(path_to_sub_experiments, train_prop)
+        seeds = os.listdir(path_to_seeds)
+
+        results = {}
+        for seed in seeds:
+            eval_path = os.path.join(path_to_seeds, seed, "evaluation.txt")
+
+            if not os.path.exists(eval_path):
+                continue  # Skip this seed if file is missing
+
+            eval_file_exists = True
+            with open(eval_path, "r") as file:
+                for line in file:
+                    key, value = line.strip().split(": ")
+                    value = float(value)
+                    if key not in results:
+                        results[key] = []
+                    results[key].append(value)
+        
+        return results
+    
     def create_table(self, experiment, model, partition):
         # Create empty MultiIndex table
         if experiment == "noise":

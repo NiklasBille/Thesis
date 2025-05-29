@@ -147,6 +147,25 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
         #TODO figure out why this variance can be negative for HIV?
 
         return std_noise
+    
+    def compute_std_split(self, dataset, model, split_strategy, train_prop, use_secondary_metric):
+        # First extract baseline results
+        baseline_split = 'train_prop=0.8'
+        baseline_results = self.extract_results_split(model, dataset, split_strategy, baseline_split)
+        # Then extract readout results
+        readout_results = self.extract_results_split(model, dataset, split_strategy, train_prop)
+
+        if dataset in ['freesolv', 'esol', 'lipo']:
+            metric = 'mae' if use_secondary_metric else 'rmse'                                
+        else:
+            metric = 'prcauc' if use_secondary_metric else 'rocauc'
+
+        X = readout_results[f'{self.partition}_{metric}']
+        Y = baseline_results[f'{self.partition}_{metric}']
+
+        std_noise = np.sqrt(approx_variance_delta_method(X, Y))
+
+        return std_noise
 
     @override
     def convert_table_to_latex(self, print_secondary_metric=False, use_percentage=False):
@@ -226,21 +245,21 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                     for model in self.list_of_models:
                         mean_col = (sub_exp, train_prop, model, "mean")
                         std_col = (sub_exp, train_prop, model, "std")
-                        if use_percentage:
-                            combined[sub_exp, train_prop, model] = table.apply(
-                                lambda row: f"{row[mean_col]:.{self.decimals}f}\%" 
-                                            if pd.notna(row[mean_col]) 
-                                            else "*",
-                                axis=1
-                            )
-                        else:
+            
+                        if train_prop == "train_prop=0.8" or not use_percentage:
                             combined[sub_exp, train_prop, model] = table.apply(
                                 lambda row: f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}" 
                                             if pd.notna(row[mean_col]) and pd.notna(row[std_col]) 
                                             else "*",
                                 axis=1
                             )
-            
+                        else:
+                            combined[sub_exp, train_prop, model] = table.apply(
+                                lambda row: f"{row[mean_col]:.{self.decimals}f}\pct$\\pm${self.compute_std_split(dataset=row.name, model=model, split_strategy=sub_exp, train_prop=train_prop, use_secondary_metric=print_secondary_metric):.{self.decimals}f}"
+                                            if pd.notna(row[mean_col]) 
+                                            else "*",
+                                axis=1
+                            )
             
             # Extract columns
             random_cols = [col for col in combined.columns if isinstance(col, tuple) and col[0] == 'random']
@@ -255,16 +274,16 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
             combined_scaff.columns =  pd.MultiIndex.from_tuples([(f"$p={col[1].split('=')[1]}$", col[2]) for col in combined_scaff.columns if isinstance(col, tuple) and len(col) == 3], names=["train_prop", "model"])
 
             # Add metric column back
-            combined_random.insert(0, column=('', 'Metric'), value=table["metric"])
-            combined_scaff.insert(0, column=('', 'Metric'), value=table["metric"])
+            #combined_random.insert(0, column=('', 'Metric'), value=table["metric"])
+            #combined_scaff.insert(0, column=('', 'Metric'), value=table["metric"])
             
          
             # Rename metrics
             combined_random = combined_random.copy() # to suppres a warning
-            combined_random[("", "Metric")] = combined_random[("", "Metric")].replace(metric_rename)
+            # combined_random[("", "Metric")] = combined_random[("", "Metric")].replace(metric_rename)
 
             combined_scaff = combined_scaff.copy() # to suppres a warning
-            combined_scaff[("", "Metric")] = combined_scaff[("", "Metric")].replace(metric_rename)
+            # combined_scaff[("", "Metric")] = combined_scaff[("", "Metric")].replace(metric_rename)
 
             combined_random.rename(index=dataset_rename, inplace=True)
             combined_scaff.rename(index=dataset_rename, inplace=True)
@@ -280,8 +299,9 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
             latex_str_random = latex_str_random.replace(r'\multicolumn{2}{r}', r'\multicolumn{2}{c}')
             latex_str_scaff = latex_str_scaff.replace(r'\multicolumn{2}{r}', r'\multicolumn{2}{c}')
 
-            title_random = rf"\toprule" + "\n" + rf"\textbf{{Random splits}} \\" + "\n" + r"\midrule"
-            title_scaff = rf"\toprule" + "\n" + rf"\textbf{{Scaffold splits}} \\" + "\n" + r"\midrule"
+            # Define title row (spanning all columns)
+            title_random = rf"\toprule" + "\n" + rf"\multicolumn{{7}}{{c}}{{\textbf{{Random splits}}}} \\" + "\n" + r"\midrule"
+            title_scaff = rf"\toprule" + "\n" + rf"\multicolumn{{7}}{{c}}{{\textbf{{Scaffold splits}}}} \\" + "\n" + r"\midrule"
 
             # Inject the title after \toprule and before the column headers
             latex_str_random = latex_str_random.replace(r"\toprule", title_random, 1)
