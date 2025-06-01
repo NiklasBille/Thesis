@@ -13,14 +13,41 @@ class LabelPlotter:
     def visualize_label_distribution(self, dataset_name=None):
         if dataset_name in ["lipo", "freesolve", "esol"]:
             self._visualize_regression_label_distribution(dataset_name)
-        elif dataset_name in ["bbbp", "bace", "hiv"]:
-            # Classification datasets with only 1 task
-            self._visualize_single_class_label_distribution(dataset_name)
-        elif dataset_name in ["clintox"]:
-            # Classification datasets with only 2 tasks
-            self._visualize_clintox_label_distribution(dataset_name)
-        elif dataset_name in ["toxcast", "sider", "tox21", "clintox"]:
-            self._visualize_many_class_label_distribution(dataset_name)
+        else:
+            self._visualize_classification_label_distribution(dataset_name)
+
+    def _visualize_classification_label_distribution(self, dataset_name=None):
+        dataset = OGBGDatasetExtension(name=f'ogbg-mol{dataset_name}', return_types=['targets'], device='cuda')
+        # Each label is a tensor with multiple elements/tasks
+        labels = [dataset[i][0].tolist() for i in range(len(dataset))]
+        
+        # for each task compute the ratio of positive and negative lalels
+        label_counts = pd.DataFrame(labels).apply(lambda x: x.value_counts(), axis=0)
+        # Compute the ratio of positive and negative labels without removing the NaN values. Act as the length of eask task are the positive and negative labels combined
+        negative_percentage = label_counts.iloc[0, :] / (label_counts.iloc[0, :] + label_counts.iloc[1, :])
+        # Sort the labels by the ratio of negative labels
+        negative_percentage = negative_percentage.sort_values(ascending=False)
+        positive_percentage = 1 - negative_percentage
+        
+        # Use the sns barplot to plot the ratio of positive and negative labels
+        f, ax = plt.subplots(figsize=(10, 6))
+        sns.set_theme(style="whitegrid")
+        sns.set_color_codes("pastel")
+
+        # Background bar (Negative)
+        sns.barplot(x=negative_percentage, y=negative_percentage.index, label="Negative", color="b")
+        # Overlay bar (Positive)
+        sns.set_color_codes("muted")
+        sns.barplot(x=positive_percentage, y=positive_percentage.index, label="Positive", color="b")
+        # Save the figure
+        output_dir = "dataset_statistics/figures/label_distribution"
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = f"{output_dir}/{dataset_name}_label_distribution.png"
+        plt.savefig(output_path)
+        plt.show()
+
+        
+
 
     def _visualize_clintox_label_distribution(self, dataset_name=None):
 
@@ -98,23 +125,54 @@ class LabelPlotter:
         plt.savefig(output_path)
         plt.show()       
 
-    def _visualize_single_class_label_distribution(self, dataset_name=None):
-        # Load the dataset
-        dataset = OGBGDatasetExtension(name=f'ogbg-mol{dataset_name}', return_types=['targets'], device='cuda')
-        labels = [dataset[i][0].item() for i in range(len(dataset))]
-        # Make a pie chart for these labels
-        label_counts = pd.Series(labels).value_counts()
-        plt.figure(figsize=(10, 6))
-        plt.pie(label_counts, labels=label_counts.index, autopct='%1.1f%%', startangle=140)
-        plt.title(f"Label Distribution for {dataset_name}")
-        plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.grid()
-        # Save the figure
-        output_dir = "dataset_statistics/figures/label_distribution"
-        os.makedirs(output_dir, exist_ok=True)
-        output_path = f"{output_dir}/{dataset_name}_label_distribution.png"
-        plt.savefig(output_path)
-        plt.show()
+
+def _visualize_single_class_label_distribution(self, dataset_name=None):
+    # Load the dataset
+    dataset = OGBGDatasetExtension(name=f'ogbg-mol{dataset_name}', return_types=['targets'], device='cuda')
+    labels = [dataset[i][0].item() for i in range(len(dataset))]
+
+    # Compute counts
+    label_counts = pd.Series(labels).value_counts().sort_index()
+    total = label_counts.sum()
+    positive = label_counts.get(1, 0)
+    negative = label_counts.get(0, 0)
+
+    # Data for plotting
+    plot_df = pd.DataFrame({
+        'Label': ['All', 'All'],
+        'Type': ['Negative', 'Positive'],
+        'Ratio': [negative / total, positive / total]
+    })
+
+    # Initialize the matplotlib figure
+    sns.set_theme(style="whitegrid")
+    f, ax = plt.subplots(figsize=(6, 1.5))
+
+    # Background bar (Negative)
+    sns.set_color_codes("pastel")
+    sns.barplot(x="Ratio", y="Label", data=plot_df[plot_df["Type"] == "Negative"],
+                label="Negative", color="b")
+
+    # Overlay bar (Positive)
+    sns.set_color_codes("muted")
+    sns.barplot(x="Ratio", y="Label", data=plot_df[plot_df["Type"] == "Positive"],
+                label="Positive", color="b")
+
+    # Add legend and axis labels
+    ax.legend(ncol=2, loc="lower center", frameon=True, bbox_to_anchor=(0.5, -0.5))
+    ax.set(xlim=(0, 1), ylabel="", xlabel="Proportion")
+    sns.despine(left=True, bottom=True)
+
+    # Save the figure
+    output_dir = "dataset_statistics/figures/label_distribution"
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = f"{output_dir}/{dataset_name}_label_distribution.png"
+    plt.tight_layout()
+    plt.savefig(output_path)
+    plt.show()
+
+        
+        
 
 
     def _visualize_regression_label_distribution(self, dataset_name=None):

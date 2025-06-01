@@ -53,6 +53,35 @@ class FeatureCounter:
         plt.savefig(output_path)
         plt.show()
 
+    def get_average_atom_count(self, dataset_name=None):
+        dataset = OGBGDatasetExtension(
+            name=f'ogbg-mol{dataset_name}',
+            return_types=['dgl_graph', 'target'],
+            device='cuda'
+        )
+        atom_counts = []
+        for n in tqdm(range(len(dataset))):
+            graph, _ = dataset[n]
+            atom_counts.append(graph.num_nodes())
+        avg_atom_count = sum(atom_counts) / len(atom_counts)
+        return avg_atom_count
+
+    def get_average_bond_count_per_atom(self, dataset_name=None):
+        dataset = OGBGDatasetExtension(
+            name=f'ogbg-mol{dataset_name}',
+            return_types=['dgl_graph', 'target'],
+            device='cuda'
+        )
+        avg_bond_count_per_atom = []
+        for n in tqdm(range(len(dataset))):
+            graph, _ = dataset[n]
+            num_atoms = graph.num_nodes()
+            num_bonds = graph.num_edges()
+
+            avg_bond_count_per_atom.append(num_bonds / num_atoms if num_atoms > 0 else 0)
+        avg_bond_count_per_atom = sum(avg_bond_count_per_atom) / len(avg_bond_count_per_atom)
+        return avg_bond_count_per_atom
+
     def count_features(self, dataset_name=None, save=False):
         # If the dataset statistics have already been calculated, load them
         if os.path.exists(self.get_save_path(dataset_name, 'node')) and os.path.exists(self.get_save_path(dataset_name, 'edge')):
