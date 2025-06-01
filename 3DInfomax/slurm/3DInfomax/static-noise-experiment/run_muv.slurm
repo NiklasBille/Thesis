@@ -21,6 +21,7 @@ fi
 apptainer exec --nv --bind $PWD:/workspace 3dinfomax-complete.sif bash -c "
     cd /workspace && \
     gpu_counter=0 && \
+    pip install ogb==1.3.3 && \
     for noise in 0.0 0.05 0.1 0.2; do
         config=configs_static_noise_experiments/3DInfomax/muv/noise=\$noise.yml
         gpu=\$((gpu_counter % 4))

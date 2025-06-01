@@ -28,7 +28,7 @@ def create_config(dataset, train_prop, split_type):
     return {
         'experiment_name': f'GraphCL_{dataset}_{split_type}={train_prop}',
         'logdir': f'runs/split/GraphCL/{dataset}/{split_type}/train_prop={train_prop}',
-        'multiple_seeds': [1, 2, 3], 
+        'multiple_seeds': [4, 5, 6],  
         'train_prop': train_prop, 
         'force_random_split': force_random_split,
         'pretrain_checkpoint': 'runs/PNA_graphcl_drugs_smaller/best_checkpoint.pt',

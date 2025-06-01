@@ -1,9 +1,9 @@
 experiment_name: GraphCL_freesolv_static_noise=0.2
 logdir: runs/static_noise/GraphCL/freesolv/noise=0.2
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 pretrain_checkpoint: runs/PNA_graphcl_drugs_smaller/best_checkpoint.pt
 transfer_layers:
 - gnn.

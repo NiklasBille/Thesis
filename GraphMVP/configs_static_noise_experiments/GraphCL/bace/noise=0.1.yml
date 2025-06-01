@@ -1,9 +1,9 @@
 output_model_dir: ../runs/static-noise/GraphCL/bace/noise=0.1
 input_model_file: ../weights/pretrained/GraphCL_classification.pth
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 dataset: bace
 noise_level: 0.1
 dynamic_noise: False

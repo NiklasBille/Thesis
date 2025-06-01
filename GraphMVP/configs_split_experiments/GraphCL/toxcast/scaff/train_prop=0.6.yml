@@ -1,9 +1,9 @@
 output_model_dir: ../runs/split/GraphCL/toxcast/scaff/train_prop=0.6
 input_model_file: ../weights/pretrained/GraphCL_classification.pth
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 train_prop: 0.6
 split: scaffold
 dataset: toxcast

@@ -10,7 +10,8 @@ class SplitIntraStratTableGenerator(tg.RawTableGenerator):
     def __init__(self, experiment, partition, decimals=None):
         super().__init__(experiment=experiment, partition=partition, decimals=decimals, isComparingModels=True)
         
-        self.allowed_models = ['GraphCL', '3DInfomax']
+        # TODO implement for GraphMVP and GraphCL_2 
+        self.allowed_models = ['GraphCL_1', '3DInfomax']
         self.raw_table_dict = dict.fromkeys(self.allowed_models)
         for model in self.allowed_models:
             raw_primary_table, raw_secondary_table =  super().create_table(experiment, model, partition)
@@ -39,11 +40,11 @@ class SplitIntraStratTableGenerator(tg.RawTableGenerator):
                     R = raw_table.loc[self.datasets, (sub_experiment, train_prop)]
                     
                     # 2D model is always our baseline in this comparison
-                    if model == 'GraphCL':
+                    if model == 'GraphCL_1':
                         table.loc[:, (sub_experiment, train_prop, model)] = R['mean']
                     
                     elif model == '3DInfomax':
-                        baseline = table.loc[:, (sub_experiment, train_prop, 'GraphCL')]
+                        baseline = table.loc[:, (sub_experiment, train_prop, 'GraphCL_1')]
                         table.loc[:, (sub_experiment, train_prop, model)] = R['mean'] - baseline
         
         return table
@@ -65,10 +66,11 @@ class SplitIntraStratTableGenerator(tg.RawTableGenerator):
         if self.decimals is not None:
             self.round_table(primary_table)
             self.round_table(secondary_table)
-        print("PRIMARY METRIC DELTA TABLE")
-        print(primary_table.to_string())
-        print("\n" + "-"*80)
-        if print_secondary_metric:
+        if print_secondary_metric is False:
+            print("PRIMARY METRIC DELTA TABLE")
+            print(primary_table.to_string())
+            print("\n" + "-"*80)
+        else:
             print("SECONDARY METRIC DELTA TABLE")
             print(secondary_table.to_string())
             print("\n" + "-"*80)

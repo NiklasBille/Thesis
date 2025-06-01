@@ -1,9 +1,9 @@
 experiment_name: GraphCL_esol_scaff=0.8
 logdir: runs/split/GraphCL/esol/scaff/train_prop=0.8
 multiple_seeds:
-- 1
-- 2
-- 3
+- 4
+- 5
+- 6
 train_prop: 0.8
 force_random_split: False
 pretrain_checkpoint: runs/PNA_graphcl_drugs_smaller/best_checkpoint.pt
