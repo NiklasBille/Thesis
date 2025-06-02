@@ -5,7 +5,7 @@ if __name__ == "__main__":
     # Create an instance of the DeltaTableGenerator class
     loss_diff_table_generator = ldtg.LossDifferenceTableGenerator(
         model="3DInfomax",
-        experiment="split",
+        experiment="noise",
         decimals=3
     )
     loss_diff_table_generator.print_result_table()

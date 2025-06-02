@@ -11,7 +11,7 @@ class LabelPlotter:
         pass        
         
     def visualize_label_distribution(self, dataset_name=None):
-        if dataset_name in ["lipo", "freesolve", "esol"]:
+        if dataset_name in ["lipo", "freesolv", "esol"]:
             self._visualize_regression_label_distribution(dataset_name)
         else:
             self._visualize_classification_label_distribution(dataset_name)
@@ -38,24 +38,43 @@ class LabelPlotter:
 
         # Sort by positive percentage (descending)
         plot_df = plot_df.sort_values(by='positive', ascending=False).reset_index(drop=True)
-        print(plot_df)
         # Plot stacked bars with negative on top
-        plt.figure(figsize=(10, 6))
-        plt.bar(plot_df.index, plot_df['positive'], label='Positive', color='lightblue')
-        plt.bar(plot_df.index, plot_df['negative'], bottom=plot_df['positive'], label='Negative', color='darkblue')
+        plt.figure(figsize=(7, 5))
 
-        plt.xlabel('Task (sorted by positive ratio)')
+        plt.rcParams.update({
+            "axes.titlesize": 20,
+            "axes.labelsize": 20,
+            "xtick.labelsize": 16,
+            "ytick.labelsize": 16,
+            "legend.fontsize": 16
+        })
+
+        if len(plot_df) == 1:
+            # Center the single bar at x=0.5 with a width of 0.5
+            x = [0.5]
+            width = 0.5
+            plt.bar(x, plot_df['positive'], width=width, label='Positive', color='lightblue')
+            plt.bar(x, plot_df['negative'], width=width, bottom=plot_df['positive'], label='Negative', color='darkblue')
+            plt.xticks([])  # No ticks needed for single bar
+            plt.xlim(0, 1)  # Set x-axis limits to center the bar
+        else:
+            plt.bar(plot_df.index, plot_df['positive'], label='Positive', color='lightblue')
+            plt.bar(plot_df.index, plot_df['negative'], bottom=plot_df['positive'], label='Negative', color='darkblue')
+            plt.xticks([])
         plt.ylabel('Label Ratio')
-        plt.title(f'Label Distribution for ogbg-mol{dataset_name}')
-        plt.legend()
-        plt.xticks([])
+        plt.xlabel('Task')
+        #plt.title(f'Label Distribution for {dataset_name}')
+
+        # handles, labels = plt.gca().get_legend_handles_labels()
+        # plt.legend(handles[::-1], labels[::-1])
 
         output_dir = "dataset_statistics/figures/label_distribution"
         os.makedirs(output_dir, exist_ok=True)
         output_path = f"{output_dir}/{dataset_name}_label_distribution.png"
         plt.savefig(output_path)
 
-        plt.show()    
+        plt.show()
+
 
 
     def _visualize_regression_label_distribution(self, dataset_name=None):
@@ -64,13 +83,21 @@ class LabelPlotter:
         labels = [dataset[i][0].item() for i in range(len(dataset))]
 
         # Ensure output directory exists
-        output_dir = "dataset_statistics/figures"
+        output_dir = "dataset_statistics/figures/label_distribution"
         os.makedirs(output_dir, exist_ok=True)
 
+        plt.rcParams.update({
+            "axes.titlesize": 20,
+            "axes.labelsize": 18,
+            "xtick.labelsize": 16,
+            "ytick.labelsize": 16,
+            "legend.fontsize": 16
+        })
+
         # Create a histogram for these labels
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(7, 6))
         sns.histplot(labels, bins=30, kde=True)
-        plt.title(f"Label Distribution for {dataset_name}")
+        #plt.title(f"Label Distribution for {dataset_name}")
         plt.xlabel("Label Value")
         plt.ylabel("Frequency")
         plt.grid()
@@ -79,3 +106,30 @@ class LabelPlotter:
         output_path = f"{output_dir}/{dataset_name}_label_distribution.png"
         plt.savefig(output_path)
         plt.show()
+
+    def visualize_all_labels_from_png(self):
+            path_to_pngs = "dataset_statistics/figures/label_distribution"
+
+            png_files = [f for f in os.listdir(path_to_pngs) if f.endswith('.png')]
+
+            # Create a grid of subplots with 3 columns
+            num_files = len(png_files)
+            num_cols = 3
+            num_rows = (num_files + num_cols - 1) // num_cols
+            fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 5 * num_rows))
+            axes = axes.flatten() if num_rows > 1 else [axes]
+            for ax, png_file in zip(axes, png_files):
+                img = plt.imread(os.path.join(path_to_pngs, png_file))
+                ax.imshow(img)
+                ax.axis('off')
+                ax.set_title(png_file.replace('_label_distribution.png', ''))
+            # Hide any unused subplots
+            for ax in axes[num_files:]:
+                ax.axis('off')
+            plt.tight_layout()
+
+            # Save the combined figure
+            save_path = "dataset_statistics/figures/all_label_distributions.png"
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            plt.savefig(save_path)
+            plt.show()
