@@ -11,9 +11,9 @@ def approx_variance_delta_method(X, Y):
 
     mu_X = np.mean(X)
     mu_Y = np.mean(Y)
-    sigma2_X = np.var(X)/n
-    sigma2_Y = np.var(Y)/n
-    cov = np.cov(X, Y)[0,1]/n
+    sigma2_X = np.var(X, ddof=1)/n
+    sigma2_Y = np.var(Y, ddof=1)/n
+    cov = np.cov(X, Y, ddof=1)[0,1]/n
     
     return 100**2 * (sigma2_X/(mu_Y**2) + mu_X**2 * sigma2_Y/(mu_Y**4) - 2 * mu_X/(mu_Y**3)*cov)
 
@@ -205,7 +205,18 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                                         else pd.NA,
                             axis=1
                         )
-        
+                        # combined[sub_exp, model] = table.apply(
+                        #     lambda row: (
+                        #         f"{row[mean_col]:.{self.decimals + 1}f}$\\pm${row[std_col]:.{self.decimals+1}f}" 
+                        #         if row.name in ["freesolv", "esol", "lipo"]
+                        #         else (
+                        #             f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}"
+                        #             if pd.notna(row[mean_col]) and pd.notna(row[std_col])
+                        #             else pd.NA
+                        #         )
+                        #     ),
+                        #     axis=1
+                        # )        
                     else:
                         combined[sub_exp, model] = table.apply(
                             lambda row: f"{row[mean_col]:.{self.decimals}f}\pct$\\pm${self.compute_std_noise(dataset=row.name, model=model, noise_level=sub_exp, partition=self.partition, use_secondary_metric=print_secondary_metric):.{self.decimals}f}"
@@ -254,6 +265,18 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
                                             else "*",
                                 axis=1
                             )
+                            # combined[sub_exp, train_prop, model] = table.apply(
+                            #     lambda row: (
+                            #         f"{row[mean_col]:.{self.decimals + 1}f}$\\pm${row[std_col]:.{self.decimals+1}f}" 
+                            #         if row.name in ["freesolv", "esol", "lipo"]
+                            #         else (
+                            #             f"{row[mean_col]:.{self.decimals}f}$\\pm${row[std_col]:.{self.decimals}f}"
+                            #             if pd.notna(row[mean_col]) and pd.notna(row[std_col])
+                            #             else pd.NA
+                            #         )
+                            #     ),
+                            #     axis=1
+                            # )        
                         else:
                             combined[sub_exp, train_prop, model] = table.apply(
                                 lambda row: f"{row[mean_col]:.{self.decimals}f}\pct$\\pm${self.compute_std_split(dataset=row.name, model=model, split_strategy=sub_exp, train_prop=train_prop, use_secondary_metric=print_secondary_metric):.{self.decimals}f}"
@@ -398,6 +421,7 @@ class ModelComparisonSplitInterStratTableGenerator(ModelComparisonTableGenerator
         combined.columns.names = [None, None] # Get rid of 'train_prop' and 'model' naming
 
         latex_str = combined.to_latex()
+        latex_str = latex_str.replace("GraphCL_1", "GraphCL").replace("GraphCL_2", "GraphCL")
 
         latex_str = latex_str.replace(rf'\multicolumn{{{len(self.list_of_models)}}}{{r}}', rf'\multicolumn{{{len(self.list_of_models)}}}{{c}}')
 
