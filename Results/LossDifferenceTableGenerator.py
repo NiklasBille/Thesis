@@ -5,7 +5,7 @@ import os
 
 class LossDifferenceTableGenerator(tg.RawTableGenerator):
     def __init__(self, model, experiment, decimals=None):
-        super().__init__(model=model, experiment=experiment, decimals=decimals, secondary_metric=False, partition=None)
+        super().__init__(model=model, experiment=experiment, decimals=decimals, partition=None)
         
     def print_result_table(self):
         print("\n" + "="*80)
