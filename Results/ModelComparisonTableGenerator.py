@@ -337,6 +337,10 @@ class ModelComparisonTableGenerator(tg.RawTableGenerator):
             print(latex_str_random, "\n")
             print(latex_str_scaff)
 
+    def get_table(self, secondary_metric=False):
+        table_primary_metric, table_secondary_metric = self.create_table()
+        return table_primary_metric if secondary_metric is False else table_secondary_metric
+
 
 class ModelComparisonSplitInterStratTableGenerator(ModelComparisonTableGenerator):
     def __init__(self, experiment, partition, list_of_models, decimals=None):

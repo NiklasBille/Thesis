@@ -355,3 +355,7 @@ class RawTableGenerator:
                     table.loc[dataset, "metric"] = metric
         
         return table_primary_metric, table_secondary_metric
+    
+    def get_table(self, secondary_metric=False):
+        table_primary_metric, table_secondary_metric = self.create_table(self.experiment, self.model, self.partition)
+        return table_primary_metric if secondary_metric is False else table_secondary_metric
