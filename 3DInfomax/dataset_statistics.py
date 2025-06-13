@@ -6,7 +6,7 @@ import pandas as pd
 import torch
 import numpy as np
 
-def test_classification_unique_classes():
+def get_classification_unique_classes():
     """
     Find out which classification datasets contain missing labels since these require
     the loss function OGBNanLabelBCEWithLogitsLoss.
@@ -49,4 +49,4 @@ def test_classification_unique_classes():
 
 
 if __name__ == "__main__":
-    test_classification_unique_classes()
+    get_classification_unique_classes()
